@@ -1,0 +1,654 @@
+@font-face {
+  font-family: "Bandit";
+  src: url("/reference/thibault/fonts/bandit/Variable-trial.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ThibaultMono";
+  src: url("/reference/thibault/fonts/mgm/ABCMonumentGroteskMono-Regular-Trial.woff2")
+    format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ThibaultMonoMedium";
+  src: url("/reference/thibault/fonts/mgm/ABCMonumentGroteskMono-Medium-Trial.woff2")
+    format("woff2");
+  font-display: swap;
+}
+
+.shell {
+  position: absolute;
+  inset: 0;
+  background: #050505;
+  color: #f8f3ea;
+  overflow: hidden;
+}
+
+.viewport,
+.desktop {
+  position: absolute;
+  inset: 0;
+}
+
+.canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1920px;
+  height: 1080px;
+  transform: translate(-50%, -50%) scale(var(--slide-scale, 1));
+  transform-origin: center;
+  will-change: transform;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #070707;
+  border-radius: 32px;
+  box-shadow:
+    0 42px 110px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.home,
+.route {
+  position: absolute;
+  inset: 0;
+}
+
+.route {
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+.route::-webkit-scrollbar {
+  display: none;
+}
+
+.homeMedia,
+.homeVideo,
+.projectHeroVideo,
+.projectShade,
+.homeShade {
+  position: absolute;
+  inset: 0;
+}
+
+.homeVideo,
+.projectHeroVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.homeVideo {
+  opacity: 0;
+  transform: scale(1.03);
+  transition:
+    opacity 420ms ease,
+    transform 900ms ease;
+}
+
+.homeVideoActive {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.homeShade {
+  background:
+    linear-gradient(180deg, rgba(8, 8, 8, 0.72), rgba(8, 8, 8, 0.16) 36%, rgba(8, 8, 8, 0.64)),
+    radial-gradient(circle at center, transparent 0%, rgba(8, 8, 8, 0.1) 48%, rgba(8, 8, 8, 0.82));
+}
+
+.home::after,
+.about::before,
+.projectHero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.homeGrid {
+  position: absolute;
+  inset: 50px 82px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto 1fr auto;
+  gap: 44px 60px;
+  z-index: 1;
+}
+
+.tile,
+.edgeLeft,
+.edgeRight,
+.routeButton,
+.contactLink,
+.nextCard {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #f8f3ea;
+  cursor: pointer;
+}
+
+.tile {
+  display: grid;
+  gap: 28px;
+  justify-items: center;
+  align-self: start;
+  padding: 0;
+  text-transform: uppercase;
+  font-family: "ThibaultMono", monospace;
+  opacity: 0.8;
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease;
+}
+
+.tile:nth-child(n + 4) {
+  align-self: end;
+}
+
+.tile:hover,
+.tile:focus-visible,
+.tileActive {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.tileTitle,
+.tileDiscipline,
+.tileMeta {
+  display: block;
+  text-align: center;
+}
+
+.tileTitle {
+  max-width: 470px;
+  font-size: 21px;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.tileMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 54px;
+  font-size: 19px;
+  letter-spacing: 0.05em;
+}
+
+.diamond {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  transform: rotate(45deg);
+}
+
+.diamond span {
+  transform: rotate(-45deg);
+  font-family: "ThibaultMonoMedium", monospace;
+  font-size: 15px;
+}
+
+.tileDiscipline {
+  font-size: 18px;
+  letter-spacing: 0.05em;
+}
+
+.logoFrame {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.logoCorners {
+  position: absolute;
+  inset: 31% 34%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.logoCorners::before,
+.logoCorners::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 36px;
+  height: 36px;
+  border-top: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.logoCorners::before {
+  left: 0;
+  border-left: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.logoCorners::after {
+  right: 0;
+  border-right: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.logo {
+  width: min(960px, 68%);
+  max-height: 210px;
+  object-fit: contain;
+  filter: drop-shadow(0 24px 28px rgba(0, 0, 0, 0.24));
+}
+
+.edgeLeft,
+.edgeRight,
+.routeButton,
+.routeLabel,
+.sectionTitle,
+.projectCategory,
+.utilityRow,
+.factGrid dt,
+.experienceCompany,
+.experienceTime,
+.availability,
+.contactLink,
+.nextLabel {
+  font-family: "ThibaultMonoMedium", monospace;
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.edgeLeft,
+.edgeRight {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+}
+
+.edgeLeft {
+  left: 68px;
+  transform: translateY(-50%);
+}
+
+.edgeRight {
+  right: 68px;
+  transform: translateY(-50%);
+}
+
+.about {
+  position: relative;
+  min-height: 100%;
+  padding: 42px 58px 56px;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255, 123, 104, 0.12), transparent 24%),
+    linear-gradient(180deg, #090909, #060606);
+}
+
+.routeHeader {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 18px;
+}
+
+.routeButton {
+  padding: 0;
+}
+
+.routeLabel {
+  color: rgba(248, 243, 234, 0.88);
+}
+
+.aboutHero {
+  max-width: 1160px;
+  padding: 40px 0 90px;
+}
+
+.aboutTitle,
+.projectTitle,
+.nextTitle {
+  margin: 0;
+  font-family: "Bandit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: normal;
+  text-transform: uppercase;
+}
+
+.aboutTitle {
+  font-size: 84px;
+}
+
+.aboutLead {
+  max-width: 900px;
+  margin: 42px 0 0;
+  font-size: 30px;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.aboutBody {
+  max-width: 960px;
+  margin: 24px 0 0;
+  color: rgba(248, 243, 234, 0.74);
+  font-family: "ThibaultMono", monospace;
+  font-size: 17px;
+  line-height: 1.7;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.aboutSection {
+  padding: 28px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.experienceGrid {
+  margin-top: 28px;
+  display: grid;
+  gap: 0;
+}
+
+.experienceCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 22px 32px;
+  padding: 24px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.experienceCompany,
+.experienceTime {
+  margin: 0;
+  color: rgba(248, 243, 234, 0.7);
+}
+
+.experienceBody {
+  display: grid;
+  gap: 16px;
+}
+
+.experienceRole {
+  font-family: "ThibaultMonoMedium", monospace;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+}
+
+.experienceCopy {
+  max-width: 860px;
+  margin: 0;
+  color: rgba(248, 243, 234, 0.82);
+  font-family: "ThibaultMono", monospace;
+  font-size: 15px;
+  line-height: 1.7;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.contactRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.contactLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  text-decoration: none;
+}
+
+.availability {
+  margin: 24px 0 0;
+  color: rgba(171, 247, 144, 0.92);
+}
+
+.project {
+  background: #060606;
+}
+
+.projectHero {
+  position: relative;
+  min-height: 1080px;
+  padding: 42px 58px 56px;
+  background:
+    linear-gradient(180deg, rgba(6, 6, 6, 0.18), rgba(6, 6, 6, 0.5) 54%, rgba(6, 6, 6, 0.92)),
+    var(--hero-image) center / cover no-repeat;
+}
+
+.projectShade {
+  background:
+    radial-gradient(circle at 18% 26%, rgba(255, 169, 140, 0.24), transparent 24%),
+    linear-gradient(180deg, rgba(6, 6, 6, 0.2), rgba(6, 6, 6, 0.56) 52%, rgba(6, 6, 6, 0.94));
+}
+
+.projectMeta,
+.projectFooter,
+.routeHeader {
+  position: relative;
+  z-index: 1;
+}
+
+.projectMeta {
+  margin-left: auto;
+  max-width: 720px;
+  padding-top: 72px;
+}
+
+.projectCategory {
+  margin: 0;
+}
+
+.projectSummary,
+.factGrid dd {
+  font-family: "ThibaultMono", monospace;
+  text-transform: uppercase;
+}
+
+.projectSummary {
+  margin: 70px 0 0;
+  font-size: 24px;
+  line-height: 1.7;
+  letter-spacing: 0.08em;
+}
+
+.utilityRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 90px;
+}
+
+.liveLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #f8f3ea;
+  text-decoration: none;
+}
+
+.liveDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #4ac569;
+  box-shadow: 0 0 0 8px rgba(74, 197, 105, 0.14);
+}
+
+.factGrid {
+  margin: 72px 0 0;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 18px 30px;
+}
+
+.factGrid div {
+  display: contents;
+}
+
+.factGrid dt {
+  color: rgba(248, 243, 234, 0.54);
+}
+
+.factGrid dd {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+}
+
+.score {
+  margin-top: 64px;
+  display: inline-grid;
+  gap: 8px;
+}
+
+.score span {
+  font-family: "Bandit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 70px;
+  line-height: 0.9;
+}
+
+.score small {
+  color: rgba(248, 243, 234, 0.66);
+  font-family: "ThibaultMono", monospace;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.projectFooter {
+  position: absolute;
+  left: 58px;
+  right: 58px;
+  bottom: 52px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.projectTitle {
+  max-width: 840px;
+  font-size: 112px;
+}
+
+.gallery {
+  padding: 28px 58px 48px;
+  display: grid;
+  gap: 28px;
+}
+
+.galleryCard {
+  margin: 0;
+  min-height: 720px;
+  overflow: hidden;
+  background: #111111;
+}
+
+.galleryCardWide {
+  min-height: 560px;
+}
+
+.galleryCardTall {
+  min-height: 820px;
+}
+
+.galleryImage,
+.nextPreview {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nextCard {
+  position: relative;
+  width: calc(100% - 116px);
+  min-height: 250px;
+  margin: 0 58px 58px;
+  overflow: hidden;
+  text-align: left;
+}
+
+.nextPreview,
+.nextOverlay {
+  position: absolute;
+  inset: 0;
+}
+
+.nextOverlay {
+  background: linear-gradient(180deg, rgba(6, 6, 6, 0.18), rgba(6, 6, 6, 0.82));
+}
+
+.nextContent {
+  position: relative;
+  z-index: 1;
+  min-height: 250px;
+  display: grid;
+  align-content: end;
+  gap: 12px;
+  padding: 30px 34px;
+}
+
+.nextTitle {
+  font-size: 68px;
+}
+
+.tile,
+.edgeLeft,
+.edgeRight,
+.routeButton,
+.contactLink,
+.nextCard,
+.liveLink {
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease,
+    color 200ms ease;
+}
+
+.tile:hover,
+.edgeLeft:hover,
+.edgeRight:hover,
+.routeButton:hover,
+.contactLink:hover,
+.nextCard:hover,
+.liveLink:hover {
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homeVideo,
+  .tile,
+  .edgeLeft,
+  .edgeRight,
+  .routeButton,
+  .contactLink,
+  .nextCard,
+  .liveLink {
+    transition: none !important;
+  }
+}

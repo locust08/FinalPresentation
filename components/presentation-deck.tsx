@@ -17,6 +17,7 @@ import { PresentationHumanValueSlide } from "@/components/presentation-human-val
 import { PresentationLocusReasonsSlide } from "@/components/presentation-locus-reasons-slide"
 import { PresentationOverviewSlide } from "@/components/presentation-overview-slide"
 import { PresentationShowcasePlaceholderSlide } from "@/components/presentation-showcase-placeholder-slide"
+import { PresentationThibaultShowcaseSlide } from "@/components/presentation-thibault-showcase-slide"
 import { SECTION_TITLES } from "@/components/presentation-sections"
 import { PresentationStorySlide } from "@/components/presentation-story-slide"
 import { SectionOpenerSlide } from "@/components/section-opener-slide"
@@ -319,17 +320,7 @@ const SLIDES = [
           id: "product-showcase-content",
           label: "Product Showcase",
           theme: "light" as const,
-          render: () => (
-            <PresentationShowcasePlaceholderSlide
-              caption="Final AI Video Output"
-              description="Final visual output developed during the internship project, prepared for presentation and review."
-              eyebrow="Final Showcase"
-              frameLabel="Media Area"
-              mediaFormat="portrait"
-              tags={["AI Video", "Reels", "Final Output"]}
-              title="Product Showcase"
-            />
-          ),
+          render: () => <PresentationThibaultShowcaseSlide />,
         },
       ]
     }
