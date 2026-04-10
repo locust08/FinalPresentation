@@ -1,0 +1,777 @@
+.shell {
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  min-height: 100dvh;
+  height: 100dvh;
+  background: #ffffff;
+  color: #000000;
+  overflow: hidden;
+}
+
+.viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.desktop {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 84% 16%, rgba(238, 32, 40, 0.06), transparent 26%),
+    radial-gradient(circle at 14% 88%, rgba(238, 32, 40, 0.035), transparent 24%),
+    linear-gradient(180deg, #ffffff 0%, #fffdfd 100%);
+}
+
+.canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1920px;
+  height: 1080px;
+  transform: translate(-50%, -50%) scale(var(--slide-scale, 1));
+  transform-origin: center;
+  will-change: transform;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.frame::before {
+  content: "";
+  position: absolute;
+  right: 118px;
+  top: 138px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(238, 32, 40, 0.065), transparent 72%);
+  filter: blur(18px);
+}
+
+.topLine,
+.responsiveTopLine {
+  background: #ee2028;
+  transform-origin: left center;
+  animation: lineReveal 820ms var(--motion-ease) both;
+}
+
+.topLine {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 1920px;
+  height: 5px;
+}
+
+.brandGhost,
+.responsiveBrandGhost {
+  pointer-events: none;
+}
+
+.brandGhost {
+  position: absolute;
+  right: 114px;
+  top: 122px;
+  opacity: 0;
+  animation: fadeInSoft 900ms var(--motion-ease) 220ms forwards;
+}
+
+.brandGhost span {
+  color: rgba(238, 32, 40, 0.045);
+  font-size: 150px;
+  font-weight: 700;
+  letter-spacing: calc(-0.1em + var(--letter-spacing-boost));
+  line-height: 0.88;
+}
+
+.content {
+  position: absolute;
+  left: 112px;
+  top: 112px;
+  width: 1696px;
+  height: 784px;
+  display: grid;
+  grid-template-columns: minmax(0, 510px) minmax(0, 1fr);
+  gap: 58px;
+}
+
+.header {
+  display: grid;
+  align-content: center;
+  gap: 22px;
+}
+
+.eyebrow,
+.responsiveEyebrow {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0;
+  padding: 0.8rem 1.2rem;
+  border-radius: 999px;
+  background: rgba(238, 32, 40, 0.08);
+  color: #ee2028;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: calc(0.14em + var(--letter-spacing-boost));
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: riseIn 700ms var(--motion-ease) 80ms forwards;
+}
+
+.titleWrap,
+.responsiveTitleWrap {
+  display: grid;
+  gap: 6px;
+}
+
+.preTitle,
+.responsivePreTitle {
+  margin: 0;
+  color: rgba(18, 18, 18, 0.72);
+  font-size: 44px;
+  font-weight: 500;
+  letter-spacing: calc(-0.07em + var(--letter-spacing-boost));
+  line-height: 0.92;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: riseIn 760ms var(--motion-ease) 150ms forwards;
+}
+
+.heroTitle,
+.responsiveHeroTitle {
+  margin: 0;
+  color: #090909;
+  font-size: 84px;
+  font-weight: 700;
+  letter-spacing: calc(-0.09em + var(--letter-spacing-boost));
+  line-height: 0.9;
+  text-wrap: balance;
+  opacity: 0;
+  transform: translateY(24px);
+  animation: riseIn 760ms var(--motion-ease) 220ms forwards;
+}
+
+.leadBlock,
+.responsiveLeadBlock {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  align-items: start;
+  max-width: 470px;
+  padding: 12px 0 0;
+  opacity: 0;
+  transform: translateY(24px);
+  animation: riseIn 760ms var(--motion-ease) 300ms forwards;
+}
+
+.leadBlock::after,
+.responsiveLeadBlock::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 -20px;
+  width: calc(100% + 20px);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(238, 32, 40, 0.05), rgba(238, 32, 40, 0));
+  z-index: -1;
+}
+
+.leadRule,
+.responsiveLeadRule {
+  display: block;
+  width: 6px;
+  min-height: 102px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ee2028, rgba(238, 32, 40, 0.12));
+}
+
+.lead,
+.responsiveLead {
+  margin: 0;
+  color: rgba(20, 20, 20, 0.78);
+  font-size: 23px;
+  font-weight: 400;
+  letter-spacing: calc(-0.038em + var(--letter-spacing-boost));
+  line-height: 1.18;
+}
+
+.bodyColumn {
+  display: grid;
+  align-content: center;
+  gap: 22px;
+}
+
+.adviceList,
+.responsiveAdviceList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.adviceCard,
+.responsiveAdviceCard {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  min-height: 204px;
+  padding: 24px 24px 26px;
+  border: 1px solid rgba(238, 32, 40, 0.1);
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.998), rgba(255, 250, 250, 0.975)),
+    #ffffff;
+  box-shadow:
+    0 14px 32px rgba(238, 32, 40, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(28px) scale(0.985);
+  animation: cardEnter 820ms var(--motion-ease) calc(320ms + (var(--stagger) * 120ms)) forwards;
+}
+
+.adviceCard::after,
+.responsiveAdviceCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    118deg,
+    transparent 18%,
+    rgba(255, 255, 255, 0.74) 40%,
+    transparent 66%
+  );
+  transform: translateX(-140%);
+  animation: shimmerPass 1100ms var(--motion-ease) calc(560ms + (var(--stagger) * 120ms)) 1;
+  pointer-events: none;
+}
+
+.adviceCardFeature,
+.responsiveAdviceCardFeature {
+  grid-column: 1 / -1;
+  min-height: 172px;
+  padding: 26px 28px 28px;
+  border-color: rgba(238, 32, 40, 0.16);
+  background:
+    linear-gradient(135deg, rgba(238, 32, 40, 0.065), rgba(238, 32, 40, 0) 48%),
+    linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(255, 246, 246, 0.985)),
+    #ffffff;
+  box-shadow:
+    0 20px 42px rgba(238, 32, 40, 0.09),
+    0 0 0 1px rgba(238, 32, 40, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+.adviceTop,
+.responsiveAdviceTop {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.adviceNumber,
+.responsiveAdviceNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(238, 32, 40, 0.08);
+  color: #ee2028;
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: calc(-0.06em + var(--letter-spacing-boost));
+  line-height: 1;
+  animation: badgePop 720ms var(--motion-ease) calc(450ms + (var(--stagger) * 120ms)) both;
+}
+
+.adviceLabel,
+.responsiveAdviceLabel {
+  margin: 0;
+  color: #ee2028;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: calc(0.16em + var(--letter-spacing-boost));
+  text-transform: uppercase;
+}
+
+.adviceText,
+.responsiveAdviceText {
+  margin: 0;
+  color: #111111;
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: calc(-0.045em + var(--letter-spacing-boost));
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.quote,
+.responsiveQuote {
+  position: relative;
+  display: grid;
+  gap: 20px;
+  padding: 30px 30px 32px;
+  border: 1px solid rgba(238, 32, 40, 0.15);
+  border-radius: 32px;
+  background:
+    linear-gradient(135deg, rgba(238, 32, 40, 0.08), rgba(238, 32, 40, 0) 52%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.998), rgba(255, 246, 246, 0.985)),
+    #ffffff;
+  box-shadow:
+    0 18px 38px rgba(238, 32, 40, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+  opacity: 0;
+  transform: translateY(18px);
+  animation: fadeInSoft 760ms var(--motion-ease) 640ms forwards;
+}
+
+.quote::before,
+.responsiveQuote::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 8px;
+  border-radius: 32px 0 0 32px;
+  background: linear-gradient(180deg, #ee2028, rgba(238, 32, 40, 0.22));
+}
+
+.quoteLabel,
+.responsiveQuoteLabel {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0;
+  padding: 0.72rem 1rem;
+  border-radius: 999px;
+  background: rgba(238, 32, 40, 0.08);
+  color: #ee2028;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: calc(0.16em + var(--letter-spacing-boost));
+  text-transform: uppercase;
+}
+
+.quoteList,
+.responsiveQuoteList {
+  display: grid;
+  gap: 12px;
+}
+
+.quoteText,
+.responsiveQuoteText {
+  margin: 0;
+  color: #101010;
+  max-width: 860px;
+  font-size: 38px;
+  font-weight: 600;
+  letter-spacing: calc(-0.072em + var(--letter-spacing-boost));
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.quoteTextSecondary,
+.responsiveQuoteTextSecondary {
+  color: rgba(16, 16, 16, 0.76);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: calc(-0.045em + var(--letter-spacing-boost));
+  line-height: 1.08;
+}
+
+.footer,
+.responsiveFooter {
+  position: absolute;
+  left: 50px;
+  top: 1015px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 1820px;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeInSoft 700ms ease 620ms forwards;
+}
+
+.footerLine,
+.responsiveFooterLine {
+  width: 1820px;
+  height: 1px;
+  background: #5f5f5f;
+}
+
+.footerMeta,
+.responsiveFooterMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.logo,
+.responsiveLogo {
+  position: relative;
+  width: 127px;
+  height: 39px;
+}
+
+.logo :global(img),
+.responsiveLogo :global(img) {
+  object-fit: contain;
+}
+
+.footerText,
+.responsiveFooterText {
+  margin: 0;
+  color: #000000;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: calc(-0.03em + var(--letter-spacing-boost));
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.responsive {
+  position: relative;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at 88% 14%, rgba(238, 32, 40, 0.06), transparent 26%),
+    linear-gradient(180deg, #ffffff 0%, #fffdfd 100%);
+}
+
+.responsiveTopLine {
+  width: 100%;
+  height: 5px;
+}
+
+.responsiveInner {
+  position: relative;
+  min-height: calc(100dvh - 5px);
+  display: flex;
+  flex-direction: column;
+  padding:
+    max(28px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right))
+    max(22px, env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
+  overflow: hidden;
+}
+
+.responsiveHeader {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 16px;
+}
+
+.responsiveEyebrow {
+  padding: 0.72rem 1rem;
+  font-size: 0.82rem;
+}
+
+.responsivePreTitle {
+  font-size: clamp(1.82rem, 7vw, 2.6rem);
+}
+
+.responsiveHeroTitle {
+  font-size: clamp(2.8rem, 10.8vw, 4rem);
+}
+
+.responsiveLeadBlock {
+  max-width: 30rem;
+}
+
+.responsiveLeadRule {
+  min-height: 72px;
+}
+
+.responsiveLead {
+  font-size: clamp(0.98rem, 2.3vw, 1.2rem);
+}
+
+.responsiveBody {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 16px;
+  margin-top: 22px;
+  flex: 1;
+  align-content: start;
+}
+
+.responsiveAdviceList {
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.responsiveAdviceCard {
+  gap: 12px;
+  min-height: auto;
+  padding: 16px 18px 18px;
+  border-radius: 22px;
+}
+
+.responsiveAdviceCardFeature {
+  grid-column: auto;
+  padding: 18px 20px 20px;
+}
+
+.responsiveAdviceNumber {
+  min-width: 48px;
+  height: 36px;
+  font-size: 1rem;
+}
+
+.responsiveAdviceLabel {
+  font-size: 0.74rem;
+}
+
+.responsiveAdviceText {
+  font-size: clamp(1rem, 3vw, 1.24rem);
+}
+
+.responsiveQuote {
+  gap: 14px;
+  padding: 20px 20px 22px;
+  border-radius: 22px;
+}
+
+.responsiveQuoteText {
+  font-size: clamp(1.26rem, 4.3vw, 1.82rem);
+}
+
+.responsiveQuoteTextSecondary {
+  font-size: clamp(1rem, 3.5vw, 1.2rem);
+}
+
+.responsiveFooter {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: auto;
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.responsiveFooterLine {
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+  }
+
+  .header {
+    align-content: start;
+  }
+
+  .preTitle {
+    font-size: 42px;
+  }
+
+  .heroTitle {
+    font-size: 76px;
+  }
+
+  .leadBlock {
+    max-width: 920px;
+  }
+
+  .adviceCardFeature {
+    grid-column: 1 / -1;
+  }
+
+  .bodyColumn {
+    align-content: start;
+  }
+}
+
+@media (max-width: 767px) {
+  .responsiveInner {
+    padding:
+      max(24px, env(safe-area-inset-top))
+      max(16px, env(safe-area-inset-right))
+      max(18px, env(safe-area-inset-bottom))
+      max(16px, env(safe-area-inset-left));
+  }
+
+  .responsivePreTitle {
+    font-size: clamp(1.66rem, 7.8vw, 2.08rem);
+  }
+
+  .responsiveHeroTitle {
+    font-size: clamp(2.35rem, 10.8vw, 3.3rem);
+  }
+
+  .responsiveLead {
+    font-size: 0.95rem;
+  }
+
+  .responsiveAdviceList {
+    gap: 10px;
+  }
+
+  .responsiveAdviceText {
+    font-size: 0.96rem;
+  }
+
+  .responsiveQuoteText {
+    font-size: 1.08rem;
+  }
+
+  .responsiveQuoteTextSecondary {
+    font-size: 0.94rem;
+  }
+
+  .responsiveFooterMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .responsiveLogo {
+    width: 110px;
+    height: 34px;
+  }
+}
+
+@keyframes lineReveal {
+  from {
+    opacity: 0.4;
+    transform: scaleX(0.08);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateX(28px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes shimmerPass {
+  from {
+    transform: translateX(-140%);
+  }
+
+  to {
+    transform: translateX(140%);
+  }
+}
+
+@keyframes badgePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+
+  70% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInSoft {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.preTitle,
+.responsivePreTitle,
+.heroTitle,
+.responsiveHeroTitle {
+  --letter-spacing-boost: 0cm;
+}
+
+.responsivePreTitle,
+.responsiveHeroTitle {
+  --letter-spacing-boost: 0.1cm;
+}
+
+.shell p:not(.preTitle):not(.responsivePreTitle),
+.shell span,
+.shell li,
+.shell button,
+.shell label,
+.shell h2,
+.shell h3,
+.shell h4,
+.shell h5,
+.shell h6 {
+  letter-spacing: 0cm;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topLine,
+  .eyebrow,
+  .preTitle,
+  .heroTitle,
+  .leadBlock,
+  .brandGhost,
+  .adviceCard,
+  .adviceCard::after,
+  .quote,
+  .footer,
+  .responsiveTopLine,
+  .responsiveBrandGhost,
+  .responsiveEyebrow,
+  .responsivePreTitle,
+  .responsiveHeroTitle,
+  .responsiveLeadBlock,
+  .responsiveAdviceCard,
+  .responsiveAdviceCard::after,
+  .responsiveQuote,
+  .responsiveFooter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

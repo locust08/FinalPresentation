@@ -1,0 +1,335 @@
+.deck {
+  position: relative;
+  min-height: 100dvh;
+}
+
+.slideStage {
+  position: relative;
+  min-height: 100dvh;
+}
+
+.slideLayerCurrent {
+  position: relative;
+  z-index: 1;
+}
+
+.slideLayer {
+  position: absolute;
+  inset: 0;
+}
+
+.slideLayerTo {
+  z-index: 1;
+}
+
+.slideLayerFrom {
+  z-index: 2;
+}
+
+.slideStageTransitioning .slideLayerFrom,
+.slideStageTransitioning .slideLayerTo {
+  will-change: opacity;
+}
+
+.slideStageTransitioning .slideLayerFrom {
+  opacity: 1;
+  transition:
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slideStageReveal .slideLayerFrom {
+  opacity: 0;
+  filter: saturate(0.96);
+}
+
+.slideStageTransitioning .slideLayerFrom [data-transition-shape],
+.slideStageTransitioning .slideLayerFrom [data-transition-panel] {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 120ms ease,
+    visibility 0s linear 120ms;
+}
+
+.slideStageTransitioning .slideLayerTo [data-transition-shape],
+.slideStageTransitioning .slideLayerTo [data-transition-panel] {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 220ms;
+}
+
+.slideStageReveal .slideLayerTo [data-transition-shape],
+.slideStageReveal .slideLayerTo [data-transition-panel] {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 240ms cubic-bezier(0.22, 1, 0.36, 1) 40ms,
+    visibility 0s linear 0s;
+}
+
+.slideStageTransitioning [data-transition-content] {
+  will-change: opacity, transform;
+}
+
+.slideStageTransitioning .slideLayerFrom [data-transition-content] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slideStageTransitioning:not(.slideStageReveal) .slideLayerFrom [data-transition-content] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.slideStageTransitioning.slideStageForward:not(.slideStageReveal)
+  .slideLayerFrom
+  [data-transition-content] {
+  transform: translateY(16px) translateX(-12px);
+}
+
+.slideStageTransitioning.slideStageBackward:not(.slideStageReveal)
+  .slideLayerFrom
+  [data-transition-content] {
+  transform: translateY(16px) translateX(12px);
+}
+
+.slideStageReveal .slideLayerFrom [data-transition-content] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.slideStageTransitioning .slideLayerTo [data-transition-content] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 460ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slideStageTransitioning.slideStageForward .slideLayerTo [data-transition-content] {
+  transform: translateY(22px) translateX(14px);
+}
+
+.slideStageTransitioning.slideStageBackward .slideLayerTo [data-transition-content] {
+  transform: translateY(22px) translateX(-14px);
+}
+
+.slideStageTransitioning .slideLayerTo [data-transition-content="decor"] {
+  transition-delay: 40ms;
+}
+
+.slideStageTransitioning .slideLayerTo [data-transition-content="title"],
+.slideStageTransitioning .slideLayerTo [data-transition-content="header"] {
+  transition-delay: 90ms;
+}
+
+.slideStageTransitioning .slideLayerTo [data-transition-content="main"] {
+  transition-delay: 160ms;
+}
+
+.slideStageTransitioning .slideLayerTo [data-transition-content="footer"] {
+  transition-delay: 220ms;
+}
+
+.slideStageReveal .slideLayerTo [data-transition-content] {
+  opacity: 1;
+  transform: none;
+}
+
+.sharedMorph {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  transform: translateZ(0);
+  background:
+    radial-gradient(circle at top right, rgba(238, 32, 40, 0.1), transparent 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 247, 247, 0.98)),
+    #ffffff;
+  box-shadow:
+    0 24px 64px rgba(78, 9, 18, 0.18),
+    0 10px 28px rgba(238, 32, 40, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  transition:
+    left cubic-bezier(0.22, 1, 0.36, 1),
+    top cubic-bezier(0.22, 1, 0.36, 1),
+    width cubic-bezier(0.22, 1, 0.36, 1),
+    height cubic-bezier(0.22, 1, 0.36, 1),
+    clip-path cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 240ms ease;
+  overflow: hidden;
+}
+
+.sharedMorph::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(118deg, transparent 18%, rgba(255, 255, 255, 0.62) 42%, transparent 66%);
+  transform: translateX(-140%);
+  animation: shared-morph-shimmer 880ms cubic-bezier(0.22, 1, 0.36, 1) 1;
+}
+
+.sharedMorphSettled {
+  opacity: 0;
+  transition-delay: 80ms;
+}
+
+.deck:focus {
+  outline: none;
+}
+
+.controls {
+  position: fixed;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px) saturate(140%);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 20px);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.controlsVisible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+.controlsDark {
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.controlsLight {
+  border-color: rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.controlButton {
+  min-width: 52px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: calc(-0.03em + var(--letter-spacing-boost));
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+.controlButton:hover,
+.controlButton:focus-visible {
+  background: rgba(255, 255, 255, 0.18);
+  outline: none;
+}
+
+.controlsLight .controlButton:hover,
+.controlsLight .controlButton:focus-visible {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.controlButton:disabled {
+  cursor: default;
+  opacity: 0.3;
+}
+
+.controlMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 108px;
+  gap: 3px;
+}
+
+.controlMeta strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: calc(-0.03em + var(--letter-spacing-boost));
+  line-height: 1;
+}
+
+.controlMeta span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: calc(0.12em + var(--letter-spacing-boost));
+  line-height: 1;
+  opacity: 0.72;
+  text-transform: uppercase;
+}
+
+.controlsDark {
+  color: #ffffff;
+}
+
+.controlsLight {
+  color: #000000;
+}
+
+.deck button,
+.deck strong,
+.deck span {
+  letter-spacing: 0cm;
+}
+
+@media (max-width: 767px) {
+  .controls {
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .controlButton {
+    min-width: 44px;
+    height: 44px;
+    font-size: 1.05rem;
+  }
+
+  .controlMeta {
+    min-width: 88px;
+  }
+
+  .controlMeta strong {
+    font-size: 0.84rem;
+  }
+
+  .controlMeta span {
+    font-size: 0.62rem;
+  }
+}
+
+@keyframes shared-morph-shimmer {
+  from {
+    transform: translateX(-140%);
+  }
+
+  to {
+    transform: translateX(140%);
+  }
+}

@@ -1,0 +1,848 @@
+"use client"
+
+import {
+  useEffect,
+  useEffectEvent,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
+
+import { PresentationPhasesSlide } from "@/components/presentation-phases-slide"
+import { PresentationConclusionSlide } from "@/components/presentation-conclusion-slide"
+import { PresentationAdviceSlide } from "@/components/presentation-advice-slide"
+import { PresentationInitialExpectationSlide } from "@/components/presentation-initial-expectation-slide"
+import { PresentationHumanValueSlide } from "@/components/presentation-human-value-slide"
+import { PresentationLocusReasonsSlide } from "@/components/presentation-locus-reasons-slide"
+import { PresentationOverviewSlide } from "@/components/presentation-overview-slide"
+import { PresentationShowcasePlaceholderSlide } from "@/components/presentation-showcase-placeholder-slide"
+import { SECTION_TITLES } from "@/components/presentation-sections"
+import { PresentationStorySlide } from "@/components/presentation-story-slide"
+import { SectionOpenerSlide } from "@/components/section-opener-slide"
+import { TableOfContents } from "@/components/table-of-contents"
+import { TitleSlide } from "@/components/title-slide"
+
+import styles from "./presentation-deck.module.css"
+
+const CONTROL_HIDE_MS = 2200
+const SLIDE_SWIPE_DISTANCE = 48
+const SHARED_MORPH_DURATION_MS = 720
+const SHARED_REVEAL_DELAY_MS = 660
+const SHARED_TRANSITION_TOTAL_MS = 1380
+const SHARED_SHAPE_CLIP_PATH =
+  "polygon(46% 0%, 54% 0%, 97% 22%, 97% 78%, 54% 100%, 46% 100%, 3% 78%, 3% 22%)"
+const SHARED_PANEL_CLIP_PATH =
+  "polygon(3% 0%, 97% 0%, 100% 8%, 100% 92%, 97% 100%, 3% 100%, 0% 92%, 0% 8%)"
+
+type SharedElementKind = "shape" | "panel"
+
+type SharedMorphRect = {
+  clipPath: string
+  height: number
+  left: number
+  top: number
+  width: number
+}
+
+type SharedMorphTransition = {
+  direction: "forward" | "backward"
+  fromIndex: number
+  overlayRect: SharedMorphRect | null
+  sourceKind: SharedElementKind | null
+  stage: "mount" | "morph" | "reveal"
+  targetKind: SharedElementKind | null
+  targetRect: SharedMorphRect | null
+  toIndex: number
+}
+
+const BASE_SLIDES = [
+  {
+    id: "title",
+    label: "Title Slide",
+    theme: "dark" as const,
+    render: () => <TitleSlide />,
+  },
+  {
+    id: "toc",
+    label: "Table of Contents",
+    theme: "light" as const,
+    render: () => <TableOfContents />,
+  },
+]
+
+function isSectionOpenerSlide(slideId: string) {
+  return slideId.startsWith("section-opener-")
+}
+
+function isSharedMorphPair(fromIndex: number, toIndex: number) {
+  if (Math.abs(fromIndex - toIndex) !== 1) {
+    return false
+  }
+
+  const fromSlide = SLIDES[fromIndex]
+  const toSlide = SLIDES[toIndex]
+
+  if (!fromSlide || !toSlide) {
+    return false
+  }
+
+  return isSectionOpenerSlide(fromSlide.id) !== isSectionOpenerSlide(toSlide.id)
+}
+
+function toSharedMorphRect(
+  elementRect: DOMRect,
+  containerRect: DOMRect,
+  kind: SharedElementKind
+): SharedMorphRect {
+  return {
+    clipPath: kind === "shape" ? SHARED_SHAPE_CLIP_PATH : SHARED_PANEL_CLIP_PATH,
+    height: elementRect.height,
+    left: elementRect.left - containerRect.left,
+    top: elementRect.top - containerRect.top,
+    width: elementRect.width,
+  }
+}
+
+const SLIDES = [
+  ...BASE_SLIDES,
+  ...SECTION_TITLES.flatMap((title, index) => {
+    const sectionNumber = String(index + 1).padStart(2, "0")
+    const openerSlide = {
+      id: `section-opener-${sectionNumber}`,
+      label: title,
+      theme: "dark" as const,
+      render: () => <SectionOpenerSlide sectionNumber={sectionNumber} title={title} />,
+    }
+
+    if (index === 0) {
+      return [
+        openerSlide,
+        {
+          id: "why-i-choose-locus-t",
+          label: "Why I Choose LOCUS-T",
+          theme: "light" as const,
+          render: () => (
+            <PresentationLocusReasonsSlide
+              lead="Three reasons LOCUS-T felt like the right place to learn, contribute, and grow."
+              points={[
+                "Strong learning opportunities",
+                "Real work, real application",
+                "Strong digital reputation",
+              ]}
+              sectionNumber="01"
+            />
+          ),
+        },
+        {
+          id: "my-initial-expectation",
+          label: "My Initial Expectation",
+          theme: "light" as const,
+          render: () => (
+            <PresentationInitialExpectationSlide
+              lead="The expectations I had before the internship began, especially around real work, AI tools, and team collaboration."
+              points={[
+                {
+                  label: "Real Work",
+                  text: "Curious how real digital marketing works.",
+                },
+                {
+                  label: "AI + Teamwork",
+                  text: "Gain hands-on experience with AI, workflow, and teamwork.",
+                },
+                {
+                  label: "Client Output",
+                  text: "Learn how ideas become real client outputs.",
+                },
+              ]}
+              sectionNumber="01"
+            />
+          ),
+        },
+      ]
+    }
+
+    if (index === 1) {
+      return [
+        openerSlide,
+        {
+          id: "project-overview-content",
+          label: "Project Overview",
+          theme: "light" as const,
+          render: () => (
+            <PresentationOverviewSlide
+              cards={[
+                {
+                  label: "Team",
+                  body: "I was placed under the Paid Media R&D team.",
+                },
+                {
+                  label: "Bigger Picture",
+                  body: "The goal was to explore how AI could speed up creative work and improve team efficiency.",
+                },
+                {
+                  label: "Project Scope",
+                  body: "My project focused on AI video generation, AI website generation, and paid media support.",
+                },
+              ]}
+              lead="A structured overview of where I was placed, what I worked on, and why the project mattered."
+              sectionNumber="02"
+              title="Project Overview"
+            />
+          ),
+        },
+        {
+          id: "project-phases",
+          label: "Project Phases / What Was Expected",
+          theme: "light" as const,
+          render: () => (
+            <PresentationPhasesSlide
+              lead="The project was structured in stages, starting with AI-generated Reels, then expanding into website generation and broader product support."
+              phaseGroups={[
+                {
+                  duration: "Phase 1 - 3 (2 months)",
+                  title: "3 AI Video Generation Reels",
+                  items: [
+                    "Signature Market - Two Tails",
+                    "Kenny Hills Bakers - Peach Strudel",
+                    "Kapten Batik",
+                  ],
+                  videos: [
+                    {
+                      title: "Signature Market - Two Tails",
+                      url: "https://drive.google.com/file/d/1bvvq9X015bVa8uLnJOevN05IWoeUoybH/view?usp=drive_link",
+                    },
+                    {
+                      title: "Kenny Hills Bakers - Peach Strudel",
+                      url: "https://drive.google.com/file/d/1E1tLhZF2BG9E0AvDO_qFvPgXU-LHZWjc/view?usp=drive_link",
+                    },
+                    {
+                      title: "Kapten Batik",
+                      url: "https://drive.google.com/file/d/18uAHTxLLgpgDlVC96FClsadns5FaDHq0/view?usp=drive_link",
+                    },
+                  ],
+                },
+                {
+                  duration: "Phase 4 (1 month)",
+                  title: "3 AI Website Generation Projects",
+                  items: [
+                    "Frontend refinement",
+                    "Backend learning & support",
+                  ],
+                },
+              ]}
+              sectionNumber="02"
+              title="Project Phases / What Was Expected"
+            />
+          ),
+        },
+      ]
+    }
+
+    if (index === 2) {
+      return [
+        openerSlide,
+        {
+          id: "my-most-exciting-moment-content",
+          label: "My Most Exciting Moment",
+          theme: "light" as const,
+          render: () => (
+              <PresentationStorySlide
+                lead="A breakthrough during the internship that turned repeated trial and error into a moment of real progress."
+                sectionNumber="03"
+                sections={[
+                  {
+                    label: "Exciting Moment",
+                    body: [
+                      "The AI finally generated something close to what I imagined.",
+                      "After many wrong results and repeated testing, that moment felt truly rewarding.",
+                    ],
+                  },
+                  {
+                    label: "Why It Mattered",
+                    body: [
+                      "It showed my prompting and testing were improving.",
+                      "It proved the effort was paying off.",
+                      "It gave me confidence to keep refining the work.",
+                    ],
+                  },
+                ]}
+                title="My Most Exciting Moment"
+                variant="breakthrough"
+              />
+          ),
+        },
+      ]
+    }
+
+    if (index === 3) {
+      return [
+        openerSlide,
+        {
+          id: "biggest-challenge-content",
+          label: "Biggest Challenge & How to Overcome",
+          theme: "light" as const,
+          render: () => (
+              <PresentationStorySlide
+                lead="One of the toughest parts of the internship was learning how to choose the right tools and build a workflow that actually worked."
+                sectionNumber="04"
+                sections={[
+                  {
+                    label: "Biggest Challenge",
+                    body: [
+                      "Figuring out the right tools and workflow was the hardest part.",
+                      "Some outputs looked promising at first, but did not really work in practice.",
+                      "It was stressful because I had to learn fast and still produce something useful.",
+                    ],
+                  },
+                  {
+                    label: "How to Overcome",
+                    body: [
+                      "I tested things step by step and compared the results properly.",
+                      "I started asking questions earlier and improved the workflow each time.",
+                      "That process made me more adaptable, organised, and confident.",
+                    ],
+                  },
+                ]}
+                title="Biggest Challenge & How to Overcome"
+                variant="challenge"
+              />
+          ),
+        },
+      ]
+    }
+
+    if (index === 4) {
+      return [
+        openerSlide,
+        {
+          id: "product-showcase-content",
+          label: "Product Showcase",
+          theme: "light" as const,
+          render: () => (
+            <PresentationShowcasePlaceholderSlide
+              caption="Final AI Video Output"
+              description="Final visual output developed during the internship project, prepared for presentation and review."
+              eyebrow="Final Showcase"
+              frameLabel="Media Area"
+              mediaFormat="portrait"
+              tags={["AI Video", "Reels", "Final Output"]}
+              title="Product Showcase"
+            />
+          ),
+        },
+      ]
+    }
+
+    if (index === 5) {
+      return [
+        openerSlide,
+        {
+          id: "conclusion-summary",
+          label: "Conclusion",
+          theme: "light" as const,
+          render: () => (
+            <PresentationConclusionSlide
+              lead="The internship brought my AI learning closer to real working practice and helped me build stronger problem-solving habits."
+              points={[
+                "This internship gave me a clearer view of how AI supports real work.",
+                "My AI journey became more practical and problem-solving focused.",
+                "Overall, I learned to explore, adapt, and improve through testing.",
+              ]}
+              sectionNumber="06"
+            />
+          ),
+        },
+        {
+          id: "human-vs-ai",
+          label: "What Makes Me Different and Unique Compared to AI?",
+          theme: "light" as const,
+          render: () => (
+            <PresentationHumanValueSlide
+              lead="The experience also reminded me that speed alone is not enough. Human value still matters in how work is judged, shaped, and trusted."
+              points={[
+                "AI can generate faster, but I bring judgement and responsibility.",
+                "I can adapt, communicate, and make more careful decisions.",
+                "What makes me different is human understanding, flexibility, and trust.",
+              ]}
+              sectionNumber="06"
+              title="What Makes Me Different from AI"
+            />
+          ),
+        },
+        {
+          id: "advice-to-future-intern",
+          label: "Advice to My Future Junior Intern",
+          theme: "light" as const,
+          render: () => (
+            <PresentationAdviceSlide
+              lead="If I could leave a short message for a future junior intern, it would be to stay curious, stay thoughtful, and keep learning through the process."
+              points={[
+                "Ask early. Do not stay stuck too long.",
+                "Do not fully rely on AI. Review and think properly.",
+                "Stay organised, accept feedback, and stay open to new tools.",
+              ]}
+              quote={{
+                label: "Quote",
+                text: [
+                  "Failure is not the opposite of success. It is part of success.",
+                  "Work Smart Not Hard",
+                ],
+              }}
+              sectionNumber="06"
+              title="Advice to My Future Junior Intern"
+            />
+          ),
+        },
+      ]
+    }
+
+    if (index === 6) {
+      return [
+        openerSlide,
+        {
+          id: "my-internship-my-future-content",
+          label: "My Internship & My Future",
+          theme: "light" as const,
+          render: () => (
+            <PresentationShowcasePlaceholderSlide
+              caption="Internship Reflection Video"
+              description="Final reflection video covering my internship experience and the direction I want to pursue next."
+              eyebrow="Future Reflection"
+              frameLabel="Reflection Media"
+              mediaFormat="landscape"
+              tags={["Reflection", "Presentation", "Future Direction"]}
+              title="My Internship & My Future"
+            />
+          ),
+        },
+      ]
+    }
+
+    return [openerSlide]
+  }),
+  {
+    id: "thank-you",
+    label: "Thank You",
+    theme: "dark" as const,
+    render: () => <SectionOpenerSlide sectionNumber="" title="Thank You" />,
+  },
+].map((slide, index) => ({
+    ...slide,
+    shortLabel: `Slide ${index + 1}`,
+  }))
+
+export function PresentationDeck() {
+  const [currentIndex, setCurrentIndex] = useState(1)
+  const [showControls, setShowControls] = useState(false)
+  const [isResponsiveViewport, setIsResponsiveViewport] = useState(false)
+  const [sharedMorphTransition, setSharedMorphTransition] =
+    useState<SharedMorphTransition | null>(null)
+  const deckRef = useRef<HTMLDivElement | null>(null)
+  const transitionFromRef = useRef<HTMLDivElement | null>(null)
+  const transitionToRef = useRef<HTMLDivElement | null>(null)
+  const hideTimerRef = useRef<number | null>(null)
+  const sharedTransitionRevealTimerRef = useRef<number | null>(null)
+  const sharedTransitionFinishTimerRef = useRef<number | null>(null)
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null)
+
+  const currentSlide = SLIDES[currentIndex]
+  const visibleSlide = sharedMorphTransition
+    ? SLIDES[sharedMorphTransition.toIndex]
+    : currentSlide
+
+  const clearSharedTransitionRevealTimer = () => {
+    if (sharedTransitionRevealTimerRef.current) {
+      window.clearTimeout(sharedTransitionRevealTimerRef.current)
+      sharedTransitionRevealTimerRef.current = null
+    }
+  }
+
+  const clearSharedTransitionFinishTimer = () => {
+    if (sharedTransitionFinishTimerRef.current) {
+      window.clearTimeout(sharedTransitionFinishTimerRef.current)
+      sharedTransitionFinishTimerRef.current = null
+    }
+  }
+
+  const controlsClassName = useMemo(() => {
+    return [
+      styles.controls,
+      showControls ? styles.controlsVisible : "",
+      visibleSlide.theme === "dark" ? styles.controlsDark : styles.controlsLight,
+    ]
+      .filter(Boolean)
+      .join(" ")
+  }, [showControls, visibleSlide.theme])
+
+  useEffect(() => {
+    const syncViewportMode = () => {
+      setIsResponsiveViewport(window.innerWidth < 1024)
+    }
+
+    syncViewportMode()
+    window.addEventListener("resize", syncViewportMode)
+
+    return () => {
+      window.removeEventListener("resize", syncViewportMode)
+    }
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (hideTimerRef.current) {
+        window.clearTimeout(hideTimerRef.current)
+      }
+
+      clearSharedTransitionRevealTimer()
+      clearSharedTransitionFinishTimer()
+    }
+  }, [])
+
+  const scheduleHide = () => {
+    if (hideTimerRef.current) {
+      window.clearTimeout(hideTimerRef.current)
+    }
+
+    hideTimerRef.current = window.setTimeout(() => {
+      setShowControls(false)
+    }, CONTROL_HIDE_MS)
+  }
+
+  const revealControls = () => {
+    setShowControls(true)
+    scheduleHide()
+  }
+
+  const goToSlide = (nextIndex: number) => {
+    if (sharedMorphTransition) {
+      return
+    }
+
+    const clampedIndex = Math.max(0, Math.min(nextIndex, SLIDES.length - 1))
+
+    if (clampedIndex === currentIndex) {
+      return
+    }
+
+    if (isSharedMorphPair(currentIndex, clampedIndex)) {
+      setSharedMorphTransition({
+        direction: clampedIndex > currentIndex ? "forward" : "backward",
+        fromIndex: currentIndex,
+        overlayRect: null,
+        sourceKind: null,
+        stage: "mount",
+        targetKind: null,
+        targetRect: null,
+        toIndex: clampedIndex,
+      })
+      revealControls()
+      return
+    }
+
+    setCurrentIndex(clampedIndex)
+    revealControls()
+  }
+
+  const handleKeyboardNavigation = useEffectEvent((delta: number) => {
+    goToSlide(currentIndex + delta)
+    revealControls()
+  })
+
+  useLayoutEffect(() => {
+    if (!sharedMorphTransition || sharedMorphTransition.stage !== "mount") {
+      return
+    }
+
+    const deckElement = deckRef.current
+    const fromElement = transitionFromRef.current
+    const toElement = transitionToRef.current
+
+    if (!deckElement || !fromElement || !toElement) {
+      return
+    }
+
+    const fromSlide = SLIDES[sharedMorphTransition.fromIndex]
+    const toSlide = SLIDES[sharedMorphTransition.toIndex]
+    const fromIsOpener = isSectionOpenerSlide(fromSlide.id)
+    const toIsOpener = isSectionOpenerSlide(toSlide.id)
+    const sourceSelector = fromIsOpener ? "[data-transition-shape]" : "[data-transition-panel]"
+    const targetSelector = toIsOpener ? "[data-transition-shape]" : "[data-transition-panel]"
+    const sourceKind: SharedElementKind = fromIsOpener ? "shape" : "panel"
+    const targetKind: SharedElementKind = toIsOpener ? "shape" : "panel"
+    const sourceElement = fromElement.querySelector<HTMLElement>(sourceSelector)
+    const targetElement = toElement.querySelector<HTMLElement>(targetSelector)
+
+    if (!sourceElement || !targetElement) {
+      const fallbackFrameId = window.requestAnimationFrame(() => {
+        setCurrentIndex(sharedMorphTransition.toIndex)
+        setSharedMorphTransition(null)
+      })
+
+      return () => {
+        window.cancelAnimationFrame(fallbackFrameId)
+      }
+    }
+
+    const deckRect = deckElement.getBoundingClientRect()
+    const sourceRect = toSharedMorphRect(
+      sourceElement.getBoundingClientRect(),
+      deckRect,
+      sourceKind
+    )
+    const targetRect = toSharedMorphRect(
+      targetElement.getBoundingClientRect(),
+      deckRect,
+      targetKind
+    )
+
+    setSharedMorphTransition((previousTransition) => {
+      if (!previousTransition || previousTransition.stage !== "mount") {
+        return previousTransition
+      }
+
+      return {
+        ...previousTransition,
+        overlayRect: sourceRect,
+        sourceKind,
+        stage: "morph",
+        targetKind,
+        targetRect,
+      }
+    })
+
+    const frameId = window.requestAnimationFrame(() => {
+      setSharedMorphTransition((previousTransition) => {
+        if (!previousTransition || previousTransition.stage !== "morph") {
+          return previousTransition
+        }
+
+        return {
+          ...previousTransition,
+          overlayRect: targetRect,
+        }
+      })
+    })
+
+    return () => {
+      window.cancelAnimationFrame(frameId)
+    }
+  }, [sharedMorphTransition])
+
+  useEffect(() => {
+    if (!sharedMorphTransition || sharedMorphTransition.stage !== "morph") {
+      return
+    }
+
+    clearSharedTransitionRevealTimer()
+
+    sharedTransitionRevealTimerRef.current = window.setTimeout(() => {
+      setSharedMorphTransition((previousTransition) => {
+        if (!previousTransition || previousTransition.stage !== "morph") {
+          return previousTransition
+        }
+
+        return {
+          ...previousTransition,
+          stage: "reveal",
+        }
+      })
+    }, SHARED_REVEAL_DELAY_MS)
+
+    return () => {
+      clearSharedTransitionRevealTimer()
+    }
+  }, [sharedMorphTransition])
+
+  const sharedMorphToIndex = sharedMorphTransition?.toIndex ?? null
+
+  useEffect(() => {
+    if (sharedMorphToIndex === null) {
+      return
+    }
+
+    clearSharedTransitionFinishTimer()
+
+    sharedTransitionFinishTimerRef.current = window.setTimeout(() => {
+      setCurrentIndex(sharedMorphToIndex)
+      setSharedMorphTransition(null)
+    }, SHARED_TRANSITION_TOTAL_MS)
+
+    return () => {
+      clearSharedTransitionFinishTimer()
+    }
+  }, [sharedMorphToIndex])
+
+  useEffect(() => {
+    deckRef.current?.focus({ preventScroll: true })
+  }, [currentIndex, sharedMorphTransition])
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault()
+        handleKeyboardNavigation(-1)
+        return
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault()
+        handleKeyboardNavigation(1)
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [])
+
+  const sharedMorphClassName = useMemo(() => {
+    return [
+      styles.sharedMorph,
+      sharedMorphTransition?.direction === "backward" ? styles.sharedMorphBackward : "",
+      sharedMorphTransition?.stage === "reveal" ? styles.sharedMorphSettled : "",
+    ]
+      .filter(Boolean)
+      .join(" ")
+  }, [sharedMorphTransition?.direction, sharedMorphTransition?.stage])
+
+  const sharedTransitionClassName = useMemo(() => {
+    return [
+      styles.slideStage,
+      sharedMorphTransition ? styles.slideStageTransitioning : "",
+      sharedMorphTransition?.direction === "forward" ? styles.slideStageForward : "",
+      sharedMorphTransition?.direction === "backward" ? styles.slideStageBackward : "",
+      sharedMorphTransition?.stage === "reveal" ? styles.slideStageReveal : "",
+    ]
+      .filter(Boolean)
+      .join(" ")
+  }, [sharedMorphTransition])
+
+  return (
+    <div
+      className={styles.deck}
+      onMouseDownCapture={() => {
+        deckRef.current?.focus({ preventScroll: true })
+      }}
+      onMouseMove={() => {
+        if (!isResponsiveViewport) {
+          revealControls()
+        }
+      }}
+      onTouchEnd={(event) => {
+        if (!isResponsiveViewport) {
+          touchStartRef.current = null
+          return
+        }
+
+        const start = touchStartRef.current
+        const touch = event.changedTouches[0]
+        touchStartRef.current = null
+
+        if (!start || !touch) {
+          return
+        }
+
+        const deltaX = touch.clientX - start.x
+        const deltaY = touch.clientY - start.y
+
+        if (Math.abs(deltaX) < SLIDE_SWIPE_DISTANCE || Math.abs(deltaX) <= Math.abs(deltaY)) {
+          return
+        }
+
+        if (deltaX < 0) {
+          goToSlide(currentIndex + 1)
+          return
+        }
+
+        goToSlide(currentIndex - 1)
+      }}
+      onTouchMove={() => {
+        if (isResponsiveViewport) {
+          revealControls()
+        }
+      }}
+      onTouchStart={(event) => {
+        if (!isResponsiveViewport) {
+          return
+        }
+
+        const touch = event.touches[0]
+
+        if (!touch) {
+          return
+        }
+
+        touchStartRef.current = { x: touch.clientX, y: touch.clientY }
+      }}
+      onWheel={() => {
+        if (isResponsiveViewport) {
+          revealControls()
+        }
+      }}
+      ref={deckRef}
+      tabIndex={-1}
+    >
+      <div className={sharedTransitionClassName}>
+        {sharedMorphTransition ? (
+          <>
+            <div className={[styles.slideLayer, styles.slideLayerTo].join(" ")} ref={transitionToRef}>
+              {SLIDES[sharedMorphTransition.toIndex].render()}
+            </div>
+
+            <div className={[styles.slideLayer, styles.slideLayerFrom].join(" ")} ref={transitionFromRef}>
+              {SLIDES[sharedMorphTransition.fromIndex].render()}
+            </div>
+
+            {sharedMorphTransition.overlayRect ? (
+              <div
+                className={sharedMorphClassName}
+                style={{
+                  clipPath: sharedMorphTransition.overlayRect.clipPath,
+                  height: `${sharedMorphTransition.overlayRect.height}px`,
+                  left: `${sharedMorphTransition.overlayRect.left}px`,
+                  top: `${sharedMorphTransition.overlayRect.top}px`,
+                  transitionDuration: `${SHARED_MORPH_DURATION_MS}ms`,
+                  width: `${sharedMorphTransition.overlayRect.width}px`,
+                }}
+              />
+            ) : null}
+          </>
+        ) : (
+          <div className={styles.slideLayerCurrent} key={currentSlide.id}>
+            {currentSlide.render()}
+          </div>
+        )}
+      </div>
+
+      <div className={controlsClassName}>
+        <button
+          aria-label="Previous slide"
+          className={styles.controlButton}
+          disabled={currentIndex === 0}
+          onClick={() => goToSlide(currentIndex - 1)}
+          type="button"
+        >
+          {"<"}
+        </button>
+
+        <div className={styles.controlMeta}>
+          <strong>{visibleSlide.shortLabel}</strong>
+          <span>{visibleSlide.label}</span>
+        </div>
+
+        <button
+          aria-label="Next slide"
+          className={styles.controlButton}
+          disabled={currentIndex === SLIDES.length - 1}
+          onClick={() => goToSlide(currentIndex + 1)}
+          type="button"
+        >
+          {">"}
+        </button>
+      </div>
+    </div>
+  )
+}

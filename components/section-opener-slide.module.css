@@ -1,0 +1,446 @@
+.shell {
+  min-height: 100dvh;
+  height: 100dvh;
+  background: #ee2028;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.desktop {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #ee2028;
+}
+
+.canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1920px;
+  height: 1080px;
+  transform: translate(-50%, -50%) scale(var(--slide-scale, 1));
+  transform-origin: center;
+  will-change: transform;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.title {
+  position: absolute;
+  left: 134px;
+  top: 50%;
+  width: 792px;
+  margin: 0;
+  color: #ffffff;
+  font-size: 128px;
+  font-weight: 400;
+  letter-spacing: calc(-0.055em + var(--letter-spacing-boost));
+  line-height: 1.05;
+  transform: translateY(-50%);
+  opacity: 0;
+  animation: opener-title-in 820ms cubic-bezier(0.22, 1, 0.36, 1) 180ms forwards;
+}
+
+.outline {
+  position: absolute;
+  left: 1488px;
+  top: -34px;
+  width: 1168px;
+  height: 1140px;
+  opacity: 0;
+  transform: translateX(64px);
+  animation: opener-shape-in 860ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
+}
+
+.card {
+  position: absolute;
+  left: 1612px;
+  top: 119px;
+  width: 914px;
+  height: 848px;
+  opacity: 0;
+  transform: translateX(54px);
+  animation: opener-shape-in 860ms cubic-bezier(0.22, 1, 0.36, 1) 220ms forwards;
+}
+
+.outline :global(img),
+.card :global(img) {
+  object-fit: contain;
+}
+
+.number {
+  position: absolute;
+  left: 1830px;
+  top: 458px;
+  width: 128px;
+  margin: 0;
+  color: #ee2028;
+  font-size: 100px;
+  font-weight: 400;
+  letter-spacing: calc(-0.05em + var(--letter-spacing-boost));
+  line-height: 1;
+  opacity: 0;
+  transform: scale(0.82);
+  animation: opener-number-pop 760ms cubic-bezier(0.22, 1, 0.36, 1) 360ms forwards;
+}
+
+.responsive {
+  position: relative;
+  min-height: 100%;
+  background: #ee2028;
+}
+
+.responsiveInner {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+  align-items: center;
+  gap: clamp(1.5rem, 5vw, 4rem);
+  padding:
+    max(28px, env(safe-area-inset-top))
+    max(32px, env(safe-area-inset-right))
+    max(28px, env(safe-area-inset-bottom))
+    max(32px, env(safe-area-inset-left));
+}
+
+.responsiveCopy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  min-height: min(50vh, 20rem);
+}
+
+.responsiveTitle {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 16rem);
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  font-weight: 400;
+  letter-spacing: calc(-0.06em + var(--letter-spacing-boost));
+  line-height: 0.95;
+  opacity: 0;
+  transform: translateY(22px);
+  animation: opener-title-rise 820ms cubic-bezier(0.22, 1, 0.36, 1) 180ms forwards;
+}
+
+.responsiveShapes {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 44rem);
+  aspect-ratio: 1.04;
+  margin-left: auto;
+  pointer-events: none;
+}
+
+.responsiveOutline {
+  position: absolute;
+  inset: -7% -34% -7% 20%;
+  opacity: 0;
+  transform: translateX(46px);
+  animation: opener-shape-in 860ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
+}
+
+.responsiveCard {
+  position: absolute;
+  inset: 11% -12% 11% 31%;
+  opacity: 0;
+  transform: translateX(38px);
+  animation: opener-shape-in 860ms cubic-bezier(0.22, 1, 0.36, 1) 220ms forwards;
+}
+
+.responsiveOutline :global(img),
+.responsiveCard :global(img) {
+  object-fit: contain;
+}
+
+.responsiveNumber {
+  position: absolute;
+  left: 72%;
+  top: 50%;
+  margin: 0;
+  color: #ee2028;
+  font-size: clamp(4rem, 7vw, 5.75rem);
+  font-weight: 400;
+  letter-spacing: calc(-0.05em + var(--letter-spacing-boost));
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: opener-responsive-number 760ms cubic-bezier(0.22, 1, 0.36, 1) 360ms forwards;
+}
+
+.responsiveCompact .responsiveInner {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  align-content: center;
+  gap: clamp(2rem, 6vh, 3.5rem);
+}
+
+.responsiveCompact .responsiveShapes {
+  width: min(100%, 18rem);
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+
+.responsiveCompact .responsiveOutline {
+  inset: -4% -4% -4% -4%;
+}
+
+.responsiveCompact .responsiveCard {
+  inset: 13% 13% 13% 13%;
+}
+
+.responsiveCompact .responsiveNumber {
+  left: 50%;
+  top: 50%;
+  font-size: clamp(2.8rem, 10vw, 4rem);
+}
+
+.responsiveCompact .responsiveCopy {
+  width: 100%;
+  min-height: unset;
+  justify-content: center;
+  text-align: center;
+}
+
+.responsiveCompact .responsiveTitle {
+  width: min(100%, 17rem);
+  margin-inline: auto;
+  text-align: center;
+  font-size: clamp(2.65rem, 9.4vw, 4rem);
+  line-height: 1.08;
+}
+
+@media (max-width: 1023px) {
+  .responsiveInner {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-content: center;
+  }
+
+  .responsiveCopy {
+    width: 100%;
+    min-height: unset;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .responsiveTitle {
+    width: min(100%, 20rem);
+    font-size: clamp(3.2rem, 11vw, 5.6rem);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .responsiveShapes {
+    width: min(100%, 34rem);
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .responsiveInner {
+    gap: clamp(1.25rem, 6vw, 2.25rem);
+    justify-items: center;
+    align-content: center;
+    padding:
+      max(24px, env(safe-area-inset-top))
+      max(18px, env(safe-area-inset-right))
+      max(24px, env(safe-area-inset-bottom))
+      max(18px, env(safe-area-inset-left));
+  }
+
+  .responsiveTitle {
+    width: min(100%, 14rem);
+    font-size: clamp(2.9rem, 15vw, 4.6rem);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .responsiveShapes {
+    width: min(100%, 22rem);
+    margin-inline: auto;
+  }
+
+  .responsiveOutline {
+    inset: -8% -40% -8% 24%;
+  }
+
+  .responsiveCard {
+    inset: 11% -17% 11% 34%;
+  }
+
+  .responsiveNumber {
+    left: 72%;
+    font-size: clamp(3.2rem, 12vw, 4.8rem);
+  }
+}
+
+@media (max-height: 740px) {
+  .responsiveInner {
+    min-height: 100%;
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+
+  .responsiveTitle {
+    font-size: clamp(2.8rem, 8vh, 4.6rem);
+  }
+
+  .responsiveShapes {
+    width: min(100%, 26rem);
+  }
+}
+
+@media (max-width: 560px), (max-height: 760px) {
+  .responsiveCompact .responsiveInner {
+    padding:
+      max(22px, env(safe-area-inset-top))
+      max(18px, env(safe-area-inset-right))
+      max(22px, env(safe-area-inset-bottom))
+      max(18px, env(safe-area-inset-left));
+  }
+
+  .responsiveCompact .responsiveShapes {
+    width: min(100%, 14rem);
+  }
+
+  .responsiveCompact .responsiveTitle {
+    width: min(100%, 15rem);
+    font-size: clamp(2.25rem, 10.2vw, 3.3rem);
+  }
+}
+
+@keyframes opener-shape-in {
+  from {
+    opacity: 0;
+    transform: translateX(56px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes opener-title-in {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+@keyframes opener-title-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes opener-number-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+
+  70% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes opener-responsive-number {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.82);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.title {
+  --letter-spacing-boost: 0cm;
+}
+
+.responsiveTitle {
+  --letter-spacing-boost: 0.2cm;
+}
+
+.responsiveTitle {
+  --letter-spacing-boost: 0.2cm;
+}
+
+.shell p,
+.shell span,
+.shell li,
+.shell button,
+.shell label,
+.shell h2,
+.shell h3,
+.shell h4,
+.shell h5,
+.shell h6 {
+  letter-spacing: 0cm;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title,
+  .outline,
+  .card,
+  .number,
+  .responsiveTitle,
+  .responsiveOutline,
+  .responsiveCard,
+  .responsiveNumber {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .title {
+    transform: translateY(-50%) !important;
+  }
+
+  .responsiveNumber {
+    transform: translate(-50%, -50%) !important;
+  }
+}
