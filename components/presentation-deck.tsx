@@ -16,8 +16,8 @@ import { PresentationInitialExpectationSlide } from "@/components/presentation-i
 import { PresentationHumanValueSlide } from "@/components/presentation-human-value-slide"
 import { PresentationLocusReasonsSlide } from "@/components/presentation-locus-reasons-slide"
 import { PresentationOverviewSlide } from "@/components/presentation-overview-slide"
+import { PresentationEmbeddedWebsiteSlide } from "@/components/presentation-embedded-website-slide"
 import { PresentationShowcasePlaceholderSlide } from "@/components/presentation-showcase-placeholder-slide"
-import { PresentationThibaultShowcaseSlide } from "@/components/presentation-thibault-showcase-slide"
 import { SECTION_TITLES } from "@/components/presentation-sections"
 import { PresentationStorySlide } from "@/components/presentation-story-slide"
 import { SectionOpenerSlide } from "@/components/section-opener-slide"
@@ -76,19 +76,13 @@ function isSectionOpenerSlide(slideId: string) {
   return slideId.startsWith("section-opener-")
 }
 
-function isSharedMorphPair(fromIndex: number, toIndex: number) {
-  if (Math.abs(fromIndex - toIndex) !== 1) {
-    return false
-  }
+function isSharedMorphPair(...args: [number, number]) {
+  const [_fromIndex, _toIndex] = args
 
-  const fromSlide = SLIDES[fromIndex]
-  const toSlide = SLIDES[toIndex]
+  void _fromIndex
+  void _toIndex
 
-  if (!fromSlide || !toSlide) {
-    return false
-  }
-
-  return isSectionOpenerSlide(fromSlide.id) !== isSectionOpenerSlide(toSlide.id)
+  return false
 }
 
 function toSharedMorphRect(
@@ -317,10 +311,16 @@ const SLIDES = [
       return [
         openerSlide,
         {
-          id: "product-showcase-content",
-          label: "Product Showcase",
+          id: "product-showcase-runtime",
+          label: "Product Showcase Runtime",
           theme: "light" as const,
-          render: () => <PresentationThibaultShowcaseSlide />,
+          render: () => (
+            <PresentationEmbeddedWebsiteSlide
+              musicSrc="/audio/fireplace-ambience.mp3"
+              src="https://project1-three-ashy.vercel.app/en"
+              title="Thibault Guignand portfolio runtime"
+            />
+          ),
         },
       ]
     }
@@ -424,7 +424,7 @@ const SLIDES = [
   }))
 
 export function PresentationDeck() {
-  const [currentIndex, setCurrentIndex] = useState(1)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [showControls, setShowControls] = useState(false)
   const [isResponsiveViewport, setIsResponsiveViewport] = useState(false)
   const [sharedMorphTransition, setSharedMorphTransition] =
@@ -670,13 +670,13 @@ export function PresentationDeck() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowLeft") {
+      if (event.key === "ArrowLeft" || event.key === "PageUp") {
         event.preventDefault()
         handleKeyboardNavigation(-1)
         return
       }
 
-      if (event.key === "ArrowRight") {
+      if (event.key === "ArrowRight" || event.key === "PageDown") {
         event.preventDefault()
         handleKeyboardNavigation(1)
       }
@@ -714,6 +714,7 @@ export function PresentationDeck() {
   return (
     <div
       className={styles.deck}
+      data-presentation-deck-root="true"
       onMouseDownCapture={() => {
         deckRef.current?.focus({ preventScroll: true })
       }}

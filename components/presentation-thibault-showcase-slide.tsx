@@ -71,7 +71,7 @@ const PROJECTS: Project[] = [
   {
     slug: "metropole",
     homeTitle: "Metropole, Advertising Network",
-    detailTitle: "Metropole media",
+    detailTitle: "Metropole média",
     homeMeta: "Freelance",
     homeScope: "Web & mobile",
     homeDiscipline: "Front & back-end development",
@@ -79,12 +79,12 @@ const PROJECTS: Project[] = [
     category: "Exceptional advertising spaces.",
     summary:
       "Complete website creation, integrating smooth animations and an immersive user experience to showcase their unique advertising offer.",
-    client: "Metropole media",
+    client: "Metropole média",
     role: "Developer",
     stack: "Next.js, TypeScript, Sanity, GSAP, Lenis Scroll",
     type: "Freelance",
     score: "100",
-    liveUrl: "https://metropolemedia.fr/",
+    liveUrl: "https://www.metropole.media/",
     logoPath: "/reference/thibault/img/metropole.svg",
     videoPath: "/reference/thibault/vid/metropole.mp4",
     videoPosterPath: "/reference/thibault/vid/posters/metropole.webp",
@@ -108,7 +108,7 @@ const PROJECTS: Project[] = [
     role: "Developer",
     stack: "React, GoogleAPI, Symfony, Elasticsearch",
     type: "Employed",
-    liveUrl: "https://www.acheterduneuf.com/",
+    liveUrl: "https://acheterduneuf.com",
     logoPath: "/reference/thibault/img/acheterduneuf.svg",
     videoPath: "/reference/thibault/vid/acheterduneuf.mp4",
     videoPosterPath: "/reference/thibault/vid/posters/acheterduneuf.webp",
@@ -195,26 +195,26 @@ const EXPERIENCE: ExperienceItem[] = [
     description:
       "Crafting immersive and interactive web experiences. Polished animations, custom interfaces and optimal performance.",
     role: "Creative Frontend Developer",
-    time: "2025 - Present",
+    time: "2025 \u2014 Present",
   },
   {
     company: "Multi-brand Company",
     description:
       "Development of all digital products across multiple brands: showcase websites, web applications and design interfaces.",
     role: "Frontend Developer",
-    time: "2023 - Present",
+    time: "2023 \u2014 Present",
   },
   {
     company: "Web Agency",
     description:
       "A short but decisive experience. I discovered what I did not want to do, and it awakened me to the level of quality I wanted to represent.",
     role: "Frontend Developer",
-    time: "2023 - 3 months",
+    time: "2023 \u2014 3 months",
   },
 ]
 
 function countLabel(index: number) {
-  return `${String(index + 1).padStart(2, "0")} - ${String(PROJECTS.length).padStart(2, "0")}`
+  return `${String(index + 1).padStart(2, "0")} \u2014 ${String(PROJECTS.length).padStart(2, "0")}`
 }
 
 export function PresentationThibaultShowcaseSlide() {
@@ -389,7 +389,7 @@ export function PresentationThibaultShowcaseSlide() {
                       </p>
                       <div className={styles.contactRow}>
                         <a className={styles.contactLink} href="mailto:bonjour@atypica.digital">
-                          Email <span>-&gt;</span>
+                          Email <span>{"\u2192"}</span>
                         </a>
                         <a
                           className={styles.contactLink}
@@ -397,13 +397,13 @@ export function PresentationThibaultShowcaseSlide() {
                           rel="noreferrer"
                           target="_blank"
                         >
-                          LinkedIn <span>-&gt;</span>
+                          LinkedIn <span>{"\u2192"}</span>
                         </a>
                         <a
                           className={styles.contactLink}
                           href="mailto:bonjour@atypica.digital?subject=GitHub"
                         >
-                          GitHub <span>-&gt;</span>
+                          GitHub <span>{"\u2192"}</span>
                         </a>
                       </div>
                       <p className={styles.availability}>Available for new projects</p>
