@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import {
   useEffect,
   useEffectEvent,
@@ -35,6 +36,7 @@ const SHARED_SHAPE_CLIP_PATH =
   "polygon(46% 0%, 54% 0%, 97% 22%, 97% 78%, 54% 100%, 46% 100%, 3% 78%, 3% 22%)"
 const SHARED_PANEL_CLIP_PATH =
   "polygon(3% 0%, 97% 0%, 100% 8%, 100% 92%, 97% 100%, 3% 100%, 0% 92%, 0% 8%)"
+const PHASES_INTERSTITIAL_SLIDE_ID = "project-phases"
 
 type SharedElementKind = "shape" | "panel"
 
@@ -135,15 +137,15 @@ const SLIDES = [
           theme: "light" as const,
           render: () => (
             <PresentationInitialExpectationSlide
-              lead="The expectations I had before the internship began, especially around real work, AI tools, and team collaboration."
+              lead="The expectations I had before the internship began."
               points={[
                 {
                   label: "Real Work",
-                  text: "Curious how real digital marketing works.",
+                  text: "Learn how real digital marketing works.",
                 },
                 {
-                  label: "AI + Teamwork",
-                  text: "Gain hands-on experience with AI, workflow, and teamwork.",
+                  label: "HANDS-ON EXPERIENCE",
+                  text: "Gain hands-on experience in real working environment.",
                 },
                 {
                   label: "Client Output",
@@ -168,16 +170,16 @@ const SLIDES = [
             <PresentationOverviewSlide
               cards={[
                 {
-                  label: "Team",
-                  body: "I was placed under the Paid Media R&D team.",
+                  label: "AI Video Generation",
+                  body: "Test AI-generated video production to speed up creative output and campaign execution.",
                 },
                 {
-                  label: "Bigger Picture",
-                  body: "The goal was to explore how AI could speed up creative work and improve team efficiency.",
+                  label: "Strategic Goal",
+                  body: "Explore how AI can help clients increase traffic and sales while maintaining or reducing total ad spend.",
                 },
                 {
-                  label: "Project Scope",
-                  body: "My project focused on AI video generation, AI website generation, and paid media support.",
+                  label: "AI Website & Embedded Form Generation",
+                  body: "Develop AI-assisted website and embedded forms to improve speed, consistency, and lead capture.",
                 },
               ]}
               lead="A structured overview of where I was placed, what I worked on, and why the project mattered."
@@ -192,42 +194,63 @@ const SLIDES = [
           theme: "light" as const,
           render: () => (
             <PresentationPhasesSlide
-              lead="The project was structured in stages, starting with AI-generated Reels, then expanding into website generation and broader product support."
+              lead="A four-phase roadmap showing how the internship moved from AI-generated reel experiments into a broader AI website generation stage."
               phaseGroups={[
                 {
-                  duration: "Phase 1 - 3 (2 months)",
-                  title: "3 AI Video Generation Reels",
-                  items: [
-                    "Signature Market - Two Tails",
-                    "Kenny Hills Bakers - Peach Strudel",
-                    "Kapten Batik",
-                  ],
+                  duration: "2 weeks",
+                  title: "AI Video Generation Reels",
+                  items: ["Signature Market - Two Tails"],
                   videos: [
                     {
                       title: "Signature Market - Two Tails",
-                      url: "https://drive.google.com/file/d/1bvvq9X015bVa8uLnJOevN05IWoeUoybH/view?usp=drive_link",
-                    },
-                    {
-                      title: "Kenny Hills Bakers - Peach Strudel",
-                      url: "https://drive.google.com/file/d/1E1tLhZF2BG9E0AvDO_qFvPgXU-LHZWjc/view?usp=drive_link",
-                    },
-                    {
-                      title: "Kapten Batik",
-                      url: "https://drive.google.com/file/d/18uAHTxLLgpgDlVC96FClsadns5FaDHq0/view?usp=drive_link",
+                      url: "/videos/slide-8/signature-market-two-tails.mp4",
                     },
                   ],
                 },
                 {
-                  duration: "Phase 4 (1 month)",
-                  title: "3 AI Website Generation Projects",
-                  items: [
-                    "Frontend refinement",
-                    "Backend learning & support",
+                  duration: "2 weeks",
+                  title: "AI Video Generation Reels",
+                  items: ["Kenny Hills Bakers - Peach Strudel"],
+                  videos: [
+                    {
+                      title: "Kenny Hills Bakers - Peach Strudel",
+                      url: "/videos/slide-8/kenny-hills-bakers-peach-strudel.mp4",
+                    },
+                  ],
+                },
+                {
+                  duration: "2 weeks",
+                  title: "AI Video Generation Reels",
+                  items: ["Kapten Batik"],
+                  videos: [
+                    {
+                      title: "Kapten Batik",
+                      url: "/videos/slide-8/kapten-batik.mp4",
+                    },
+                  ],
+                },
+                {
+                  duration: "1 month",
+                  title: "AI Website Generation",
+                  items: ["Frontend refinement, Backend learning & support"],
+                  images: [
+                    {
+                      title: "Signature Market Website",
+                      url: "/reference/slide-8/website-gallery/signature-market-site.png",
+                    },
+                    {
+                      title: "Kenny Hills Bakers Website",
+                      url: "/reference/slide-8/website-gallery/kenny-hills-site.png",
+                    },
+                    {
+                      title: "Kapten Batik Website",
+                      url: "/reference/slide-8/website-gallery/kapten-batik-site.png",
+                    },
                   ],
                 },
               ]}
               sectionNumber="02"
-              title="Project Phases / What Was Expected"
+              title="Project Timeline / 4 Phases"
             />
           ),
         },
@@ -249,7 +272,7 @@ const SLIDES = [
                   {
                     label: "Exciting Moment",
                     body: [
-                      "The AI finally generated something close to what I imagined.",
+                      "AI generated what I want",
                       "After many wrong results and repeated testing, that moment felt truly rewarding.",
                     ],
                   },
@@ -427,6 +450,7 @@ export function PresentationDeck() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [showControls, setShowControls] = useState(false)
   const [isResponsiveViewport, setIsResponsiveViewport] = useState(false)
+  const [showPhasesInterstitial, setShowPhasesInterstitial] = useState(false)
   const [sharedMorphTransition, setSharedMorphTransition] =
     useState<SharedMorphTransition | null>(null)
   const deckRef = useRef<HTMLDivElement | null>(null)
@@ -441,6 +465,10 @@ export function PresentationDeck() {
   const visibleSlide = sharedMorphTransition
     ? SLIDES[sharedMorphTransition.toIndex]
     : currentSlide
+  const isPhasesInterstitialActive =
+    currentSlide.id === PHASES_INTERSTITIAL_SLIDE_ID &&
+    showPhasesInterstitial &&
+    !sharedMorphTransition
 
   const clearSharedTransitionRevealTimer = () => {
     if (sharedTransitionRevealTimerRef.current) {
@@ -460,11 +488,12 @@ export function PresentationDeck() {
     return [
       styles.controls,
       showControls ? styles.controlsVisible : "",
+      visibleSlide.id === "product-showcase-runtime" ? styles.controlsHidden : "",
       visibleSlide.theme === "dark" ? styles.controlsDark : styles.controlsLight,
     ]
       .filter(Boolean)
       .join(" ")
-  }, [showControls, visibleSlide.theme])
+  }, [showControls, visibleSlide.id, visibleSlide.theme])
 
   useEffect(() => {
     const syncViewportMode = () => {
@@ -511,9 +540,26 @@ export function PresentationDeck() {
     }
 
     const clampedIndex = Math.max(0, Math.min(nextIndex, SLIDES.length - 1))
+    const isOnPhasesSlide = currentSlide.id === PHASES_INTERSTITIAL_SLIDE_ID
+
+    if (isOnPhasesSlide && showPhasesInterstitial && clampedIndex === currentIndex - 1) {
+      setShowPhasesInterstitial(false)
+      revealControls()
+      return
+    }
+
+    if (isOnPhasesSlide && !showPhasesInterstitial && clampedIndex === currentIndex + 1) {
+      setShowPhasesInterstitial(true)
+      revealControls()
+      return
+    }
 
     if (clampedIndex === currentIndex) {
       return
+    }
+
+    if (showPhasesInterstitial) {
+      setShowPhasesInterstitial(false)
     }
 
     if (isSharedMorphPair(currentIndex, clampedIndex)) {
@@ -538,6 +584,26 @@ export function PresentationDeck() {
   const handleKeyboardNavigation = useEffectEvent((delta: number) => {
     goToSlide(currentIndex + delta)
     revealControls()
+  })
+
+  const handleDeckKeyDown = useEffectEvent((event: KeyboardEvent) => {
+    if (event.key === "Escape" && showPhasesInterstitial) {
+      event.preventDefault()
+      setShowPhasesInterstitial(false)
+      revealControls()
+      return
+    }
+
+    if (event.key === "ArrowLeft" || event.key === "PageUp") {
+      event.preventDefault()
+      handleKeyboardNavigation(-1)
+      return
+    }
+
+    if (event.key === "ArrowRight" || event.key === "PageDown") {
+      event.preventDefault()
+      handleKeyboardNavigation(1)
+    }
   })
 
   useLayoutEffect(() => {
@@ -669,23 +735,16 @@ export function PresentationDeck() {
   }, [currentIndex, sharedMorphTransition])
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowLeft" || event.key === "PageUp") {
-        event.preventDefault()
-        handleKeyboardNavigation(-1)
-        return
-      }
-
-      if (event.key === "ArrowRight" || event.key === "PageDown") {
-        event.preventDefault()
-        handleKeyboardNavigation(1)
-      }
+    if (currentSlide.id !== PHASES_INTERSTITIAL_SLIDE_ID && showPhasesInterstitial) {
+      setShowPhasesInterstitial(false)
     }
+  }, [currentSlide.id, showPhasesInterstitial])
 
-    document.addEventListener("keydown", handleKeyDown)
+  useEffect(() => {
+    document.addEventListener("keydown", handleDeckKeyDown)
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown)
+      document.removeEventListener("keydown", handleDeckKeyDown)
     }
   }, [])
 
@@ -808,6 +867,41 @@ export function PresentationDeck() {
           </div>
         )}
       </div>
+
+      {isPhasesInterstitialActive ? (
+        <div
+          aria-label="Detailed gantt chart for project phases"
+          className={styles.slideInterstitial}
+          onClick={() => setShowPhasesInterstitial(false)}
+          role="dialog"
+        >
+          <div
+            className={styles.slideInterstitialFrame}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className={styles.slideInterstitialImageWrap}>
+              <Image
+                alt="Gantt chart showing the detailed project timeline from January to April 2026"
+                className={styles.slideInterstitialImage}
+                fill
+                priority
+                sizes="(max-width: 1023px) 92vw, 78vw"
+                src="/reference/slide-8/gantt-chart.png"
+                unoptimized
+              />
+            </div>
+
+            <button
+              aria-label="Close detailed timeline"
+              className={styles.slideInterstitialClose}
+              onClick={() => setShowPhasesInterstitial(false)}
+              type="button"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       <div className={controlsClassName}>
         <button

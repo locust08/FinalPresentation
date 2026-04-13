@@ -21,6 +21,19 @@ type PresentationInitialExpectationSlideProps = {
   sectionNumber: string
 }
 
+function getBubbleLines(label: string, text: string) {
+  switch (label) {
+    case "Real Work":
+      return ["Learn how real digital", "marketing works."]
+    case "HANDS-ON EXPERIENCE":
+      return ["Gain hands-on experience in", "real working environment"]
+    case "Client Output":
+      return ["Learn how ideas become", "real client outputs."]
+    default:
+      return [text]
+  }
+}
+
 export function PresentationInitialExpectationSlide({
   lead,
   points,
@@ -47,45 +60,100 @@ export function PresentationInitialExpectationSlide({
                 aria-hidden="true"
                 data-transition-content="decor"
               >
-                <span>EXPECT</span>
+                <span>EXPECTATION</span>
               </div>
 
-              <header className={styles.responsiveHeader} data-transition-content="header">
-                <p className={styles.responsiveEyebrow}>Section {sectionNumber}</p>
+              <header
+                className={styles.responsiveHeader}
+                data-transition-content="header"
+              >
+                <p className={styles.responsiveEyebrow}>
+                  Section {sectionNumber}
+                </p>
 
                 <div className={styles.responsiveTitleWrap}>
                   <p className={styles.responsivePreTitle}>My Initial</p>
-                  <h1 className={styles.responsiveHeroTitle}>Expectation</h1>
+                  <h1 className={styles.responsiveHeroTitle}>EXPECTATION</h1>
                 </div>
 
                 <div className={styles.responsiveLeadBlock}>
-                  <span className={styles.responsiveLeadRule} aria-hidden="true" />
+                  <span
+                    className={styles.responsiveLeadRule}
+                    aria-hidden="true"
+                  />
                   <p className={styles.responsiveLead}>{lead}</p>
                 </div>
               </header>
 
-              <ol className={styles.responsivePoints} data-transition-content="main">
-                {points.map((point, index) => (
-                  <li
-                    className={styles.responsivePoint}
-                    data-emphasis={index === 1 ? "strong" : "default"}
-                    key={point.label}
-                    style={{ "--stagger": index } as CSSProperties}
-                  >
-                    <div className={styles.responsivePointTop}>
-                      <span className={styles.responsivePointNumber}>
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <p className={styles.responsivePointLabel}>{point.label}</p>
-                    </div>
+              <div
+                className={styles.responsiveScene}
+                data-transition-content="main"
+              >
+                <div
+                  className={styles.responsiveThoughtCore}
+                  aria-hidden="true"
+                >
+                  <span className={styles.responsiveThoughtHalo} />
+                  <span className={styles.responsiveThoughtOrbPrimary} />
+                  <span className={styles.responsiveThoughtOrbSecondary} />
+                  <span className={styles.responsiveThoughtOrbTertiary} />
+                </div>
 
-                    <p className={styles.responsivePointText}>{point.text}</p>
-                  </li>
-                ))}
-              </ol>
+                <ol className={styles.responsivePoints}>
+                  {points.map((point, index) => (
+                    <li
+                      className={styles.responsivePoint}
+                      data-bubble={index + 1}
+                      data-emphasis={index === 1 ? "strong" : "default"}
+                      key={point.label}
+                      style={{ "--stagger": index } as CSSProperties}
+                    >
+                      <div className={styles.responsivePointContent}>
+                        <div className={styles.responsivePointTop}>
+                          <span className={styles.responsivePointNumber}>
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <p className={styles.responsivePointLabel}>
+                            {point.label}
+                          </p>
+                        </div>
 
-              <footer className={styles.responsiveFooter} data-transition-content="footer">
-                <div className={styles.responsiveFooterLine} aria-hidden="true" />
+                        <p className={styles.responsivePointText}>
+                          {getBubbleLines(point.label, point.text).map(
+                            (line, lineIndex) => (
+                              <span
+                                className={styles.pointTextLine}
+                                key={`${point.label}-${lineIndex}`}
+                              >
+                                {line}
+                              </span>
+                            )
+                          )}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+
+                <div className={styles.responsiveFigure} aria-hidden="true">
+                  <Image
+                    alt=""
+                    className={styles.responsiveFigureImage}
+                    fill
+                    sizes="(max-width: 767px) 240px, 320px"
+                    src="/reference/slide-5-woman-cutout.png"
+                  />
+                </div>
+              </div>
+
+              <footer
+                className={styles.responsiveFooter}
+                data-transition-content="footer"
+              >
+                <div
+                  className={styles.responsiveFooterLine}
+                  aria-hidden="true"
+                />
 
                 <div className={styles.responsiveFooterMeta}>
                   <div className={styles.responsiveLogo}>
@@ -103,7 +171,10 @@ export function PresentationInitialExpectationSlide({
             </div>
           </section>
         ) : (
-          <section aria-label="My Initial Expectation slide" className={styles.desktop}>
+          <section
+            aria-label="My Initial Expectation slide"
+            className={styles.desktop}
+          >
             <div
               className={styles.canvas}
               style={{ "--slide-scale": scale } as CSSProperties}
@@ -116,16 +187,19 @@ export function PresentationInitialExpectationSlide({
                   aria-hidden="true"
                   data-transition-content="decor"
                 >
-                  <span>EXPECT</span>
+                  <span>EXPECTATION</span>
                 </div>
 
                 <div className={styles.content} data-transition-panel>
-                  <header className={styles.header} data-transition-content="header">
+                  <header
+                    className={styles.header}
+                    data-transition-content="header"
+                  >
                     <p className={styles.eyebrow}>Section {sectionNumber}</p>
 
                     <div className={styles.titleWrap}>
                       <p className={styles.preTitle}>My Initial</p>
-                      <h1 className={styles.heroTitle}>Expectation</h1>
+                      <h1 className={styles.heroTitle}>EXPECTATION</h1>
                     </div>
 
                     <div className={styles.leadBlock}>
@@ -134,28 +208,65 @@ export function PresentationInitialExpectationSlide({
                     </div>
                   </header>
 
-                  <ol className={styles.points} data-transition-content="main">
-                    {points.map((point, index) => (
-                      <li
-                        className={styles.point}
-                        data-emphasis={index === 1 ? "strong" : "default"}
-                        key={point.label}
-                        style={{ "--stagger": index } as CSSProperties}
-                      >
-                        <div className={styles.pointTop}>
-                          <span className={styles.pointNumber}>
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <p className={styles.pointLabel}>{point.label}</p>
-                        </div>
+                  <div className={styles.scene} data-transition-content="main">
+                    <div className={styles.thoughtCore} aria-hidden="true">
+                      <span className={styles.thoughtHalo} />
+                      <span className={styles.thoughtRing} />
+                      <span className={styles.thoughtOrbPrimary} />
+                      <span className={styles.thoughtOrbSecondary} />
+                      <span className={styles.thoughtOrbTertiary} />
+                    </div>
 
-                        <p className={styles.pointText}>{point.text}</p>
-                      </li>
-                    ))}
-                  </ol>
+                    <ol className={styles.points}>
+                      {points.map((point, index) => (
+                        <li
+                          className={styles.point}
+                          data-bubble={index + 1}
+                          data-emphasis={index === 1 ? "strong" : "default"}
+                          key={point.label}
+                          style={{ "--stagger": index } as CSSProperties}
+                        >
+                          <div className={styles.pointContent}>
+                            <div className={styles.pointTop}>
+                              <span className={styles.pointNumber}>
+                                {String(index + 1).padStart(2, "0")}
+                              </span>
+                              <p className={styles.pointLabel}>{point.label}</p>
+                            </div>
+
+                            <p className={styles.pointText}>
+                              {getBubbleLines(point.label, point.text).map(
+                                (line, lineIndex) => (
+                                  <span
+                                    className={styles.pointTextLine}
+                                    key={`${point.label}-${lineIndex}`}
+                                  >
+                                    {line}
+                                  </span>
+                                )
+                              )}
+                            </p>
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
+
+                    <div className={styles.figure} aria-hidden="true">
+                      <Image
+                        alt=""
+                        className={styles.figureImage}
+                        fill
+                        sizes="430px"
+                        src="/reference/slide-5-woman-cutout.png"
+                      />
+                    </div>
+                  </div>
                 </div>
 
-                <footer className={styles.footer} data-transition-content="footer">
+                <footer
+                  className={styles.footer}
+                  data-transition-content="footer"
+                >
                   <div className={styles.footerLine} aria-hidden="true" />
 
                   <div className={styles.footerMeta}>

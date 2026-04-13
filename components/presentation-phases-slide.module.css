@@ -732,6 +732,27 @@
   animation: fadeInSoft 260ms ease both;
 }
 
+.preloadVideoCache {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  inset: auto;
+}
+
+.preloadVideoCache iframe {
+  width: 1px;
+  height: 1px;
+  border: 0;
+}
+
+.preloadVideoCache video {
+  width: 1px;
+  height: 1px;
+}
+
 .modal {
   position: fixed;
   inset: max(28px, env(safe-area-inset-top))
@@ -754,6 +775,15 @@
   overflow: hidden;
   grid-template-rows: auto minmax(0, 1fr);
   animation: cardEnter 320ms var(--motion-ease) both;
+}
+
+.imageModal {
+  inset: max(22px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right))
+    max(22px, env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
+  gap: 18px;
+  padding: 22px;
 }
 
 .modalHeader {
@@ -828,6 +858,12 @@
   align-items: start;
 }
 
+.imageGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: 12px;
+}
+
 .videoCard {
   display: grid;
   gap: 12px;
@@ -844,6 +880,108 @@
   align-content: start;
   justify-items: center;
   gap: 14px;
+}
+
+.imageCard {
+  justify-items: stretch;
+  gap: 10px;
+}
+
+.imageCarousel {
+  display: grid;
+  gap: 18px;
+  width: 100%;
+  min-height: 0;
+  align-content: center;
+  justify-items: center;
+}
+
+.imageCarouselMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: min(100%, 1120px);
+  margin: 0 auto;
+}
+
+.imageCarouselCount {
+  margin: 0;
+  color: rgba(17, 17, 17, 0.5);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: calc(0.12em + var(--letter-spacing-boost));
+}
+
+.imageCarouselFrame {
+  width: auto;
+  max-width: min(100%, 1120px);
+  max-height: calc(100dvh - 300px);
+  margin: 0 auto;
+}
+
+.imageCarouselArrows {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, 1120px);
+  margin: 2px auto 0;
+}
+
+.imageCarouselArrow {
+  min-width: 46px;
+  height: 46px;
+  border: 1px solid rgba(238, 32, 40, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #ee2028;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.imageCarouselArrow:hover,
+.imageCarouselArrow:focus-visible {
+  background: rgba(238, 32, 40, 0.08);
+  border-color: rgba(238, 32, 40, 0.24);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.imageDots {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.imageDot {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  padding: 0;
+  border-radius: 999px;
+  background: rgba(238, 32, 40, 0.2);
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    width 180ms ease;
+}
+
+.imageDot:hover,
+.imageDot:focus-visible {
+  background: rgba(238, 32, 40, 0.38);
+  outline: none;
+}
+
+.imageDotActive {
+  width: 28px;
+  background: #ee2028;
 }
 
 .videoTitle {
@@ -873,10 +1011,31 @@
   );
 }
 
+.imageFrame {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 20px;
+  background: #f6f3f1;
+}
+
 .videoFrame iframe {
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+.videoFrame video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+  object-fit: cover;
+  background: #0f1014;
+}
+
+.imageFrame :global(img) {
+  object-fit: contain;
+  background: #ffffff;
 }
 
 @media (max-width: 1023px) {
@@ -973,6 +1132,15 @@
     border-radius: 24px;
   }
 
+  .imageModal {
+    inset: max(12px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right))
+      max(12px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+    gap: 14px;
+    padding: 14px;
+  }
+
   .modalHeader {
     flex-direction: column;
   }
@@ -987,6 +1155,10 @@
 
   .videoGridMulti {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .imageGrid {
+    grid-template-columns: 1fr;
   }
 
   .videoCardMulti {
@@ -1009,9 +1181,503 @@
     );
   }
 
+  .imageFrame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: calc(100dvh - 260px);
+  }
+
+  .imageCarouselMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .imageCarouselCount {
+    font-size: 0.76rem;
+  }
+
+  .imageCarouselArrows {
+    width: 100%;
+  }
+
+  .imageCarouselArrow {
+    min-width: 40px;
+    height: 40px;
+    font-size: 1.02rem;
+  }
+
+  .imageDots {
+    gap: 8px;
+  }
+
+  .imageDot {
+    width: 9px;
+    height: 9px;
+  }
+
+  .imageDotActive {
+    width: 22px;
+  }
+
   .responsiveLogo {
     width: 110px;
     height: 34px;
+  }
+}
+
+.content {
+  position: absolute;
+  left: 106px;
+  top: 102px;
+  width: 1708px;
+  height: 818px;
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+}
+
+.header {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  max-width: 690px;
+}
+
+.titleWrap {
+  gap: 0;
+}
+
+.heroTitle {
+  max-width: none;
+  font-size: 92px;
+}
+
+.leadBlock {
+  max-width: 520px;
+  padding: 10px 0 8px;
+}
+
+.roadmap,
+.responsiveRoadmap {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  flex: 1;
+  transform: translateY(-1cm);
+}
+
+.roadmapTrack,
+.responsiveRoadmapTrack {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: 152px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(238, 32, 40, 0.06),
+    rgba(238, 32, 40, 0.28) 18%,
+    rgba(238, 32, 40, 0.48) 50%,
+    rgba(238, 32, 40, 0.28) 82%,
+    rgba(238, 32, 40, 0.06)
+  );
+  box-shadow: 0 0 18px rgba(238, 32, 40, 0.08);
+  pointer-events: none;
+}
+
+.roadmapTrack::before,
+.roadmapTrack::after,
+.responsiveRoadmapTrack::before,
+.responsiveRoadmapTrack::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(238, 32, 40, 0.22);
+  box-shadow: 0 0 0 5px rgba(238, 32, 40, 0.05);
+}
+
+.roadmapTrack::before,
+.responsiveRoadmapTrack::before {
+  left: 0;
+}
+
+.roadmapTrack::after,
+.responsiveRoadmapTrack::after {
+  right: 0;
+}
+
+.phases {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 26px;
+  align-items: end;
+  height: 100%;
+}
+
+.phase {
+  position: relative;
+  display: grid;
+  align-content: start;
+  justify-items: stretch;
+  gap: 18px;
+  min-height: 100%;
+  padding-top: 8px;
+  opacity: 0;
+  animation: fadeInSoft 10ms linear calc(360ms + (var(--stagger) * 280ms)) forwards;
+}
+
+.phaseArchWrap {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  display: grid;
+  place-items: end center;
+}
+
+.phaseArch,
+.responsivePhaseArch {
+  position: absolute;
+  bottom: 0;
+  width: 290px;
+  height: 148px;
+  border-radius: 290px 290px 0 0;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.22), transparent 38%),
+    linear-gradient(180deg, rgba(255, 91, 96, 0.98), rgba(238, 32, 40, 0.94) 58%, rgba(195, 18, 30, 0.96)),
+    #ee2028;
+  box-shadow:
+    0 28px 44px rgba(238, 32, 40, 0.14),
+    0 10px 18px rgba(238, 32, 40, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -14px 22px rgba(120, 8, 16, 0.14);
+  transform-origin: center bottom;
+  transform: scaleY(0.02);
+  opacity: 0;
+  animation: phaseArcReveal 820ms var(--motion-ease) calc(360ms + (var(--stagger) * 280ms))
+    forwards;
+}
+
+.phase:nth-child(1) .phaseArch {
+  width: 264px;
+  height: 134px;
+  border-radius: 264px 264px 0 0;
+}
+
+.phase:nth-child(2) .phaseArch {
+  width: 296px;
+  height: 152px;
+  border-radius: 296px 296px 0 0;
+}
+
+.phase:nth-child(3) .phaseArch {
+  width: 314px;
+  height: 160px;
+  border-radius: 314px 314px 0 0;
+}
+
+.phase:nth-child(4) .phaseArch {
+  width: 342px;
+  height: 174px;
+  border-radius: 342px 342px 0 0;
+  box-shadow:
+    0 34px 56px rgba(238, 32, 40, 0.18),
+    0 12px 20px rgba(238, 32, 40, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    inset 0 -16px 24px rgba(120, 8, 16, 0.16);
+}
+
+.phaseArchCore,
+.responsivePhaseArchCore {
+  display: none;
+}
+
+.stageBadge,
+.responsiveStageBadge {
+  position: absolute;
+  top: auto;
+  right: auto;
+  left: 50%;
+  bottom: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-50%) translateY(18px);
+  min-width: auto;
+  height: auto;
+  padding: 0.62rem 0.94rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #ee2028;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: calc(0.14em + var(--letter-spacing-boost));
+  text-transform: uppercase;
+  border: 1px solid rgba(238, 32, 40, 0.1);
+  box-shadow:
+    0 10px 24px rgba(238, 32, 40, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  animation: phaseTextReveal 520ms var(--motion-ease)
+    calc(650ms + (var(--stagger) * 280ms)) forwards;
+}
+
+.phaseText,
+.responsivePhaseText {
+  position: relative;
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 18px 16px;
+  border-radius: 26px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 248, 249, 0.975)),
+    #ffffff;
+  border: 1px solid rgba(238, 32, 40, 0.09);
+  box-shadow:
+    0 18px 34px rgba(17, 17, 17, 0.045),
+    0 0 0 1px rgba(255, 255, 255, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  opacity: 0;
+  transform: translateY(18px);
+  animation: phaseTextReveal 620ms var(--motion-ease)
+    calc(760ms + (var(--stagger) * 280ms)) forwards;
+}
+
+.phaseText::before,
+.responsivePhaseText::before {
+  content: "";
+  position: absolute;
+  inset: 18px auto 18px 0;
+  width: 5px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ee2028, rgba(238, 32, 40, 0.08));
+}
+
+.phaseText .groupTop,
+.responsivePhaseText .responsiveGroupTop {
+  gap: 10px;
+  padding-right: 0;
+  padding-bottom: 0;
+}
+
+.phaseText .groupTop::after,
+.responsivePhaseText .responsiveGroupTop::after {
+  display: none;
+}
+
+.groupTitle,
+.responsiveGroupTitle {
+  display: grid;
+  gap: 0;
+  max-width: none;
+  font-size: 1.9rem;
+  font-weight: 650;
+  line-height: 0.96;
+}
+
+.groupTitle span,
+.responsiveGroupTitle span {
+  display: block;
+}
+
+.phaseDetail,
+.responsivePhaseDetail {
+  margin: 0;
+  display: grid;
+  gap: 2px;
+  color: rgba(18, 18, 18, 0.68);
+  font-size: 1.08rem;
+  font-weight: 540;
+  letter-spacing: calc(-0.035em + var(--letter-spacing-boost));
+  line-height: 1.08;
+}
+
+.phaseDetail span,
+.responsivePhaseDetail span {
+  display: block;
+}
+
+.phaseMeta,
+.responsivePhaseMeta {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: fit-content;
+  padding-top: 12px;
+  border-top: 1px solid rgba(238, 32, 40, 0.1);
+}
+
+.duration,
+.responsiveDuration {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: #ee2028;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: calc(0.18em + var(--letter-spacing-boost));
+}
+
+.durationValue,
+.responsiveDurationValue {
+  margin: 0;
+  color: #111111;
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: calc(-0.035em + var(--letter-spacing-boost));
+  line-height: 1;
+}
+
+.interactiveGroup {
+  cursor: pointer;
+}
+
+.interactiveGroup:hover .phaseArch,
+.interactiveGroup:hover .responsivePhaseArch {
+  filter: brightness(1.03);
+  transform: translateY(-2px) scaleY(1.01);
+}
+
+.groupHint,
+.responsiveGroupHint {
+  display: none;
+}
+
+.groupHint::before,
+.responsiveGroupHint::before {
+  content: "Preview";
+}
+
+.responsiveRoadmap {
+  margin-top: 22px;
+  align-content: start;
+}
+
+.responsiveRoadmapTrack {
+  top: 108px;
+}
+
+.responsivePhases {
+  display: grid;
+  gap: 18px;
+}
+
+.responsivePhase {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding-bottom: 8px;
+  opacity: 0;
+  animation: fadeInSoft 10ms linear calc(360ms + (var(--stagger) * 220ms)) forwards;
+}
+
+.responsivePhaseArchWrap {
+  position: relative;
+  width: 100%;
+  height: 138px;
+  display: grid;
+  place-items: end center;
+}
+
+.responsivePhaseArch {
+  width: min(100%, 280px);
+  height: 132px;
+  border-radius: 280px 280px 0 0;
+}
+
+.responsivePhase:nth-child(1) .responsivePhaseArch {
+  width: min(100%, 232px);
+  height: 112px;
+}
+
+.responsivePhase:nth-child(2) .responsivePhaseArch {
+  width: min(100%, 248px);
+  height: 120px;
+}
+
+.responsivePhase:nth-child(3) .responsivePhaseArch {
+  width: min(100%, 264px);
+  height: 128px;
+}
+
+.responsivePhase:nth-child(4) .responsivePhaseArch {
+  width: min(100%, 286px);
+  height: 138px;
+}
+
+
+.responsiveStageBadge {
+  bottom: 18px;
+  padding: 0.62rem 0.88rem;
+  font-size: 0.72rem;
+}
+
+.responsivePhaseText {
+  gap: 12px;
+  padding: 14px 14px 12px;
+  border-radius: 22px;
+}
+
+.responsiveGroupTitle {
+  font-size: 1.26rem;
+}
+
+.responsivePhaseDetail {
+  font-size: 0.9rem;
+}
+
+.responsivePhaseMeta {
+  padding-top: 10px;
+}
+
+.responsiveDurationValue {
+  font-size: 0.94rem;
+}
+
+@media (max-width: 1023px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .heroTitle {
+    font-size: 82px;
+  }
+
+  .roadmapTrack {
+    display: none;
+  }
+
+  .phases {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 26px;
+  }
+
+  .phase {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .responsivePhases {
+    gap: 16px;
+  }
+
+  .responsivePhaseArchWrap {
+    height: 128px;
+  }
+
+  .responsiveGroupTitle {
+    font-size: 1.2rem;
+  }
+
+  .responsivePhaseDetail {
+    font-size: 0.92rem;
   }
 }
 
@@ -1048,6 +1714,30 @@
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes phaseArcReveal {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.02) translateY(18px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+@keyframes phaseTextReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -1117,6 +1807,19 @@
   .responsiveGroup,
   .responsiveGroup::after,
   .responsiveFooter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .phaseArch,
+  .phaseArchCore,
+  .phaseText,
+  .stageBadge,
+  .responsivePhaseArch,
+  .responsivePhaseArchCore,
+  .responsivePhaseText,
+  .responsiveStageBadge {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;

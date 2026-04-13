@@ -67,8 +67,8 @@
 }
 
 .brandGhost span {
-  color: rgba(238, 32, 40, 0.05);
-  font-size: 152px;
+  color: rgba(238, 32, 40, 0.026);
+  font-size: 124px;
   font-weight: 700;
   letter-spacing: calc(-0.1em + var(--letter-spacing-boost));
   line-height: 0.88;
@@ -220,6 +220,383 @@
   min-height: 108px;
   border-radius: 999px;
   background: linear-gradient(180deg, #ee2028, rgba(238, 32, 40, 0.08));
+}
+
+.breakthroughLead,
+.responsiveBreakthroughLead {
+  display: grid;
+  gap: 12px;
+  max-width: 360px;
+  opacity: 0;
+  transform: translateY(24px);
+  animation: riseIn 760ms var(--motion-ease) 150ms forwards;
+}
+
+.breakthroughIntroTitle,
+.responsiveBreakthroughIntroTitle {
+  margin: 0;
+  color: #090909;
+  font-size: 60px;
+  font-weight: 650;
+  letter-spacing: calc(-0.078em + var(--letter-spacing-boost));
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+.breakthroughLeadText,
+.responsiveBreakthroughLeadText {
+  margin: 0;
+  max-width: 332px;
+  color: rgba(20, 20, 20, 0.58);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: calc(-0.035em + var(--letter-spacing-boost));
+  line-height: 1.22;
+}
+
+.breakthroughLayout {
+  display: grid;
+  grid-template-columns: 402px minmax(0, 1fr);
+  gap: 54px;
+  align-content: center;
+  align-items: center;
+}
+
+.breakthroughAnchor {
+  position: relative;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 28px;
+  opacity: 0;
+  transform: translateY(24px);
+  animation: riseIn 820ms var(--motion-ease) 260ms forwards;
+}
+
+.breakthroughAnchor::before,
+.responsiveBreakthroughAnchor::before {
+  content: "";
+  position: absolute;
+  left: -34px;
+  top: 50%;
+  width: 390px;
+  height: 390px;
+  border-radius: 50%;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 249, 249, 0.92)),
+    #ffffff;
+  box-shadow:
+    inset 0 0 0 18px rgba(17, 17, 17, 0.06),
+    0 32px 56px rgba(17, 17, 17, 0.04);
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.breakthroughCircle,
+.responsiveBreakthroughCircle {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.99), rgba(255, 247, 247, 0.98)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 250, 250, 0.985));
+  box-shadow:
+    0 24px 54px rgba(238, 32, 40, 0.08),
+    inset 0 0 0 1px rgba(238, 32, 40, 0.08);
+  z-index: 1;
+}
+
+.breakthroughCircle::before,
+.responsiveBreakthroughCircle::before {
+  content: "";
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(238, 32, 40, 0.1);
+}
+
+.breakthroughCircle::after,
+.responsiveBreakthroughCircle::after {
+  display: none;
+}
+
+.breakthroughCircleGlow,
+.responsiveBreakthroughCircleGlow {
+  position: absolute;
+  inset: auto 28px 28px auto;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(238, 32, 40, 0.12), transparent 72%);
+  filter: blur(10px);
+}
+
+.breakthroughCircleInner,
+.responsiveBreakthroughCircleInner {
+  position: relative;
+  z-index: 1;
+  width: 72%;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.breakthroughCircleLabel,
+.responsiveBreakthroughCircleLabel {
+  margin: 0;
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.62rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(238, 32, 40, 0.08);
+  color: #ee2028;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: calc(0.14em + var(--letter-spacing-boost));
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.breakthroughCircleStatement,
+.responsiveBreakthroughCircleStatement {
+  margin: 0;
+  display: grid;
+  gap: 4px;
+  color: #0f0f12;
+  font-size: 31px;
+  font-weight: 600;
+  letter-spacing: calc(-0.058em + var(--letter-spacing-boost));
+  line-height: 1.02;
+}
+
+.breakthroughCircleSupport,
+.responsiveBreakthroughCircleSupport {
+  margin: 0;
+  display: grid;
+  gap: 3px;
+  max-width: 13.4rem;
+  color: rgba(16, 16, 16, 0.64);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: calc(-0.03em + var(--letter-spacing-boost));
+  line-height: 1.2;
+}
+
+.breakthroughReasons {
+  display: grid;
+  align-content: center;
+  gap: 18px;
+  opacity: 0;
+  transform: translateY(24px);
+  animation: riseIn 820ms var(--motion-ease) 340ms forwards;
+}
+
+.breakthroughReasonsHeader,
+.responsiveBreakthroughReasonsHeader {
+  display: grid;
+  gap: 6px;
+  padding-left: 152px;
+}
+
+.breakthroughReasonsLabel,
+.responsiveBreakthroughReasonsLabel {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0;
+  padding: 0.8rem 1.12rem;
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.05);
+  color: #101010;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: calc(0.16em + var(--letter-spacing-boost));
+  text-transform: uppercase;
+}
+
+.breakthroughReasonsLead,
+.responsiveBreakthroughReasonsLead {
+  margin: 0;
+  color: rgba(17, 17, 17, 0.62);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: calc(-0.03em + var(--letter-spacing-boost));
+  line-height: 1.18;
+}
+
+.breakthroughReasonList,
+.responsiveBreakthroughReasonList {
+  position: relative;
+  display: grid;
+  gap: 16px;
+  padding-left: 0;
+}
+
+.breakthroughReasonRail,
+.responsiveBreakthroughReasonRail {
+  display: none;
+}
+
+.breakthroughReason,
+.responsiveBreakthroughReason {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  min-height: 126px;
+  margin-left: 24px;
+  padding: 22px 34px 22px 30px;
+  border-radius: 26px;
+  border: 1px solid rgba(238, 32, 40, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 250, 250, 0.985)),
+    #ffffff;
+  box-shadow:
+    0 16px 34px rgba(238, 32, 40, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  opacity: 0;
+  transform: translateX(18px);
+  animation: breakthroughReasonEnter 720ms var(--motion-ease) calc(420ms + (var(--stagger) * 120ms)) forwards;
+  overflow: hidden;
+}
+
+.breakthroughReason::before,
+.responsiveBreakthroughReason::before {
+  content: "";
+  position: absolute;
+  left: -24px;
+  top: 50%;
+  width: 24px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(238, 32, 40, 0.08), rgba(238, 32, 40, 0.38));
+  clip-path: none;
+  transform: translateY(-50%);
+}
+
+.breakthroughReason:nth-child(2),
+.responsiveBreakthroughReason:nth-child(2) {
+  width: 100%;
+}
+
+.breakthroughReason:nth-child(3),
+.responsiveBreakthroughReason:nth-child(3) {
+  width: 100%;
+}
+
+.breakthroughReason:nth-child(4),
+.responsiveBreakthroughReason:nth-child(4) {
+  width: 100%;
+}
+
+.breakthroughReason:nth-child(2),
+.responsiveBreakthroughReason:nth-child(2) {
+  background:
+    linear-gradient(180deg, #6b4751, #6b4751);
+}
+
+.breakthroughReason:nth-child(3),
+.responsiveBreakthroughReason:nth-child(3) {
+  background:
+    linear-gradient(180deg, #bb6c70, #bb6c70);
+}
+
+.breakthroughReason:nth-child(4),
+.responsiveBreakthroughReason:nth-child(4) {
+  background:
+    linear-gradient(180deg, #f2d2a6, #f2d2a6);
+}
+
+.breakthroughReason:nth-child(2)::before,
+.responsiveBreakthroughReason:nth-child(2)::before {
+  background: linear-gradient(90deg, rgba(238, 32, 40, 0.08), rgba(238, 32, 40, 0.3));
+}
+
+.breakthroughReason:nth-child(3)::before,
+.responsiveBreakthroughReason:nth-child(3)::before {
+  background: linear-gradient(90deg, rgba(238, 32, 40, 0.08), rgba(238, 32, 40, 0.34));
+}
+
+.breakthroughReason:nth-child(4)::before,
+.responsiveBreakthroughReason:nth-child(4)::before {
+  background: linear-gradient(90deg, rgba(238, 32, 40, 0.08), rgba(238, 32, 40, 0.28));
+}
+
+.breakthroughReasonNode,
+.responsiveBreakthroughReasonNode {
+  position: absolute;
+  left: -34px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  display: block;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 3px rgba(238, 32, 40, 0.1),
+    inset 0 0 0 4px #ee2028;
+  transform: translateY(-50%);
+}
+
+.breakthroughReason::after,
+.responsiveBreakthroughReason::after {
+  content: attr(data-step);
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  color: transparent;
+  font-size: 110px;
+  font-weight: 700;
+  letter-spacing: calc(-0.08em + var(--letter-spacing-boost));
+  line-height: 0.8;
+  -webkit-text-stroke: 1px rgba(238, 32, 40, 0.12);
+  transform: translateY(-50%);
+}
+
+.breakthroughReasonTop,
+.responsiveBreakthroughReasonTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.breakthroughReasonNumber,
+.responsiveBreakthroughReasonNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(238, 32, 40, 0.08);
+  color: #ee2028;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: calc(-0.05em + var(--letter-spacing-boost));
+}
+
+.breakthroughReasonTitle,
+.responsiveBreakthroughReasonTitle {
+  margin: 0;
+  color: #0f0f12;
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: calc(-0.055em + var(--letter-spacing-boost));
+  line-height: 1.02;
+}
+
+.breakthroughReasonBody,
+.responsiveBreakthroughReasonBody {
+  margin: 0;
+  max-width: 26rem;
+  color: rgba(17, 17, 17, 0.74);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: calc(-0.03em + var(--letter-spacing-boost));
+  line-height: 1.18;
 }
 
 .sections {
@@ -593,8 +970,8 @@
 }
 
 .responsiveBrandGhost span {
-  color: rgba(238, 32, 40, 0.045);
-  font-size: clamp(4rem, 18vw, 7.6rem);
+  color: rgba(238, 32, 40, 0.02);
+  font-size: clamp(3.2rem, 14vw, 5.8rem);
   font-weight: 700;
   letter-spacing: calc(-0.1em + var(--letter-spacing-boost));
   line-height: 0.88;
@@ -603,6 +980,140 @@
 .responsiveHeader {
   display: grid;
   gap: 16px;
+}
+
+.responsiveBreakthroughLayout {
+  display: grid;
+  gap: 22px;
+  margin-top: 22px;
+  flex: 1;
+  align-content: start;
+}
+
+.responsiveBreakthroughAnchor {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+}
+
+.responsiveBreakthroughCircle {
+  width: min(100%, 272px);
+  height: auto;
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+.responsiveBreakthroughAnchor::before {
+  left: 50%;
+  top: 50%;
+  width: min(100%, 324px);
+  height: min(100%, 324px);
+  transform: translate(-50%, -50%);
+}
+
+.responsiveBreakthroughCircleInner {
+  width: 74%;
+}
+
+.responsiveBreakthroughCircleLabel {
+  font-size: 0.7rem;
+}
+
+.responsiveBreakthroughLead {
+  gap: 8px;
+  max-width: 100%;
+}
+
+.responsiveBreakthroughIntroTitle {
+  font-size: clamp(2rem, 8.2vw, 3.1rem);
+  line-height: 0.9;
+}
+
+.responsiveBreakthroughLeadText {
+  max-width: 28rem;
+  font-size: clamp(0.98rem, 2.5vw, 1.16rem);
+}
+
+.responsiveBreakthroughCircleStatement {
+  font-size: clamp(1.28rem, 5vw, 1.76rem);
+}
+
+.responsiveBreakthroughCircleSupport {
+  max-width: 10.6rem;
+  font-size: 0.84rem;
+}
+
+.responsiveBreakthroughReasons {
+  display: grid;
+  gap: 16px;
+}
+
+.responsiveBreakthroughReasonsHeader {
+  padding-left: 152px;
+}
+
+.responsiveBreakthroughReasonsLabel {
+  font-size: 0.76rem;
+}
+
+.responsiveBreakthroughReasonsLead {
+  font-size: 0.98rem;
+}
+
+.responsiveBreakthroughReasonList {
+  gap: 14px;
+  padding-left: 0;
+}
+
+.responsiveBreakthroughReason {
+  min-height: unset;
+  gap: 10px;
+  margin-left: 18px;
+  padding: 16px 18px 16px 18px;
+  border-radius: 20px;
+}
+
+.responsiveBreakthroughReason::before {
+  left: -18px;
+  width: 18px;
+  top: 50%;
+  height: 2px;
+  clip-path: none;
+  transform: translateY(-50%);
+}
+
+.responsiveBreakthroughReasonNode {
+  left: -24px;
+  width: 10px;
+  height: 10px;
+  box-shadow:
+    0 0 0 3px rgba(238, 32, 40, 0.08),
+    inset 0 0 0 3px #ee2028;
+}
+
+.responsiveBreakthroughReasonTop {
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.responsiveBreakthroughReasonNumber {
+  min-width: 38px;
+  height: 30px;
+  font-size: 0.8rem;
+}
+
+.responsiveBreakthroughReason::after {
+  right: 18px;
+  font-size: 110px;
+}
+
+.responsiveBreakthroughReasonTitle {
+  font-size: clamp(1.08rem, 4.2vw, 1.34rem);
+}
+
+.responsiveBreakthroughReasonBody {
+  font-size: 0.88rem;
 }
 
 .responsiveEyebrow {
@@ -746,6 +1257,28 @@
     font-size: 24px;
   }
 
+  .breakthroughLayout {
+    grid-template-columns: 390px minmax(0, 1fr);
+    gap: 46px;
+  }
+
+  .breakthroughCircle {
+    width: 320px;
+    height: 320px;
+  }
+
+  .breakthroughCircleStatement {
+    font-size: 30px;
+  }
+
+  .breakthroughReasonTitle {
+    font-size: 24px;
+  }
+
+  .breakthroughReasonBody {
+    font-size: 16px;
+  }
+
   .sections {
     align-content: start;
   }
@@ -774,6 +1307,19 @@
 
   .responsiveLead {
     font-size: 1rem;
+  }
+
+  .responsiveBreakthroughCircle {
+    width: min(100%, 246px);
+  }
+
+  .responsiveBreakthroughAnchor::before {
+    width: 278px;
+    height: 278px;
+  }
+
+  .responsiveBreakthroughCircleStatement {
+    font-size: clamp(1.24rem, 6vw, 1.72rem);
   }
 
   .responsiveCard {
@@ -896,6 +1442,18 @@
   }
 }
 
+@keyframes breakthroughReasonEnter {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .preTitle,
 .responsivePreTitle,
 .heroTitle,
@@ -943,6 +1501,14 @@
   .responsiveLead,
   .responsiveLeadBlock,
   .responsiveBrandGhost,
+  .breakthroughLead,
+  .breakthroughAnchor,
+  .breakthroughReasons,
+  .breakthroughReason,
+  .responsiveBreakthroughLead,
+  .responsiveBreakthroughAnchor,
+  .responsiveBreakthroughReasons,
+  .responsiveBreakthroughReason,
   .responsiveCard,
   .responsiveCard::after,
   .responsiveFooter {

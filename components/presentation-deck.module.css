@@ -215,6 +215,12 @@
   transform: translate(-50%, 0);
 }
 
+.controlsHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
 .controlsDark {
   border-color: rgba(255, 255, 255, 0.24);
   background: rgba(255, 255, 255, 0.14);
@@ -300,6 +306,77 @@
   letter-spacing: 0cm;
 }
 
+.slideInterstitial {
+  position: fixed;
+  inset: 0;
+  z-index: 24;
+  display: grid;
+  place-items: center;
+  padding:
+    max(24px, env(safe-area-inset-top))
+    max(24px, env(safe-area-inset-right))
+    max(24px, env(safe-area-inset-bottom))
+    max(24px, env(safe-area-inset-left));
+  background: rgba(7, 7, 9, 0.6);
+  backdrop-filter: blur(16px) saturate(120%);
+  animation: interstitial-fade-in 240ms ease;
+}
+
+.slideInterstitialFrame {
+  position: relative;
+  width: min(1320px, 82vw);
+  border-radius: 28px;
+  padding: 18px 18px 64px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(255, 247, 247, 0.97)),
+    #ffffff;
+  box-shadow:
+    0 34px 80px rgba(0, 0, 0, 0.24),
+    0 16px 36px rgba(238, 32, 40, 0.1);
+}
+
+.slideInterstitialImageWrap {
+  position: relative;
+  width: min(100%, 1240px);
+  margin: 0 auto;
+  aspect-ratio: 1152 / 768;
+  max-height: 74dvh;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: inset 0 0 0 1px rgba(238, 32, 40, 0.1);
+}
+
+.slideInterstitialImage {
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.slideInterstitialClose {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  min-width: 88px;
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid rgba(238, 32, 40, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #111111;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.slideInterstitialClose:hover,
+.slideInterstitialClose:focus-visible {
+  background: rgba(238, 32, 40, 0.08);
+  border-color: rgba(238, 32, 40, 0.28);
+  outline: none;
+}
+
 @media (max-width: 767px) {
   .controls {
     gap: 8px;
@@ -323,6 +400,34 @@
   .controlMeta span {
     font-size: 0.62rem;
   }
+
+  .slideInterstitial {
+    padding:
+      max(12px, env(safe-area-inset-top))
+      max(12px, env(safe-area-inset-right))
+      max(12px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
+  }
+
+  .slideInterstitialFrame {
+    width: min(100%, 90vw);
+    border-radius: 20px;
+    padding: 12px 12px 56px;
+  }
+
+  .slideInterstitialImageWrap {
+    width: 100%;
+    border-radius: 14px;
+  }
+
+  .slideInterstitialClose {
+    right: 12px;
+    bottom: 12px;
+    min-width: 76px;
+    height: 34px;
+    padding: 0 14px;
+    font-size: 0.8rem;
+  }
 }
 
 @keyframes shared-morph-shimmer {
@@ -332,5 +437,15 @@
 
   to {
     transform: translateX(140%);
+  }
+}
+
+@keyframes interstitial-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }

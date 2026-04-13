@@ -1,5 +1,7 @@
 .shell {
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --bubble-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 820'%3E%3Cpath d='M212 284C212 196 280 130 362 130C402 82 474 54 548 64C610 30 696 30 762 58C854 42 948 86 994 158C1080 174 1148 242 1148 326C1148 408 1092 478 1008 510C970 584 892 632 802 630C738 686 642 706 558 688C474 712 368 700 294 648C212 644 144 588 130 510C62 474 22 416 22 344C22 270 72 212 146 184C170 152 188 136 212 130C246 122 286 134 320 162C334 140 346 132 362 130Z' fill='black'/%3E%3C/svg%3E");
+  --bubble-trail: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Ccircle cx='38' cy='38' r='10' fill='%23ffffff' fill-opacity='.72'/%3E%3Ccircle cx='82' cy='82' r='18' fill='%23ffffff' fill-opacity='.6'/%3E%3C/svg%3E");
   min-height: 100dvh;
   height: 100dvh;
   background: #ffffff;
@@ -19,7 +21,11 @@
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(circle at top right, rgba(238, 32, 40, 0.08), transparent 34%),
+    radial-gradient(
+      circle at top right,
+      rgba(238, 32, 40, 0.08),
+      transparent 34%
+    ),
     linear-gradient(180deg, #ffffff 0%, #fffdfd 100%);
 }
 
@@ -39,6 +45,19 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+.frame::before {
+  content: "";
+  position: absolute;
+  right: 122px;
+  top: 130px;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(238, 32, 40, 0.1), transparent 72%);
+  filter: blur(12px);
+  opacity: 0.85;
 }
 
 .topLine,
@@ -62,15 +81,16 @@
 
 .brandGhost {
   position: absolute;
-  right: 76px;
-  top: 112px;
+  right: 98px;
+  top: 122px;
+  z-index: 1;
   opacity: 0;
   animation: fadeInSoft 900ms var(--motion-ease) 220ms forwards;
 }
 
 .brandGhost span {
-  color: rgba(238, 32, 40, 0.05);
-  font-size: 164px;
+  color: rgba(238, 32, 40, 0.045);
+  font-size: 154px;
   font-weight: 700;
   letter-spacing: calc(-0.1em + var(--letter-spacing-boost));
   line-height: 0.88;
@@ -78,34 +98,33 @@
 
 .content {
   position: absolute;
-  left: 118px;
-  top: 116px;
-  width: 1686px;
-  height: 780px;
-  display: grid;
-  grid-template-columns: minmax(0, 620px) minmax(0, 860px);
-  justify-content: space-between;
-  align-items: center;
-  gap: 54px;
+  left: 92px;
+  top: 92px;
+  width: 1734px;
+  height: 844px;
 }
 
 .header {
   position: relative;
+  left: auto;
+  top: auto;
+  z-index: 6;
   display: grid;
+  align-content: start;
   gap: 28px;
-  align-content: center;
+  width: 520px;
 }
 
 .header::after {
   content: "";
   position: absolute;
-  left: 10px;
-  bottom: -84px;
-  width: 210px;
-  height: 210px;
+  left: 24px;
+  bottom: -82px;
+  width: 230px;
+  height: 230px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(238, 32, 40, 0.12), transparent 68%);
-  filter: blur(8px);
+  filter: blur(10px);
   pointer-events: none;
 }
 
@@ -118,9 +137,9 @@
   border-radius: 999px;
   background: rgba(238, 32, 40, 0.08);
   color: #ee2028;
-  font-size: 0.98rem;
+  font-size: 1rem;
   font-weight: 700;
-  letter-spacing: calc(0.16em + var(--letter-spacing-boost));
+  letter-spacing: calc(0.15em + var(--letter-spacing-boost));
   text-transform: uppercase;
   opacity: 0;
   transform: translateY(18px);
@@ -137,28 +156,28 @@
 .responsivePreTitle {
   margin: 0;
   color: rgba(18, 18, 18, 0.74);
-  font-size: 60px;
+  font-size: 58px;
   font-weight: 400;
   letter-spacing: calc(-0.07em + var(--letter-spacing-boost));
   line-height: 0.94;
   opacity: 0;
-  transform: translateY(20px);
-  animation: riseIn 760ms var(--motion-ease) 140ms forwards;
+  transform: translateY(18px);
+  animation: riseIn 760ms var(--motion-ease) 150ms forwards;
 }
 
 .heroTitle,
 .responsiveHeroTitle {
   margin: 0;
-  max-width: 660px;
+  max-width: 620px;
   color: #090909;
-  font-size: 126px;
+  font-size: 114px;
   font-weight: 700;
-  letter-spacing: calc(-0.1em + var(--letter-spacing-boost));
+  letter-spacing: calc(-0.095em + var(--letter-spacing-boost));
   line-height: 0.86;
   text-wrap: balance;
   opacity: 0;
-  transform: translateY(24px);
-  animation: riseIn 760ms var(--motion-ease) 210ms forwards;
+  transform: translateY(22px);
+  animation: riseIn 760ms var(--motion-ease) 220ms forwards;
 }
 
 .leadBlock,
@@ -168,114 +187,303 @@
   grid-template-columns: auto 1fr;
   gap: 18px;
   align-items: start;
-  max-width: 560px;
+  max-width: 520px;
   padding: 18px 22px 20px 0;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(24px);
   animation: riseIn 760ms var(--motion-ease) 300ms forwards;
 }
 
 .leadBlock::after,
 .responsiveLeadBlock::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 0 -18px;
-  border-radius: 30px;
-  background: linear-gradient(135deg, rgba(238, 32, 40, 0.06), rgba(238, 32, 40, 0));
-  z-index: -1;
+  content: none;
 }
 
 .leadRule,
 .responsiveLeadRule {
   display: block;
   width: 7px;
-  min-height: 116px;
+  min-height: 112px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #ee2028, rgba(238, 32, 40, 0.12));
+  background: linear-gradient(180deg, #ee2028, rgba(238, 32, 40, 0.1));
 }
 
 .lead,
 .responsiveLead {
   margin: 0;
   color: rgba(20, 20, 20, 0.78);
-  font-size: 27px;
+  font-size: 26px;
   font-weight: 400;
   letter-spacing: calc(-0.045em + var(--letter-spacing-boost));
-  line-height: 1.14;
+  line-height: 1.15;
+}
+
+.scene,
+.responsiveScene {
+  position: absolute;
+  inset: 0;
+}
+
+.thoughtCore,
+.responsiveThoughtCore {
+  position: absolute;
+  left: calc(50% + 1cm);
+  z-index: 2;
+  transform: translateX(-50%);
+}
+
+.thoughtCore {
+  top: calc(274px + 2cm);
+  width: 380px;
+  height: 258px;
+  opacity: 0;
+  animation: sourceReveal 820ms var(--motion-ease) 320ms forwards;
+}
+
+.thoughtHalo,
+.responsiveThoughtHalo {
+  position: absolute;
+  inset: 18px 4px 8px;
+  border-radius: 48% 52% 50% 50%;
+  background: radial-gradient(
+    circle,
+    rgba(238, 32, 40, 0.2),
+    rgba(238, 32, 40, 0.08) 38%,
+    rgba(238, 32, 40, 0.02) 62%,
+    transparent 74%
+  );
+  filter: blur(10px);
+  animation: thoughtPulse 2400ms ease-in-out 420ms infinite;
+}
+
+.thoughtRing {
+  position: absolute;
+  inset: 38px 34px 26px;
+  border: 1.5px solid rgba(238, 32, 40, 0.28);
+  border-radius: 50% 46% 52% 48%;
+  animation: ringDrift 2600ms ease-in-out 420ms infinite;
+}
+
+.thoughtOrbPrimary,
+.thoughtOrbSecondary,
+.thoughtOrbTertiary,
+.responsiveThoughtOrbPrimary,
+.responsiveThoughtOrbSecondary,
+.responsiveThoughtOrbTertiary {
+  position: absolute;
+  border-radius: 999px;
+}
+
+.thoughtOrbPrimary,
+.responsiveThoughtOrbPrimary {
+  left: 146px;
+  top: 84px;
+  width: 92px;
+  height: 92px;
+  background: linear-gradient(
+    180deg,
+    rgba(238, 32, 40, 0.28),
+    rgba(238, 32, 40, 0.1)
+  );
+  box-shadow: 0 24px 40px rgba(238, 32, 40, 0.12);
+}
+
+.thoughtOrbSecondary,
+.responsiveThoughtOrbSecondary {
+  left: 98px;
+  top: 122px;
+  width: 56px;
+  height: 56px;
+  background: rgba(17, 17, 17, 0.07);
+}
+
+.thoughtOrbTertiary,
+.responsiveThoughtOrbTertiary {
+  right: 88px;
+  top: 114px;
+  width: 46px;
+  height: 46px;
+  background: rgba(238, 32, 40, 0.18);
 }
 
 .points,
 .responsivePoints {
-  display: grid;
-  gap: 18px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+.points {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  transform: translateY(3cm);
+}
+
 .point,
 .responsivePoint {
-  position: relative;
-  display: grid;
-  gap: 18px;
-  padding: 22px 24px 24px;
-  border: 1px solid rgba(238, 32, 40, 0.12);
-  border-radius: 28px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(255, 250, 250, 0.97)),
-    #ffffff;
-  box-shadow:
-    0 18px 38px rgba(238, 32, 40, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.96);
-  overflow: hidden;
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+  isolation: isolate;
+  overflow: visible;
+  transform-style: preserve-3d;
+  filter:
+    drop-shadow(0 30px 36px rgba(17, 17, 17, 0.12))
+    drop-shadow(0 12px 18px rgba(255, 255, 255, 0.22));
   opacity: 0;
-  transform: translateX(28px) scale(0.985);
-  animation: cardEnter 820ms var(--motion-ease) calc(340ms + (var(--stagger) * 120ms)) forwards;
+  transform: translateY(28px) scale(0.9);
+  animation: bubbleEnter 820ms var(--motion-ease) var(--bubble-delay, 560ms)
+    forwards;
+}
+
+.point::before,
+.responsivePoint::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 24% 16%,
+      rgba(255, 255, 255, 0.98),
+      rgba(255, 247, 249, 0.95) 20%,
+      rgba(252, 233, 237, 0.9) 48%,
+      rgba(244, 214, 220, 0.86) 76%,
+      rgba(232, 191, 199, 0.82) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 252, 252, 0.9),
+      rgba(250, 233, 237, 0.86) 58%,
+      rgba(236, 201, 208, 0.82) 100%
+    );
+  -webkit-backdrop-filter: blur(20px) saturate(1.08);
+  backdrop-filter: blur(20px) saturate(1.08);
+  -webkit-mask-image: var(--bubble-shape);
+  mask-image: var(--bubble-shape);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.92),
+    inset -18px -22px 34px rgba(192, 131, 144, 0.22),
+    inset 16px 18px 28px rgba(255, 255, 255, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+    0 34px 44px rgba(17, 17, 17, 0.14),
+    0 12px 18px rgba(255, 255, 255, 0.22);
 }
 
 .point::after,
 .responsivePoint::after {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    118deg,
-    transparent 16%,
-    rgba(255, 255, 255, 0.76) 40%,
-    transparent 66%
-  );
-  transform: translateX(-140%);
-  animation: shimmerPass 1150ms var(--motion-ease) calc(560ms + (var(--stagger) * 120ms)) 1;
+  z-index: -2;
   pointer-events: none;
+  background-image: var(--bubble-trail);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  opacity: 0.9;
+  filter: drop-shadow(0 8px 16px rgba(17, 17, 17, 0.04));
+}
+
+.point[data-bubble="1"] {
+  left: 308px;
+  top: 306px;
+  z-index: 4;
+  width: calc(430px + 3cm);
+  min-height: 280px;
+  --bubble-delay: 420ms;
+  --bubble-padding: 42px 52px 40px 48px;
+}
+
+.point[data-bubble="1"]::before {
+  transform: rotate(-3deg);
+}
+
+.point[data-bubble="1"]::after {
+  right: -40px;
+  bottom: -20px;
+  width: 42px;
+  height: 42px;
+  transform: rotate(32deg);
+}
+
+.point[data-bubble="2"] {
+  left: 742px;
+  top: -96px;
+  z-index: 5;
+  width: calc(568px + 3cm);
+  min-height: 362px;
+  --bubble-delay: 760ms;
+  --bubble-padding: 50px 66px 48px 60px;
+}
+
+.point[data-bubble="2"]::before {
+  transform: rotate(-2deg);
+}
+
+.point[data-bubble="2"]::after {
+  left: 142px;
+  bottom: -42px;
+  width: 34px;
+  height: 34px;
+  transform: rotate(118deg);
+}
+
+.point[data-bubble="3"] {
+  right: 42px;
+  top: 304px;
+  z-index: 4;
+  width: calc(430px + 3cm);
+  min-height: 270px;
+  --bubble-delay: 1080ms;
+  --bubble-padding: 40px 48px 36px 44px;
+}
+
+.point[data-bubble="3"]::before {
+  transform: rotate(1deg);
+}
+
+.point[data-bubble="3"]::after {
+  left: -30px;
+  bottom: -12px;
+  width: 38px;
+  height: 38px;
+  transform: rotate(-18deg) scaleX(-1);
 }
 
 .point[data-emphasis="strong"],
 .responsivePoint[data-emphasis="strong"] {
-  margin-left: 34px;
-  padding-top: 26px;
-  padding-bottom: 28px;
-  border-color: rgba(238, 32, 40, 0.18);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(255, 245, 245, 0.98)),
-    #ffffff;
-  box-shadow:
-    0 22px 48px rgba(238, 32, 40, 0.12),
-    0 0 0 1px rgba(238, 32, 40, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.98);
+  z-index: 6;
 }
 
 .point[data-emphasis="strong"]::before,
 .responsivePoint[data-emphasis="strong"]::before {
-  content: "";
-  position: absolute;
-  inset: auto auto 0 0;
-  width: 100%;
-  height: 5px;
-  background: linear-gradient(90deg, #ee2028, rgba(238, 32, 40, 0.08));
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.95),
+    inset -20px -24px 38px rgba(194, 128, 142, 0.24),
+    inset 18px 20px 32px rgba(255, 255, 255, 0.34),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.32),
+    0 38px 50px rgba(17, 17, 17, 0.14),
+    0 12px 20px rgba(255, 255, 255, 0.24);
 }
 
-.point:nth-child(3) {
-  margin-left: 12px;
+.pointContent,
+.responsivePointContent {
+  display: grid;
+  align-content: center;
+  gap: 18px;
+  width: 100%;
+  min-height: 100%;
+  padding: var(--bubble-padding, 36px);
+  box-sizing: border-box;
+  justify-items: center;
 }
 
 .pointTop,
@@ -283,7 +491,9 @@
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
+  width: min(100%, var(--content-width, 320px));
+  justify-self: center;
 }
 
 .pointNumber,
@@ -291,26 +501,29 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 70px;
-  height: 52px;
-  padding: 0 18px;
+  min-width: 58px;
+  height: 58px;
+  padding: 0 14px;
   border-radius: 999px;
-  background: rgba(238, 32, 40, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.72);
   color: #ee2028;
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-size: 1.16rem;
+  font-weight: 800;
   letter-spacing: calc(-0.06em + var(--letter-spacing-boost));
   line-height: 1;
-  animation: badgePop 720ms var(--motion-ease) calc(470ms + (var(--stagger) * 120ms)) both;
+  box-shadow: 0 8px 18px rgba(17, 17, 17, 0.06);
+  animation: badgePop 720ms var(--motion-ease)
+    calc(var(--bubble-delay, 560ms) + 140ms) both;
 }
 
 .pointLabel,
 .responsivePointLabel {
   margin: 0;
-  color: #ee2028;
-  font-size: 0.94rem;
-  font-weight: 700;
-  letter-spacing: calc(0.16em + var(--letter-spacing-boost));
+  color: rgba(20, 20, 20, 0.48);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: calc(0.18em + var(--letter-spacing-boost));
   line-height: 1;
   text-transform: uppercase;
 }
@@ -319,11 +532,71 @@
 .responsivePointText {
   margin: 0;
   color: #101010;
-  font-size: 31px;
-  font-weight: 500;
+  width: min(100%, var(--content-width, 320px));
+  font-size: 28px;
+  font-weight: 720;
   letter-spacing: calc(-0.055em + var(--letter-spacing-boost));
-  line-height: 1.08;
-  text-wrap: balance;
+  line-height: 1.01;
+  text-align: center;
+  text-wrap: initial;
+  justify-self: center;
+}
+
+.point[data-bubble="1"] .pointContent {
+  --content-width: calc(300px + 3cm);
+}
+
+.point[data-bubble="1"] .pointText {
+  font-size: 27px;
+}
+
+.point[data-bubble="2"] .pointContent {
+  --content-width: calc(364px + 3cm);
+}
+
+.point[data-bubble="2"] .pointText {
+  font-size: 30px;
+  line-height: 1.01;
+}
+
+.point[data-bubble="3"] .pointContent {
+  --content-width: calc(280px + 3cm);
+}
+
+.point[data-bubble="3"] .pointText {
+  font-size: 24px;
+  line-height: 1.04;
+}
+
+.pointTextLine {
+  display: block;
+}
+
+.pointTextLine + .pointTextLine {
+  margin-top: 0.04em;
+}
+
+.figure,
+.responsiveFigure {
+  position: absolute;
+  left: calc(50% + 1cm);
+  z-index: 3;
+  opacity: 0;
+  transform: translateX(-50%) translateY(28px) scale(0.96);
+  animation: figureReveal 900ms var(--motion-ease) 520ms forwards;
+}
+
+.figure {
+  bottom: calc(8px - 2cm);
+  width: 410px;
+  height: 542px;
+}
+
+.figureImage,
+.responsiveFigureImage {
+  object-fit: contain;
+  filter: drop-shadow(0 18px 28px rgba(17, 17, 17, 0.08));
+  animation: figureFloat 3600ms ease-in-out 1500ms infinite;
 }
 
 .footer,
@@ -382,7 +655,11 @@
   position: relative;
   min-height: 100%;
   background:
-    radial-gradient(circle at top right, rgba(238, 32, 40, 0.08), transparent 36%),
+    radial-gradient(
+      circle at top right,
+      rgba(238, 32, 40, 0.08),
+      transparent 34%
+    ),
     linear-gradient(180deg, #ffffff 0%, #fffdfd 100%);
 }
 
@@ -396,17 +673,15 @@
   min-height: calc(100dvh - 5px);
   display: flex;
   flex-direction: column;
-  padding:
-    max(28px, env(safe-area-inset-top))
-    max(20px, env(safe-area-inset-right))
-    max(22px, env(safe-area-inset-bottom))
+  padding: max(28px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right)) max(22px, env(safe-area-inset-bottom))
     max(20px, env(safe-area-inset-left));
   overflow: hidden;
 }
 
 .responsiveBrandGhost {
   position: absolute;
-  right: 8px;
+  right: 10px;
   top: 46px;
   z-index: 0;
   opacity: 0;
@@ -415,7 +690,7 @@
 
 .responsiveBrandGhost span {
   color: rgba(238, 32, 40, 0.045);
-  font-size: clamp(4.2rem, 18vw, 8rem);
+  font-size: clamp(4rem, 18vw, 7.6rem);
   font-weight: 700;
   letter-spacing: calc(-0.1em + var(--letter-spacing-boost));
   line-height: 0.88;
@@ -425,7 +700,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 18px;
+  gap: 16px;
 }
 
 .responsiveEyebrow {
@@ -434,17 +709,15 @@
 }
 
 .responsivePreTitle {
-  font-size: clamp(2rem, 7vw, 3.2rem);
+  font-size: clamp(2rem, 7vw, 3rem);
 }
 
 .responsiveHeroTitle {
-  max-width: 18rem;
-  font-size: clamp(3.4rem, 12vw, 5.4rem);
+  font-size: clamp(3.3rem, 11.2vw, 5.2rem);
 }
 
 .responsiveLeadBlock {
   max-width: 32rem;
-  padding-right: 0;
 }
 
 .responsiveLeadRule {
@@ -452,42 +725,152 @@
 }
 
 .responsiveLead {
-  font-size: clamp(1.02rem, 2.4vw, 1.34rem);
+  font-size: clamp(1.04rem, 2.5vw, 1.38rem);
+}
+
+.responsiveScene {
+  position: relative;
+  z-index: 3;
+  min-height: 520px;
+  margin-top: 10px;
+}
+
+.responsiveThoughtCore {
+  top: calc(140px + 2cm);
+  width: 220px;
+  height: 172px;
+  opacity: 0;
+  animation: sourceReveal 820ms var(--motion-ease) 320ms forwards;
 }
 
 .responsivePoints {
-  position: relative;
-  z-index: 1;
-  margin-top: 24px;
-  flex: 1;
-  align-content: start;
+  position: absolute;
+  inset: 0;
+  transform: translateY(3cm);
+}
+
+.responsiveThoughtHalo {
+  display: none;
 }
 
 .responsivePoint {
-  gap: 14px;
-  padding: 18px 18px 20px;
-  border-radius: 22px;
-  transform: translateY(20px) scale(0.985);
+  padding: 0;
 }
 
-.responsivePoint[data-emphasis="strong"] {
-  margin-left: 0;
+.responsivePoint[data-bubble="1"] {
+  left: 0;
+  top: 238px;
+  width: 46%;
+  min-width: 156px;
+  min-height: 188px;
+  --bubble-delay: 420ms;
+  --bubble-padding: 28px 26px 24px;
+}
+
+.responsivePoint[data-bubble="1"]::before {
+  transform: rotate(-3deg);
+}
+
+.responsivePoint[data-bubble="1"]::after {
+  right: -18px;
+  bottom: -10px;
+  width: 24px;
+  height: 24px;
+  transform: rotate(26deg);
+}
+
+.responsivePoint[data-bubble="2"] {
+  left: 34%;
+  top: -10px;
+  width: 58%;
+  min-width: 220px;
+  min-height: 238px;
+  --bubble-delay: 760ms;
+  --bubble-padding: 30px 34px 26px;
+}
+
+.responsivePoint[data-bubble="2"]::before {
+  transform: rotate(0deg);
+}
+
+.responsivePoint[data-bubble="2"]::after {
+  left: 58px;
+  bottom: -20px;
+  width: 22px;
+  height: 22px;
+  transform: rotate(118deg);
+}
+
+.responsivePoint[data-bubble="3"] {
+  right: 0;
+  top: 240px;
+  width: 42%;
+  min-width: 150px;
+  min-height: 180px;
+  --bubble-delay: 1080ms;
+  --bubble-padding: 26px 24px 22px;
+}
+
+.responsivePoint[data-bubble="3"]::before {
+  transform: rotate(0deg);
+}
+
+.responsivePoint[data-bubble="3"]::after {
+  left: -16px;
+  bottom: -8px;
+  width: 24px;
+  height: 24px;
+  transform: rotate(-18deg) scaleX(-1);
 }
 
 .responsivePointNumber {
-  min-width: 56px;
+  min-width: 42px;
   height: 42px;
-  padding: 0 14px;
-  font-size: 1.18rem;
+  padding: 0 10px;
+  font-size: 0.9rem;
 }
 
 .responsivePointLabel {
-  font-size: 0.76rem;
+  font-size: 0.66rem;
 }
 
 .responsivePointText {
-  font-size: clamp(1.06rem, 3.3vw, 1.44rem);
+  width: min(100%, var(--content-width, 12rem));
+  font-size: clamp(0.9rem, 2.8vw, 1rem);
+  font-weight: 700;
+  line-height: 1.04;
+}
+
+.responsivePoint[data-bubble="1"] .responsivePointContent {
+  --content-width: 11.6rem;
+}
+
+.responsivePoint[data-bubble="1"] .responsivePointText {
+  font-size: clamp(0.92rem, 2.9vw, 1rem);
+}
+
+.responsivePoint[data-bubble="2"] .responsivePointContent {
+  --content-width: 13.4rem;
+}
+
+.responsivePoint[data-bubble="2"] .responsivePointText {
+  font-size: clamp(0.96rem, 2.9vw, 1.06rem);
+  line-height: 1.04;
+}
+
+.responsivePoint[data-bubble="3"] .responsivePointContent {
+  --content-width: 10.8rem;
+}
+
+.responsivePoint[data-bubble="3"] .responsivePointText {
+  font-size: clamp(0.84rem, 2.5vw, 0.92rem);
   line-height: 1.08;
+}
+
+.responsiveFigure {
+  bottom: -2cm;
+  width: 240px;
+  height: 318px;
 }
 
 .responsiveFooter {
@@ -503,78 +886,33 @@
   width: 100%;
 }
 
-@media (max-width: 1023px) {
-  .content {
-    top: 112px;
-    height: 800px;
-    display: flex;
-    flex-direction: column;
-    gap: 34px;
-  }
-
-  .header {
-    gap: 22px;
-  }
-
-  .header::after {
-    left: auto;
-    right: 0;
-    bottom: -56px;
-  }
-
-  .preTitle {
-    font-size: 52px;
-  }
-
-  .heroTitle {
-    font-size: 108px;
-  }
-
-  .leadBlock {
-    max-width: 860px;
-  }
-
-  .point[data-emphasis="strong"],
-  .point:nth-child(3) {
-    margin-left: 0;
-  }
-}
-
 @media (max-width: 767px) {
   .responsiveInner {
-    padding:
-      max(24px, env(safe-area-inset-top))
+    padding: max(24px, env(safe-area-inset-top))
       max(16px, env(safe-area-inset-right))
       max(18px, env(safe-area-inset-bottom))
       max(16px, env(safe-area-inset-left));
   }
 
   .responsivePreTitle {
-    font-size: clamp(1.72rem, 7.8vw, 2.4rem);
+    font-size: clamp(1.46rem, 7vw, 1.92rem);
   }
 
   .responsiveHeroTitle {
-    max-width: 14rem;
-    font-size: clamp(2.9rem, 12.6vw, 4.6rem);
+    max-width: 15rem;
+    font-size: clamp(2.75rem, 13vw, 4rem);
   }
 
   .responsiveLead {
-    font-size: 1rem;
+    font-size: 0.96rem;
   }
 
-  .responsivePoints {
-    gap: 12px;
-    margin-top: 20px;
-  }
-
-  .responsivePoint {
-    padding: 16px;
-    border-radius: 20px;
+  .responsiveScene {
+    min-height: 470px;
   }
 
   .responsivePointText {
-    font-size: 1rem;
-    line-height: calc(1em + 0.14cm);
+    font-size: 0.92rem;
   }
 
   .responsiveFooterMeta {
@@ -613,25 +951,76 @@
   }
 }
 
-@keyframes cardEnter {
+@keyframes bubbleEnter {
   from {
     opacity: 0;
-    transform: translateX(28px) scale(0.985);
+    transform: translateY(26px) scale(0.88);
   }
 
   to {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
-@keyframes shimmerPass {
+@keyframes figureReveal {
   from {
-    transform: translateX(-140%);
+    opacity: 0;
+    transform: translateX(-50%) translateY(28px) scale(0.96);
   }
 
   to {
-    transform: translateX(140%);
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes figureFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes sourceReveal {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(18px) scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes thoughtPulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(0.96);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes ringDrift {
+  0%,
+  100% {
+    opacity: 0.38;
+    transform: scale(0.98) rotate(-4deg);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.04) rotate(4deg);
   }
 }
 
@@ -697,7 +1086,6 @@
   .leadBlock,
   .brandGhost,
   .point,
-  .point::after,
   .footer,
   .responsiveTopLine,
   .responsiveBrandGhost,
@@ -705,11 +1093,18 @@
   .responsivePreTitle,
   .responsiveHeroTitle,
   .responsiveLeadBlock,
+  .thoughtCore,
   .responsivePoint,
-  .responsivePoint::after,
+  .responsiveThoughtCore,
   .responsiveFooter {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .thoughtHalo,
+  .thoughtRing,
+  .responsiveThoughtHalo {
+    animation: none !important;
   }
 }

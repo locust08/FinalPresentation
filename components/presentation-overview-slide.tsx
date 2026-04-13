@@ -22,6 +22,73 @@ type PresentationOverviewSlideProps = {
   title: string
 }
 
+function OverviewBadgeIcon({ label }: { label: string }) {
+  if (label === "Strategic Goal") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 64 64">
+        <path d="M22 36v-3.5c-4-2.8-6.5-7.1-6.5-12 0-8.6 7.1-15.5 16.5-15.5s16.5 6.9 16.5 15.5c0 4.9-2.5 9.2-6.5 12V36" />
+        <circle cx="32" cy="20.5" r="11.5" />
+        <circle cx="32" cy="20.5" r="6" />
+        <circle cx="32" cy="20.5" r="2" fill="currentColor" stroke="none" />
+        <path d="M32 20.5h16.5" />
+        <path d="m44.5 17.5 8 3-8 3" />
+        <path d="M23 36h18" />
+        <path d="M23 43h18" />
+        <path d="M25.5 51h13" />
+      </svg>
+    )
+  }
+
+  if (label === "AI Video Generation") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 64 64">
+        <path d="M46 48A22 22 0 1 1 50 18" />
+        <path d="m27 21 14 9-14 9Z" fill="currentColor" stroke="none" />
+        <path d="M43 44h11" />
+        <path d="M48.5 38.5v11" />
+      </svg>
+    )
+  }
+
+  return (
+    <svg aria-hidden="true" viewBox="0 0 64 64">
+      <rect x="9" y="16" width="31" height="23" rx="3.2" />
+      <path d="M16 31l7-7 8 9 4-4 5 5" />
+      <circle cx="32.5" cy="24.5" r="2.5" />
+      <path d="M23 39v8" />
+      <path d="M15 47h19" />
+      <rect x="39" y="12" width="16" height="16" rx="2.5" />
+      <path d="M44 17h6" />
+      <path d="M47 14v10" />
+    </svg>
+  )
+}
+
+function getOverviewLines(label: string, body: string) {
+  switch (label) {
+    case "Strategic Goal":
+      return [
+        "Explore how AI can help clients increase",
+        "traffic and sales while maintaining or",
+        "reducing total ad spend.",
+      ]
+    case "AI Video Generation":
+      return [
+        "Test AI-generated video production",
+        "to speed up creative output and",
+        "campaign execution.",
+      ]
+    case "AI Website & Embedded Form Generation":
+      return [
+        "Develop AI-assisted website and",
+        "embedded forms to improve",
+        "speed, consistency, and lead capture.",
+      ]
+    default:
+      return [body]
+  }
+}
+
 export function PresentationOverviewSlide({
   cards,
   lead,
@@ -73,7 +140,7 @@ export function PresentationOverviewSlide({
                   >
                     <div className={styles["responsive-card-top"]}>
                       <span className={styles["responsive-card-number"]}>
-                        {String(index + 1).padStart(2, "0")}
+                        <OverviewBadgeIcon label={card.label} />
                       </span>
                       <p className={styles.responsiveCardLabel}>{card.label}</p>
                     </div>
@@ -131,27 +198,80 @@ export function PresentationOverviewSlide({
                     </div>
                   </header>
 
-                  <div className={styles.grid} data-transition-content="main">
+                  <div className={styles.targetStage} data-transition-content="main">
+                    <div className={styles.targetBackdropWord} aria-hidden="true">
+                      FOCUS
+                    </div>
+                    <div className={styles.targetAccentBlur} aria-hidden="true" />
+                    <div className={styles.targetBoard} aria-hidden="true">
+                      <div className={styles.targetBoardShadow} />
+                      <div className={styles.targetBoardOuter}>
+                        <div className={styles.targetBoardRingA}>
+                          <div className={styles.targetBoardRingB}>
+                            <div className={styles.targetBoardRingC}>
+                              <div className={styles.targetBoardRingD}>
+                                <div className={styles.targetBoardCore} />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <svg
+                      aria-hidden="true"
+                      className={styles.targetConnectors}
+                      viewBox="0 0 1120 760"
+                      preserveAspectRatio="none"
+                    >
+                      <path
+                        className={styles.targetConnector}
+                        d="M210 378 C320 228 422 86 532 19"
+                      />
+                      <path
+                        className={styles.targetConnectorStrong}
+                        d="M210 378 C384 296 530 268 648 278"
+                      />
+                      <path
+                        className={styles.targetConnector}
+                        d="M210 378 C354 430 456 502 542 590"
+                      />
+                      <circle className={styles.targetConnectorDot} cx="210" cy="378" r="7" />
+                      <circle className={styles.targetConnectorDot} cx="532" cy="19" r="5.5" />
+                      <circle className={styles.targetConnectorDot} cx="648" cy="278" r="5.5" />
+                      <circle className={styles.targetConnectorDot} cx="542" cy="590" r="5.5" />
+                    </svg>
+
                     {cards.map((card, index) => (
                       <article
                         className={[
-                          styles.card,
-                          index === 0 ? styles.cardTeam : "",
-                          index === 1 ? styles.cardFeature : "",
-                          index === 2 ? styles.cardScope : "",
+                          styles.targetPoint,
+                          index === 0 ? styles.targetPointGoal : "",
+                          index === 1 ? styles.targetPointVideo : "",
+                          index === 2 ? styles.targetPointWebsite : "",
                         ]
                           .filter(Boolean)
                           .join(" ")}
                         key={card.label}
                         style={{ "--stagger": index } as CSSProperties}
                       >
-                        <div className={styles["card-top"]}>
-                          <span className={styles["card-number"]}>
-                            {String(index + 1).padStart(2, "0")}
+                        <div className={styles.targetPointTop}>
+                          <span className={styles.targetPointNumber}>
+                            <OverviewBadgeIcon label={card.label} />
                           </span>
-                          <p className={styles.cardLabel}>{card.label}</p>
+                          <p className={styles.targetPointLabel}>{card.label}</p>
                         </div>
-                        <p className={styles.cardBody}>{card.body}</p>
+                        <p className={styles.targetPointBody}>
+                          {getOverviewLines(card.label, card.body).map(
+                            (line, lineIndex) => (
+                              <span
+                                className={styles.targetPointBodyLine}
+                                key={`${card.label}-${lineIndex}`}
+                              >
+                                {line}
+                              </span>
+                            )
+                          )}
+                        </p>
                       </article>
                     ))}
                   </div>

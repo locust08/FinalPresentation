@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "ThibaultMono";
+  src: url("/reference/thibault/fonts/mgm/ABCMonumentGroteskMono-Regular-Trial.woff2")
+    format("woff2");
+  font-display: swap;
+}
+
 .shell {
   position: absolute;
   inset: 0;
@@ -10,6 +17,7 @@
 }
 
 .frameWrap {
+  position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -20,9 +28,413 @@
     0 28px 72px rgba(0, 0, 0, 0.34);
 }
 
+.introOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: #020202;
+  opacity: 1;
+  transition:
+    opacity 420ms ease,
+    visibility 420ms ease;
+}
+
+.introVideo,
+.introShade {
+  position: absolute;
+  inset: 0;
+}
+
+.introVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 84%;
+  filter: brightness(1.12) saturate(1.1);
+  opacity: 0;
+  transform: scale(0.9) translateY(12%);
+  transition:
+    opacity 1200ms ease,
+    transform 2600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.introShade {
+  background:
+    radial-gradient(circle at center, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.24)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.18));
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+.introOverlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 32px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+}
+
+.introOverlayHidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.introScreenReader {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.introPreface,
+.introDiamond,
+.introCta {
+  position: absolute;
+  z-index: 1;
+  color: rgba(245, 242, 235, 0.94);
+  font-family: "ThibaultMono", monospace;
+  text-transform: uppercase;
+}
+
+.introPreface {
+  left: 50%;
+  top: 50.6%;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  width: min(82%, 980px);
+  transform: translate(-50%, -50%);
+  transition:
+    opacity 800ms ease,
+    transform 800ms ease,
+    filter 800ms ease;
+}
+
+.introPrefaceTitle,
+.introPrefaceLead {
+  display: block;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.introPrefaceTitle {
+  font-size: clamp(22px, 1.45vw, 28px);
+  letter-spacing: 0.035em;
+}
+
+.introPrefaceLead {
+  font-size: clamp(18px, 1.2vw, 24px);
+  letter-spacing: 0.028em;
+}
+
+.introDiamond {
+  display: inline-flex;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transform: rotate(45deg) scale(0.92);
+}
+
+.introDiamond span {
+  transform: rotate(-45deg);
+}
+
+.introDiamond[data-slot="1"] {
+  left: 18.6%;
+  top: 12.8%;
+  animation: diamondReveal 700ms ease 1500ms forwards;
+}
+
+.introDiamond[data-slot="2"] {
+  left: 49.2%;
+  top: 12.8%;
+  animation: diamondReveal 700ms ease 1650ms forwards;
+}
+
+.introDiamond[data-slot="3"] {
+  right: 18.3%;
+  top: 12.8%;
+  animation: diamondReveal 700ms ease 1800ms forwards;
+}
+
+.introDiamond[data-slot="4"] {
+  left: 18.6%;
+  bottom: 12.6%;
+  animation: diamondReveal 700ms ease 1950ms forwards;
+}
+
+.introDiamond[data-slot="5"] {
+  left: 49.2%;
+  bottom: 12.6%;
+  animation: diamondReveal 700ms ease 2100ms forwards;
+}
+
+.introDiamond[data-slot="6"] {
+  right: 18.3%;
+  bottom: 12.6%;
+  animation: diamondReveal 700ms ease 2250ms forwards;
+}
+
+.introCta {
+  left: 50%;
+  top: 50.6%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(22px, 1.45vw, 28px);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  opacity: 0;
+  transition:
+    opacity 720ms ease,
+    transform 720ms ease;
+}
+
+.introArrow {
+  display: inline-block;
+  margin-left: 10px;
+  transform: translateY(-1px);
+}
+
+.introOverlay[data-stage="preface"] .introCta {
+  opacity: 0;
+  transform: translate(-50%, -50%) translateY(10px);
+}
+
+.introOverlay[data-stage="preface"] .introPreface {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.introOverlay[data-stage="preface"] .introVideo {
+  opacity: 0;
+  transform: scale(0.88) translateY(14%);
+}
+
+.introOverlay[data-stage="preface"] .introShade {
+  opacity: 0;
+}
+
+.introOverlay[data-stage="kindle"] .introVideo {
+  opacity: 0.36;
+  transform: scale(0.9) translateY(11%);
+}
+
+.introOverlay[data-stage="kindle"] .introShade {
+  opacity: 1;
+}
+
+.introOverlay[data-stage="kindle"] .introPreface {
+  opacity: 0.85;
+}
+
+.introOverlay[data-stage="cta"] .introVideo {
+  opacity: 1;
+  transform: scale(0.94) translateY(9%);
+}
+
+.introOverlay[data-stage="cta"] .introShade {
+  opacity: 1;
+}
+
+.introOverlay[data-stage="cta"] .introPreface {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translate(-50%, -50%) translateY(-10px);
+}
+
+.introOverlay[data-stage="cta"] .introCta {
+  opacity: 1;
+}
+
 .frame {
   width: 100%;
   height: 100%;
   border: 0;
   background: #000000;
+}
+
+@media (max-width: 1023px) {
+  .shell {
+    padding: 16px;
+  }
+
+  .frameWrap,
+  .introOverlay::after {
+    border-radius: 26px;
+  }
+
+  .introPreface {
+    top: 49.5%;
+    width: min(84%, 620px);
+    gap: 12px;
+  }
+
+  .introPrefaceTitle,
+  .introPrefaceLead,
+  .introCta {
+    white-space: normal;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .introPrefaceTitle {
+    font-size: clamp(18px, 3vw, 24px);
+    line-height: 1.2;
+  }
+
+  .introPrefaceLead {
+    font-size: clamp(14px, 2.35vw, 18px);
+    line-height: 1.28;
+  }
+
+  .introDiamond {
+    width: 40px;
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .introDiamond[data-slot="1"] {
+    left: 12%;
+    top: 10.8%;
+  }
+
+  .introDiamond[data-slot="2"] {
+    left: 48%;
+    top: 10.8%;
+  }
+
+  .introDiamond[data-slot="3"] {
+    right: 12%;
+    top: 10.8%;
+  }
+
+  .introDiamond[data-slot="4"] {
+    left: 12%;
+    bottom: 10.8%;
+  }
+
+  .introDiamond[data-slot="5"] {
+    left: 48%;
+    bottom: 10.8%;
+  }
+
+  .introDiamond[data-slot="6"] {
+    right: 12%;
+    bottom: 10.8%;
+  }
+
+  .introCta {
+    width: min(72%, 520px);
+    font-size: clamp(18px, 2.9vw, 24px);
+    line-height: 1.22;
+  }
+}
+
+@media (max-width: 767px) {
+  .shell {
+    padding:
+      max(10px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right))
+      max(10px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .frameWrap,
+  .introOverlay::after {
+    border-radius: 18px;
+  }
+
+  .introVideo {
+    object-position: center 68%;
+  }
+
+  .introPreface {
+    top: 48.6%;
+    width: min(82%, 320px);
+    gap: 10px;
+  }
+
+  .introPrefaceTitle {
+    font-size: clamp(14px, 4.6vw, 18px);
+    letter-spacing: 0.03em;
+  }
+
+  .introPrefaceLead {
+    font-size: clamp(11px, 3.35vw, 14px);
+    letter-spacing: 0.025em;
+  }
+
+  .introDiamond {
+    width: 30px;
+    height: 30px;
+    font-size: 10px;
+  }
+
+  .introDiamond[data-slot="1"] {
+    left: 9%;
+    top: 8.6%;
+  }
+
+  .introDiamond[data-slot="2"] {
+    left: calc(50% - 15px);
+    top: 8.6%;
+  }
+
+  .introDiamond[data-slot="3"] {
+    right: 9%;
+    top: 8.6%;
+  }
+
+  .introDiamond[data-slot="4"] {
+    left: 9%;
+    bottom: 8.8%;
+  }
+
+  .introDiamond[data-slot="5"] {
+    left: calc(50% - 15px);
+    bottom: 8.8%;
+  }
+
+  .introDiamond[data-slot="6"] {
+    right: 9%;
+    bottom: 8.8%;
+  }
+
+  .introCta {
+    width: min(78%, 300px);
+    top: 49.2%;
+    font-size: clamp(14px, 4.4vw, 18px);
+    line-height: 1.24;
+  }
+
+  .introArrow {
+    margin-left: 6px;
+  }
+}
+
+@keyframes diamondReveal {
+  from {
+    opacity: 0;
+    transform: rotate(45deg) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(45deg) scale(1);
+  }
 }
