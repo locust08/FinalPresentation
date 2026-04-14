@@ -1029,6 +1029,78 @@ export function PresentationDeck() {
           {">"}
         </button>
       </div>
+
+      {!isResponsiveViewport ? (
+        <nav
+          aria-label="Slide progress"
+          className={styles.progressRail}
+          onMouseEnter={revealControls}
+        >
+          <div className={styles.progressMenu}>
+            <p className={styles.progressMenuTitle}>Presentation Flow</p>
+
+            <div className={styles.progressMenuList}>
+              {slides.map((slide, index) => {
+                const isActive = index === currentIndex
+                const isCompleted = index < currentIndex
+
+                return (
+                  <button
+                    aria-current={isActive ? "page" : undefined}
+                    className={[
+                      styles.progressMenuItem,
+                      isActive ? styles.progressMenuItemActive : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    key={slide.id}
+                    onClick={() => goToSlide(index)}
+                    type="button"
+                  >
+                    <span
+                      className={[
+                        styles.progressMenuLine,
+                        isActive ? styles.progressMenuLineActive : "",
+                        isCompleted ? styles.progressMenuLineCompleted : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                    />
+                    <span className={styles.progressMenuMeta}>
+                      <strong>{slide.shortLabel}</strong>
+                      <span>{slide.label}</span>
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          <div className={styles.progressTicks} aria-hidden="true">
+            {slides.map((slide, index) => {
+              const isActive = index === currentIndex
+              const isCompleted = index < currentIndex
+
+              return (
+                <button
+                  aria-label={`Go to ${slide.shortLabel}: ${slide.label}`}
+                  aria-current={isActive ? "page" : undefined}
+                  className={[
+                    styles.progressTick,
+                    isActive ? styles.progressTickActive : "",
+                    isCompleted ? styles.progressTickCompleted : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  key={`${slide.id}-tick`}
+                  onClick={() => goToSlide(index)}
+                  type="button"
+                />
+              )
+            })}
+          </div>
+        </nav>
+      ) : null}
     </div>
   )
 }
