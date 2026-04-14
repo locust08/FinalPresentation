@@ -54,6 +54,28 @@
   opacity: 0.9;
 }
 
+.brandGhost,
+.responsiveBrandGhost {
+  pointer-events: none;
+}
+
+.brandGhost {
+  position: absolute;
+  right: 98px;
+  top: 122px;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeInSoft 900ms var(--motion-ease) 220ms forwards;
+}
+
+.brandGhost span {
+  color: rgba(238, 32, 40, 0.04);
+  font-size: 148px;
+  font-weight: 700;
+  letter-spacing: calc(-0.1em + var(--letter-spacing-boost));
+  line-height: 0.88;
+}
+
 .topLine,
 .responsiveTopLine {
   background: #ee2028;
@@ -597,6 +619,23 @@
   background: radial-gradient(circle, rgba(238, 32, 40, 0.1), transparent 70%);
   filter: blur(8px);
   pointer-events: none;
+}
+
+.responsiveBrandGhost {
+  position: absolute;
+  right: 10px;
+  top: 46px;
+  z-index: 0;
+  opacity: 0;
+  animation: fadeInSoft 900ms var(--motion-ease) 220ms forwards;
+}
+
+.responsiveBrandGhost span {
+  color: rgba(238, 32, 40, 0.04);
+  font-size: clamp(4rem, 17vw, 7rem);
+  font-weight: 700;
+  letter-spacing: calc(-0.1em + var(--letter-spacing-boost));
+  line-height: 0.88;
 }
 
 .responsiveHeader {
@@ -1798,7 +1837,9 @@
   .group,
   .group::after,
   .footer,
+  .brandGhost,
   .responsiveTopLine,
+  .responsiveBrandGhost,
   .responsiveEyebrow,
   .responsivePreTitle,
   .responsiveHeroTitle,

@@ -100,10 +100,22 @@
   gap: 58px;
 }
 
+.contentQuoteReveal {
+  display: block;
+}
+
 .header {
   display: grid;
-  align-content: center;
+  align-content: start;
   gap: 22px;
+}
+
+.headerQuoteReveal {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 520px;
+  z-index: 3;
 }
 
 .eyebrow,
@@ -173,13 +185,7 @@
 
 .leadBlock::after,
 .responsiveLeadBlock::after {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 -20px;
-  width: calc(100% + 20px);
-  border-radius: 24px;
-  background: linear-gradient(135deg, rgba(238, 32, 40, 0.05), rgba(238, 32, 40, 0));
-  z-index: -1;
+  display: none;
 }
 
 .leadRule,
@@ -202,16 +208,116 @@
 }
 
 .bodyColumn {
+  position: relative;
   display: grid;
   align-content: center;
   gap: 22px;
 }
 
+.bodyColumnQuoteReveal {
+  position: absolute;
+  inset: 0;
+  padding-bottom: 0;
+}
+
+.figureWrap,
+.responsiveFigureWrap {
+  justify-self: center;
+  align-self: center;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeInSoft 760ms var(--motion-ease) 520ms forwards;
+  pointer-events: none;
+}
+
+.figure {
+  display: block;
+  width: 320px;
+  height: auto;
+  filter: drop-shadow(0 20px 36px rgba(15, 15, 15, 0.12));
+}
+
+.bubbleLayer,
+.responsiveBubbleLayer {
+  position: absolute;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.bubbleLayer {
+  inset: -34px -30px -34px -24px;
+}
+
+.quoteBubble,
+.responsiveQuoteBubble {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 34%),
+    rgba(238, 32, 40, 0.2);
+  border: 1px solid rgba(238, 32, 40, 0.28);
+  box-shadow:
+    0 20px 48px rgba(238, 32, 40, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  opacity: 0;
+  backdrop-filter: blur(10px);
+  transform: translateY(22px) scale(0.72);
+  animation: bubblePop 860ms var(--motion-ease) calc(260ms + (var(--stagger) * 170ms))
+    forwards;
+}
+
+.quoteBubble::after,
+.responsiveQuoteBubble::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+}
+
+.quoteBubblePrimary {
+  left: calc(-20px - 13cm);
+  top: 110px;
+  width: 760px;
+  height: 760px;
+}
+
+.quoteBubbleSecondary {
+  right: -20px;
+  top: 110px;
+  width: 760px;
+  height: 760px;
+}
+
+.quoteBubbleText,
+.responsiveQuoteBubbleText {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: #101010;
+  max-width: 21rem;
+  font-size: 46px;
+  font-weight: 600;
+  letter-spacing: calc(-0.065em + var(--letter-spacing-boost));
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.quoteBubbleSecondary .quoteBubbleText {
+  max-width: 21rem;
+  color: #101010;
+  font-size: 46px;
+  font-weight: 600;
+}
+
 .adviceList,
 .responsiveAdviceList {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -221,22 +327,28 @@
 .responsiveAdviceCard {
   position: relative;
   display: grid;
-  align-content: start;
-  gap: 16px;
-  min-height: 204px;
-  padding: 24px 24px 26px;
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+  padding: 34px 32px;
   border: 1px solid rgba(238, 32, 40, 0.1);
-  border-radius: 28px;
+  border-radius: 50%;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.998), rgba(255, 250, 250, 0.975)),
     #ffffff;
   box-shadow:
-    0 14px 32px rgba(238, 32, 40, 0.06),
+    0 22px 48px rgba(20, 20, 20, 0.08),
+    0 10px 24px rgba(238, 32, 40, 0.08),
+    0 0 0 1px rgba(20, 20, 20, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.92);
   overflow: hidden;
   opacity: 0;
-  transform: translateX(28px) scale(0.985);
-  animation: cardEnter 820ms var(--motion-ease) calc(320ms + (var(--stagger) * 120ms)) forwards;
+  transform: translateY(88px) scale(0.58);
+  transform-origin: center center;
+  animation: cardPopOut 1080ms var(--motion-ease) calc(280ms + (var(--stagger) * 260ms))
+    forwards;
 }
 
 .adviceCard::after,
@@ -251,22 +363,20 @@
     transparent 66%
   );
   transform: translateX(-140%);
-  animation: shimmerPass 1100ms var(--motion-ease) calc(560ms + (var(--stagger) * 120ms)) 1;
+  animation: shimmerPass 1100ms var(--motion-ease) calc(760ms + (var(--stagger) * 260ms)) 1;
   pointer-events: none;
 }
 
 .adviceCardFeature,
 .responsiveAdviceCardFeature {
-  grid-column: 1 / -1;
-  min-height: 172px;
-  padding: 26px 28px 28px;
   border-color: rgba(238, 32, 40, 0.16);
   background:
-    linear-gradient(135deg, rgba(238, 32, 40, 0.065), rgba(238, 32, 40, 0) 48%),
+    radial-gradient(circle at 32% 24%, rgba(238, 32, 40, 0.08), rgba(238, 32, 40, 0) 44%),
     linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(255, 246, 246, 0.985)),
     #ffffff;
   box-shadow:
-    0 20px 42px rgba(238, 32, 40, 0.09),
+    0 24px 52px rgba(20, 20, 20, 0.09),
+    0 14px 30px rgba(238, 32, 40, 0.11),
     0 0 0 1px rgba(238, 32, 40, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.96);
 }
@@ -274,9 +384,9 @@
 .adviceTop,
 .responsiveAdviceTop {
   display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 16px;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
 }
 
 .adviceNumber,
@@ -294,100 +404,32 @@
   font-weight: 700;
   letter-spacing: calc(-0.06em + var(--letter-spacing-boost));
   line-height: 1;
-  animation: badgePop 720ms var(--motion-ease) calc(450ms + (var(--stagger) * 120ms)) both;
+  animation: badgePop 820ms var(--motion-ease) calc(520ms + (var(--stagger) * 260ms)) both;
 }
 
 .adviceLabel,
 .responsiveAdviceLabel {
   margin: 0;
   color: #ee2028;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: calc(0.16em + var(--letter-spacing-boost));
+  line-height: 1.1;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .adviceText,
 .responsiveAdviceText {
   margin: 0;
   color: #111111;
-  font-size: 25px;
+  max-width: 14rem;
+  font-size: 22px;
   font-weight: 500;
   letter-spacing: calc(-0.045em + var(--letter-spacing-boost));
-  line-height: 1.1;
+  line-height: 1.12;
+  text-align: center;
   text-wrap: balance;
-}
-
-.quote,
-.responsiveQuote {
-  position: relative;
-  display: grid;
-  gap: 20px;
-  padding: 30px 30px 32px;
-  border: 1px solid rgba(238, 32, 40, 0.15);
-  border-radius: 32px;
-  background:
-    linear-gradient(135deg, rgba(238, 32, 40, 0.08), rgba(238, 32, 40, 0) 52%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.998), rgba(255, 246, 246, 0.985)),
-    #ffffff;
-  box-shadow:
-    0 18px 38px rgba(238, 32, 40, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.94);
-  opacity: 0;
-  transform: translateY(18px);
-  animation: fadeInSoft 760ms var(--motion-ease) 640ms forwards;
-}
-
-.quote::before,
-.responsiveQuote::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 8px;
-  border-radius: 32px 0 0 32px;
-  background: linear-gradient(180deg, #ee2028, rgba(238, 32, 40, 0.22));
-}
-
-.quoteLabel,
-.responsiveQuoteLabel {
-  display: inline-flex;
-  width: fit-content;
-  margin: 0;
-  padding: 0.72rem 1rem;
-  border-radius: 999px;
-  background: rgba(238, 32, 40, 0.08);
-  color: #ee2028;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: calc(0.16em + var(--letter-spacing-boost));
-  text-transform: uppercase;
-}
-
-.quoteList,
-.responsiveQuoteList {
-  display: grid;
-  gap: 12px;
-}
-
-.quoteText,
-.responsiveQuoteText {
-  margin: 0;
-  color: #101010;
-  max-width: 860px;
-  font-size: 38px;
-  font-weight: 600;
-  letter-spacing: calc(-0.072em + var(--letter-spacing-boost));
-  line-height: 1.02;
-  text-wrap: balance;
-}
-
-.quoteTextSecondary,
-.responsiveQuoteTextSecondary {
-  color: rgba(16, 16, 16, 0.76);
-  font-size: 24px;
-  font-weight: 500;
-  letter-spacing: calc(-0.045em + var(--letter-spacing-boost));
-  line-height: 1.08;
 }
 
 .footer,
@@ -475,6 +517,10 @@
   gap: 16px;
 }
 
+.responsiveHeaderQuoteReveal {
+  padding-right: 18px;
+}
+
 .responsiveEyebrow {
   padding: 0.72rem 1rem;
   font-size: 0.82rem;
@@ -510,21 +556,25 @@
   align-content: start;
 }
 
+.responsiveBodyQuoteReveal {
+  min-height: 0;
+  padding-bottom: 0;
+}
+
 .responsiveAdviceList {
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 14px;
+  justify-items: center;
 }
 
 .responsiveAdviceCard {
-  gap: 12px;
-  min-height: auto;
-  padding: 16px 18px 18px;
-  border-radius: 22px;
+  width: min(100%, 260px);
+  gap: 10px;
+  padding: 24px 22px;
 }
 
 .responsiveAdviceCardFeature {
-  grid-column: auto;
-  padding: 18px 20px 20px;
+  width: min(100%, 272px);
 }
 
 .responsiveAdviceNumber {
@@ -538,21 +588,50 @@
 }
 
 .responsiveAdviceText {
-  font-size: clamp(1rem, 3vw, 1.24rem);
+  max-width: 12.5rem;
+  font-size: clamp(0.98rem, 3vw, 1.12rem);
 }
 
-.responsiveQuote {
-  gap: 14px;
-  padding: 20px 20px 22px;
-  border-radius: 22px;
+.responsiveFigure {
+  display: block;
+  width: min(220px, 52vw);
+  height: auto;
+  filter: drop-shadow(0 16px 28px rgba(15, 15, 15, 0.12));
 }
 
-.responsiveQuoteText {
-  font-size: clamp(1.26rem, 4.3vw, 1.82rem);
+.responsiveBubbleLayer {
+  inset: -12px -10px -12px -10px;
 }
 
-.responsiveQuoteTextSecondary {
-  font-size: clamp(1rem, 3.5vw, 1.2rem);
+.responsiveQuoteBubble {
+  width: min(92vw, 360px);
+  height: min(92vw, 360px);
+  padding: 30px;
+}
+
+.responsiveQuoteBubblePrimary {
+  left: max(-18px, -2vw);
+  top: 142px;
+  width: min(92vw, 360px);
+  height: min(92vw, 360px);
+}
+
+.responsiveQuoteBubbleSecondary {
+  right: max(-18px, -2vw);
+  top: 438px;
+  width: min(92vw, 360px);
+  height: min(92vw, 360px);
+}
+
+.responsiveQuoteBubbleText {
+  max-width: 12.5rem;
+  font-size: clamp(1.08rem, 4vw, 1.38rem);
+  line-height: 1.1;
+}
+
+.responsiveQuoteBubbleSecondary .responsiveQuoteBubbleText {
+  max-width: 12.5rem;
+  font-size: clamp(1.08rem, 4vw, 1.38rem);
 }
 
 .responsiveFooter {
@@ -592,7 +671,7 @@
   }
 
   .adviceCardFeature {
-    grid-column: 1 / -1;
+    grid-column: auto;
   }
 
   .bodyColumn {
@@ -629,12 +708,15 @@
     font-size: 0.96rem;
   }
 
-  .responsiveQuoteText {
-    font-size: 1.08rem;
+  .responsiveQuoteBubble {
+    width: min(92vw, 308px);
+    height: min(92vw, 308px);
   }
 
-  .responsiveQuoteTextSecondary {
-    font-size: 0.94rem;
+  .responsiveQuoteBubblePrimary,
+  .responsiveQuoteBubbleSecondary {
+    width: min(92vw, 308px);
+    height: min(92vw, 308px);
   }
 
   .responsiveFooterMeta {
@@ -673,15 +755,20 @@
   }
 }
 
-@keyframes cardEnter {
+@keyframes cardPopOut {
   from {
     opacity: 0;
-    transform: translateX(28px) scale(0.985);
+    transform: translateY(88px) scale(0.58);
+  }
+
+  68% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.06);
   }
 
   to {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -724,6 +811,23 @@
   }
 }
 
+@keyframes bubblePop {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.72);
+  }
+
+  72% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.04);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .preTitle,
 .responsivePreTitle,
 .heroTitle,
@@ -758,7 +862,8 @@
   .brandGhost,
   .adviceCard,
   .adviceCard::after,
-  .quote,
+  .figureWrap,
+  .quoteBubble,
   .footer,
   .responsiveTopLine,
   .responsiveBrandGhost,
@@ -768,7 +873,8 @@
   .responsiveLeadBlock,
   .responsiveAdviceCard,
   .responsiveAdviceCard::after,
-  .responsiveQuote,
+  .responsiveFigureWrap,
+  .responsiveQuoteBubble,
   .responsiveFooter {
     animation: none !important;
     opacity: 1 !important;

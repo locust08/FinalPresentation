@@ -172,12 +172,7 @@
 
 .leadBlock::after,
 .responsiveLeadBlock::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 0 -18px;
-  border-radius: 30px;
-  background: linear-gradient(135deg, rgba(238, 32, 40, 0.06), rgba(238, 32, 40, 0));
-  z-index: -1;
+  display: none;
 }
 
 .leadRule,
@@ -272,17 +267,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 64px;
-  height: 46px;
-  padding: 0 14px;
-  border-radius: 999px;
-  background: rgba(238, 32, 40, 0.08);
+  min-width: 88px;
+  height: 64px;
+  padding: 0;
   color: #ee2028;
-  font-size: 1.26rem;
-  font-weight: 700;
-  letter-spacing: calc(-0.06em + var(--letter-spacing-boost));
   line-height: 1;
   animation: badgePop 720ms var(--motion-ease) calc(450ms + (var(--stagger) * 120ms)) both;
+}
+
+.takeawayIcon,
+.responsiveTakeawayIcon {
+  width: 88px;
+  height: 64px;
+  color: #ee2028;
+  display: block;
 }
 
 .takeawayLabel,
@@ -453,9 +451,13 @@
 }
 
 .responsiveTakeawayNumber {
-  min-width: 52px;
-  height: 38px;
-  font-size: 1.04rem;
+  min-width: 72px;
+  height: 52px;
+}
+
+.responsiveTakeawayIcon {
+  width: 72px;
+  height: 52px;
 }
 
 .responsiveTakeawayLabel {

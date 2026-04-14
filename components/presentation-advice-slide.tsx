@@ -13,6 +13,7 @@ const DESIGN_HEIGHT = 1080
 type PresentationAdviceSlideProps = {
   lead: string
   points: string[]
+  quoteReveal?: boolean
   quote: {
     label?: string
     text: string | string[]
@@ -24,6 +25,7 @@ type PresentationAdviceSlideProps = {
 export function PresentationAdviceSlide({
   lead,
   points,
+  quoteReveal = false,
   quote,
   sectionNumber,
   title,
@@ -45,7 +47,10 @@ export function PresentationAdviceSlide({
             <div className={styles.responsiveTopLine} aria-hidden="true" />
 
             <div className={styles.responsiveInner} data-transition-panel>
-              <header className={styles.responsiveHeader} data-transition-content="header">
+              <header
+                className={styles.responsiveHeader}
+                data-transition-content="header"
+              >
                 <p className={styles.responsiveEyebrow}>Section {sectionNumber}</p>
 
                 <div className={styles.responsiveTitleWrap}>
@@ -61,7 +66,10 @@ export function PresentationAdviceSlide({
                 </div>
               </header>
 
-              <div className={styles.responsiveBody} data-transition-content="main">
+              <div
+                className={styles.responsiveBody}
+                data-transition-content="main"
+              >
                 <ol className={styles.responsiveAdviceList}>
                   {points.map((point, index) => (
                     <li
@@ -92,26 +100,37 @@ export function PresentationAdviceSlide({
                   ))}
                 </ol>
 
-                <aside className={styles.responsiveQuote}>
-                  {quote.label ? (
-                    <p className={styles.responsiveQuoteLabel}>{quote.label}</p>
-                  ) : null}
-                  <div className={styles.responsiveQuoteList}>
+                <div className={styles.responsiveFigureWrap} aria-hidden="true">
+                  <Image
+                    alt=""
+                    className={styles.responsiveFigure}
+                    height={440}
+                    sizes="(max-width: 767px) 220px, 320px"
+                    src="/reference/slide-18-woman-transparent.png"
+                    width={410}
+                  />
+                </div>
+
+                {quoteReveal ? (
+                  <div className={styles.responsiveBubbleLayer} aria-hidden="true">
                     {quoteLines.map((line, index) => (
-                      <blockquote
+                      <div
                         className={[
-                          styles.responsiveQuoteText,
-                          index > 0 ? styles.responsiveQuoteTextSecondary : "",
+                          styles.responsiveQuoteBubble,
+                          index === 0
+                            ? styles.responsiveQuoteBubblePrimary
+                            : styles.responsiveQuoteBubbleSecondary,
                         ]
                           .filter(Boolean)
                           .join(" ")}
                         key={line}
+                        style={{ "--stagger": index } as CSSProperties}
                       >
-                        {line}
-                      </blockquote>
+                        <p className={styles.responsiveQuoteBubbleText}>{line}</p>
+                      </div>
                     ))}
                   </div>
-                </aside>
+                ) : null}
               </div>
 
               <footer className={styles.responsiveFooter} data-transition-content="footer">
@@ -141,8 +160,14 @@ export function PresentationAdviceSlide({
               <div className={styles.frame}>
                 <div className={styles.topLine} aria-hidden="true" />
 
-                <div className={styles.content} data-transition-panel>
-                  <header className={styles.header} data-transition-content="header">
+                <div
+                  className={styles.content}
+                  data-transition-panel
+                >
+                  <header
+                    className={styles.header}
+                    data-transition-content="header"
+                  >
                     <p className={styles.eyebrow}>Section {sectionNumber}</p>
 
                     <div className={styles.titleWrap}>
@@ -156,7 +181,10 @@ export function PresentationAdviceSlide({
                     </div>
                   </header>
 
-                  <div className={styles.bodyColumn} data-transition-content="main">
+                  <div
+                    className={styles.bodyColumn}
+                    data-transition-content="main"
+                  >
                     <ol className={styles.adviceList}>
                       {points.map((point, index) => (
                         <li
@@ -187,24 +215,37 @@ export function PresentationAdviceSlide({
                       ))}
                     </ol>
 
-                    <aside className={styles.quote}>
-                      {quote.label ? <p className={styles.quoteLabel}>{quote.label}</p> : null}
-                      <div className={styles.quoteList}>
+                    <div className={styles.figureWrap} aria-hidden="true">
+                      <Image
+                        alt=""
+                        className={styles.figure}
+                        height={440}
+                        sizes="320px"
+                        src="/reference/slide-18-woman-transparent.png"
+                        width={410}
+                      />
+                    </div>
+
+                    {quoteReveal ? (
+                      <div className={styles.bubbleLayer} aria-hidden="true">
                         {quoteLines.map((line, index) => (
-                          <blockquote
+                          <div
                             className={[
-                              styles.quoteText,
-                              index > 0 ? styles.quoteTextSecondary : "",
+                              styles.quoteBubble,
+                              index === 0
+                                ? styles.quoteBubblePrimary
+                                : styles.quoteBubbleSecondary,
                             ]
                               .filter(Boolean)
                               .join(" ")}
                             key={line}
+                            style={{ "--stagger": index } as CSSProperties}
                           >
-                            {line}
-                          </blockquote>
+                            <p className={styles.quoteBubbleText}>{line}</p>
+                          </div>
                         ))}
                       </div>
-                    </aside>
+                    ) : null}
                   </div>
                 </div>
 

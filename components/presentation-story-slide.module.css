@@ -1,5 +1,6 @@
 .shell {
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --challenge-pie-ease: cubic-bezier(0.2, 0.82, 0.24, 1);
   min-height: 100dvh;
   height: 100dvh;
   background: #ffffff;
@@ -19,7 +20,11 @@
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(circle at top right, rgba(238, 32, 40, 0.08), transparent 34%),
+    radial-gradient(
+      circle at top right,
+      rgba(238, 32, 40, 0.08),
+      transparent 34%
+    ),
     #ffffff;
 }
 
@@ -44,13 +49,13 @@
 .frame::before {
   content: "";
   position: absolute;
-  right: 120px;
-  top: 124px;
-  width: 320px;
-  height: 320px;
+  right: 136px;
+  top: 148px;
+  width: 280px;
+  height: 280px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(238, 32, 40, 0.11), transparent 70%);
-  filter: blur(10px);
+  background: radial-gradient(circle, rgba(238, 32, 40, 0.07), transparent 72%);
+  filter: blur(16px);
 }
 
 .brandGhost,
@@ -68,7 +73,7 @@
 
 .brandGhost span {
   color: rgba(238, 32, 40, 0.026);
-  font-size: 124px;
+  font-size: 156px;
   font-weight: 700;
   letter-spacing: calc(-0.1em + var(--letter-spacing-boost));
   line-height: 0.88;
@@ -100,10 +105,331 @@
   gap: 58px;
 }
 
+.breakthroughContent {
+  --breakthrough-offset: 3cm;
+  --breakthrough-header-extra-offset: -4cm;
+  --breakthrough-circle-offset: -1.8cm;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 32px;
+}
+
+.challengeContent {
+  --challenge-intro-x-offset: -3cm;
+  --challenge-pie-x-offset: 2cm;
+  --challenge-pie-y-offset: 2cm;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 18px;
+}
+
 .header {
   display: grid;
   align-content: center;
   gap: 24px;
+}
+
+.breakthroughHeader {
+  width: 520px;
+  align-content: start;
+  gap: 10px;
+  transform: translateX(
+    calc(
+      var(--breakthrough-offset, 0cm) +
+        var(--breakthrough-header-extra-offset, 0cm)
+    )
+  );
+}
+
+.challengeHeader {
+  width: 460px;
+  align-content: start;
+  gap: 8px;
+}
+
+.challengeRevealStage {
+  grid-column: 1 / -1;
+  width: min(100%, 1420px);
+  height: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 16px;
+}
+
+.challengeRevealEyebrow {
+  justify-self: start;
+}
+
+.challengeRevealCenter {
+  width: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(320px, 480px) minmax(420px, 620px);
+  align-items: start;
+  align-content: start;
+  gap: 44px;
+  transform: none;
+}
+
+.challengeRevealIntro {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 20px;
+  padding-top: 10px;
+  transform: translateX(var(--challenge-intro-x-offset, 0cm));
+}
+
+.challengeRevealTitleWrap {
+  display: grid;
+  gap: 8px;
+}
+
+.challengeRevealKicker {
+  margin: 0;
+  color: rgba(28, 28, 28, 0.68);
+  font-size: 52px;
+  font-weight: 400;
+  letter-spacing: calc(-0.07em + var(--letter-spacing-boost));
+  line-height: 0.94;
+}
+
+.challengeRevealTitle {
+  margin: 0;
+  color: #090909;
+  max-width: 24rem;
+  font-size: 94px;
+  font-weight: 700;
+  letter-spacing: calc(-0.09em + var(--letter-spacing-boost));
+  line-height: 0.9;
+  text-wrap: balance;
+}
+
+.challengeRevealLeadBlock {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+  max-width: 480px;
+  padding: 0;
+}
+
+.challengeRevealLeadRule {
+  display: block;
+  width: 5px;
+  min-height: 92px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ee2028, rgba(238, 32, 40, 0.14));
+}
+
+.challengeRevealLead {
+  margin: 0;
+  color: rgba(20, 20, 20, 0.74);
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: calc(-0.045em + var(--letter-spacing-boost));
+  line-height: 1.14;
+}
+
+.challengePieChart {
+  position: relative;
+  width: 620px;
+  height: 620px;
+  opacity: 0;
+  transform: translate(
+    var(--challenge-pie-x-offset, 2cm),
+    calc(18px + var(--challenge-pie-y-offset, 0cm))
+  );
+  will-change: transform, opacity;
+  animation: challengePieChartEnter 760ms var(--challenge-pie-ease) 120ms both;
+}
+
+.challengePieCore {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 18px;
+  padding: 126px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.99), rgba(255, 247, 247, 0.95)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(255, 249, 249, 0.95));
+  box-shadow:
+    inset 0 0 0 1px rgba(238, 32, 40, 0.08),
+    inset 0 0 0 24px rgba(238, 32, 40, 0.03),
+    0 28px 56px rgba(238, 32, 40, 0.08);
+  text-align: center;
+  overflow: hidden;
+}
+
+.challengePieLabel {
+  margin: 0;
+  display: inline-flex;
+  padding: 0.82rem 1.16rem;
+  border-radius: 999px;
+  background: rgba(238, 32, 40, 0.08);
+  color: #d71d26;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: calc(0.14em + var(--letter-spacing-boost));
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.challengePieStatement {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+  color: #101014;
+  font-size: 60px;
+  font-weight: 650;
+  letter-spacing: calc(-0.08em + var(--letter-spacing-boost));
+  line-height: 0.9;
+  text-wrap: balance;
+}
+
+.challengePieSlice {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.82) rotate(-10deg);
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.challengePieSliceVisible {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  animation: challengePieSliceEnter 720ms var(--challenge-pie-ease)
+    calc(260ms + (var(--slice-index, 0) * 160ms)) both;
+}
+
+.challengePieSliceOne {
+  background: conic-gradient(
+    from -90deg,
+    #bf141d 0deg,
+    #d51c27 70deg,
+    #cb1822 120deg,
+    transparent 120deg 360deg
+  );
+  -webkit-mask: conic-gradient(from -90deg, #000 0deg 120deg, transparent 120deg 360deg);
+  mask: conic-gradient(from -90deg, #000 0deg 120deg, transparent 120deg 360deg);
+}
+
+.challengePieSliceTwo {
+  background: conic-gradient(
+    from -90deg,
+    transparent 0deg 120deg,
+    #d51c27 120deg,
+    #ef3945 190deg,
+    #e82c38 240deg,
+    transparent 240deg 360deg
+  );
+  -webkit-mask: conic-gradient(from -90deg, transparent 0deg 120deg, #000 120deg 240deg, transparent 240deg 360deg);
+  mask: conic-gradient(from -90deg, transparent 0deg 120deg, #000 120deg 240deg, transparent 240deg 360deg);
+}
+
+.challengePieSliceThree {
+  background: conic-gradient(
+    from -90deg,
+    transparent 0deg 240deg,
+    #ff3b47 240deg,
+    #ff5963 300deg,
+    #ff4a55 360deg
+  );
+  -webkit-mask: conic-gradient(from -90deg, transparent 0deg 240deg, #000 240deg 360deg);
+  mask: conic-gradient(from -90deg, transparent 0deg 240deg, #000 240deg 360deg);
+}
+
+.challengePieSliceContent {
+  position: absolute;
+  display: grid;
+  left: var(--slice-anchor-x, 50%);
+  top: var(--slice-anchor-y, 50%);
+  width: 146px;
+  gap: 6px;
+  color: #ffffff;
+  justify-items: center;
+  text-align: center;
+  opacity: 0;
+  z-index: 3;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.82);
+  will-change: transform, opacity;
+}
+
+.challengePieSliceContentVisible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  animation: challengePieSliceContentEnter 620ms var(--challenge-pie-ease)
+    calc(420ms + (var(--slice-index, 0) * 160ms)) both;
+}
+
+.challengePieSliceContentOne {
+  width: 144px;
+}
+
+.challengePieSliceContentTwo {
+  width: 154px;
+}
+
+.challengePieSliceContentThree {
+  width: 136px;
+}
+
+.challengePieSliceNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-width: 52px;
+  height: 38px;
+  padding: 0 13px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: calc(-0.05em + var(--letter-spacing-boost));
+  line-height: 1;
+  backdrop-filter: blur(10px);
+}
+
+.challengePieSliceTitle {
+  margin: 0;
+  color: #ffffff;
+  display: grid;
+  gap: 2px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: calc(-0.045em + var(--letter-spacing-boost));
+  line-height: 0.98;
+}
+
+.challengePieSliceSupport {
+  margin: 0;
+  display: grid;
+  gap: 1px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: calc(-0.02em + var(--letter-spacing-boost));
+  line-height: 1.08;
+}
+
+.challengePieRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 0 0 28px rgba(255, 255, 255, 0.04);
+  pointer-events: none;
 }
 
 .titleWrap,
@@ -204,7 +530,11 @@
   position: absolute;
   inset: 0 0 0 -18px;
   border-radius: 30px;
-  background: linear-gradient(135deg, rgba(238, 32, 40, 0.06), rgba(238, 32, 40, 0));
+  background: linear-gradient(
+    135deg,
+    rgba(238, 32, 40, 0.06),
+    rgba(238, 32, 40, 0)
+  );
   z-index: -1;
 }
 
@@ -225,87 +555,141 @@
 .breakthroughLead,
 .responsiveBreakthroughLead {
   display: grid;
-  gap: 12px;
-  max-width: 360px;
+  gap: 20px;
+  max-width: 500px;
   opacity: 0;
   transform: translateY(24px);
   animation: riseIn 760ms var(--motion-ease) 150ms forwards;
 }
 
-.breakthroughIntroTitle,
-.responsiveBreakthroughIntroTitle {
+.breakthroughTitleWrap,
+.responsiveBreakthroughTitleWrap {
+  display: grid;
+  gap: 4px;
+}
+
+.breakthroughPreTitle,
+.responsiveBreakthroughPreTitle {
+  margin: 0;
+  color: rgba(18, 18, 18, 0.74);
+  font-size: 52px;
+  font-weight: 400;
+  letter-spacing: calc(-0.07em + var(--letter-spacing-boost));
+  line-height: 0.94;
+}
+
+.breakthroughHeroTitle,
+.responsiveBreakthroughHeroTitle {
   margin: 0;
   color: #090909;
-  font-size: 60px;
-  font-weight: 650;
-  letter-spacing: calc(-0.078em + var(--letter-spacing-boost));
-  line-height: 0.94;
+  max-width: 26rem;
+  font-size: 94px;
+  font-weight: 700;
+  letter-spacing: calc(-0.09em + var(--letter-spacing-boost));
+  line-height: 0.9;
   text-wrap: balance;
+}
+
+.breakthroughLeadBlock,
+.responsiveBreakthroughLeadBlock {
+  max-width: 480px;
+  padding: 0;
+  animation-delay: 300ms;
+}
+
+.breakthroughLeadBlock::after,
+.responsiveBreakthroughLeadBlock::after {
+  display: none;
 }
 
 .breakthroughLeadText,
 .responsiveBreakthroughLeadText {
   margin: 0;
-  max-width: 332px;
-  color: rgba(20, 20, 20, 0.58);
-  font-size: 16px;
+  max-width: 420px;
+  color: rgba(20, 20, 20, 0.78);
+  font-size: 24px;
   font-weight: 400;
-  letter-spacing: calc(-0.035em + var(--letter-spacing-boost));
-  line-height: 1.22;
+  letter-spacing: calc(-0.045em + var(--letter-spacing-boost));
+  line-height: 1.14;
 }
 
 .breakthroughLayout {
   display: grid;
-  grid-template-columns: 402px minmax(0, 1fr);
-  gap: 54px;
+  grid-column: 1 / -1;
+  width: min(100%, 1140px);
+  margin: 0 auto;
+  grid-template-columns: 486px minmax(0, 1fr);
+  gap: 20px;
   align-content: center;
   align-items: center;
+  transform: translateX(var(--breakthrough-offset, 0cm));
 }
 
 .breakthroughAnchor {
   position: relative;
   display: grid;
   align-content: center;
-  justify-items: start;
-  gap: 28px;
+  justify-items: center;
+  gap: 24px;
   opacity: 0;
-  transform: translateY(24px);
-  animation: riseIn 820ms var(--motion-ease) 260ms forwards;
+  transform: translateY(calc(18px + var(--breakthrough-circle-offset, 0cm)));
+  animation: breakthroughCirclePop 760ms var(--motion-ease) 140ms forwards;
 }
 
 .breakthroughAnchor::before,
 .responsiveBreakthroughAnchor::before {
   content: "";
   position: absolute;
-  left: -34px;
+  left: -28px;
   top: 50%;
-  width: 390px;
-  height: 390px;
+  width: 432px;
+  height: 432px;
   border-radius: 50%;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 249, 249, 0.92)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.97),
+      rgba(255, 250, 250, 0.94)
+    ),
     #ffffff;
   box-shadow:
-    inset 0 0 0 18px rgba(17, 17, 17, 0.06),
-    0 32px 56px rgba(17, 17, 17, 0.04);
+    inset 0 0 0 10px rgba(238, 32, 40, 0.04),
+    0 28px 54px rgba(238, 32, 40, 0.05);
   transform: translateY(-50%);
   z-index: 0;
+}
+
+.breakthroughAnchor::after,
+.responsiveBreakthroughAnchor::after {
+  content: "";
+  position: absolute;
+  left: calc(100% - 10px);
+  top: 50%;
+  width: 166px;
+  height: 1.5px;
+  background: linear-gradient(
+    90deg,
+    rgba(238, 32, 40, 0.22),
+    rgba(238, 32, 40, 0.18)
+  );
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  animation: breakthroughConnectorDraw 460ms var(--motion-ease) 860ms forwards;
 }
 
 .breakthroughCircle,
 .responsiveBreakthroughCircle {
   position: relative;
-  width: 320px;
-  height: 320px;
+  width: 386px;
+  height: 386px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.99), rgba(255, 247, 247, 0.98)),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 250, 250, 0.985));
+  background: rgba(238, 32, 40, 0.2);
   box-shadow:
-    0 24px 54px rgba(238, 32, 40, 0.08),
-    inset 0 0 0 1px rgba(238, 32, 40, 0.08);
+    0 26px 56px rgba(238, 32, 40, 0.09),
+    inset 0 0 0 1px rgba(238, 32, 40, 0.07);
   z-index: 1;
 }
 
@@ -313,9 +697,9 @@
 .responsiveBreakthroughCircle::before {
   content: "";
   position: absolute;
-  inset: 20px;
+  inset: 24px;
   border-radius: 50%;
-  border: 1px solid rgba(238, 32, 40, 0.1);
+  border: 1px solid rgba(238, 32, 40, 0.08);
 }
 
 .breakthroughCircle::after,
@@ -326,12 +710,12 @@
 .breakthroughCircleGlow,
 .responsiveBreakthroughCircleGlow {
   position: absolute;
-  inset: auto 28px 28px auto;
-  width: 104px;
-  height: 104px;
+  inset: auto 34px 30px auto;
+  width: 126px;
+  height: 126px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(238, 32, 40, 0.12), transparent 72%);
-  filter: blur(10px);
+  background: radial-gradient(circle, rgba(238, 32, 40, 0.11), transparent 74%);
+  filter: blur(12px);
 }
 
 .breakthroughCircleInner,
@@ -341,7 +725,7 @@
   width: 72%;
   display: grid;
   justify-items: center;
-  gap: 12px;
+  gap: 14px;
   text-align: center;
 }
 
@@ -350,11 +734,11 @@
   margin: 0;
   display: inline-flex;
   width: fit-content;
-  padding: 0.62rem 0.9rem;
+  padding: 0.64rem 0.92rem;
   border-radius: 999px;
-  background: rgba(238, 32, 40, 0.08);
+  background: #ffffff;
   color: #ee2028;
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: calc(0.14em + var(--letter-spacing-boost));
   line-height: 1;
@@ -366,41 +750,46 @@
 .responsiveBreakthroughCircleStatement {
   margin: 0;
   display: grid;
-  gap: 4px;
+  gap: 3px;
   color: #0f0f12;
-  font-size: 31px;
-  font-weight: 600;
+  font-size: 33px;
+  font-weight: 620;
   letter-spacing: calc(-0.058em + var(--letter-spacing-boost));
-  line-height: 1.02;
+  line-height: 0.98;
 }
 
 .breakthroughCircleSupport,
 .responsiveBreakthroughCircleSupport {
   margin: 0;
   display: grid;
-  gap: 3px;
-  max-width: 13.4rem;
-  color: rgba(16, 16, 16, 0.64);
-  font-size: 14px;
+  gap: 2px;
+  max-width: 15.8rem;
+  color: rgba(16, 16, 16, 0.62);
+  font-size: 15px;
   font-weight: 400;
   letter-spacing: calc(-0.03em + var(--letter-spacing-boost));
-  line-height: 1.2;
+  line-height: 1.16;
 }
 
 .breakthroughReasons {
+  position: relative;
   display: grid;
   align-content: center;
-  gap: 18px;
+  gap: 20px;
+  width: calc(100% + 3cm);
+  max-width: calc(100% + 3cm);
+  margin-left: 3.5cm;
+  margin-top: -6cm;
   opacity: 0;
-  transform: translateY(24px);
-  animation: riseIn 820ms var(--motion-ease) 340ms forwards;
+  transform: translateY(14px);
+  animation: fadeInSoft 480ms var(--motion-ease) 920ms forwards;
 }
 
 .breakthroughReasonsHeader,
 .responsiveBreakthroughReasonsHeader {
   display: grid;
   gap: 6px;
-  padding-left: 152px;
+  padding-left: 68px;
 }
 
 .breakthroughReasonsLabel,
@@ -410,9 +799,9 @@
   margin: 0;
   padding: 0.8rem 1.12rem;
   border-radius: 999px;
-  background: rgba(17, 17, 17, 0.05);
-  color: #101010;
-  font-size: 0.84rem;
+  background: rgba(238, 32, 40, 0.08);
+  color: #ee2028;
+  font-size: 0.92rem;
   font-weight: 700;
   letter-spacing: calc(0.16em + var(--letter-spacing-boost));
   text-transform: uppercase;
@@ -422,7 +811,7 @@
 .responsiveBreakthroughReasonsLead {
   margin: 0;
   color: rgba(17, 17, 17, 0.62);
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
   letter-spacing: calc(-0.03em + var(--letter-spacing-boost));
   line-height: 1.18;
@@ -432,8 +821,47 @@
 .responsiveBreakthroughReasonList {
   position: relative;
   display: grid;
-  gap: 16px;
-  padding-left: 0;
+  gap: 18px;
+  padding-left: 68px;
+}
+
+.breakthroughReasonList::before,
+.responsiveBreakthroughReasonList::before {
+  content: "";
+  position: absolute;
+  left: 23px;
+  top: 66px;
+  bottom: 66px;
+  width: 1.5px;
+  background: linear-gradient(
+    180deg,
+    rgba(238, 32, 40, 0.16),
+    rgba(238, 32, 40, 0.28) 34%,
+    rgba(238, 32, 40, 0.18) 66%,
+    rgba(238, 32, 40, 0.12)
+  );
+  transform: scaleY(0);
+  transform-origin: center top;
+  opacity: 0;
+  animation: breakthroughSpineDraw 520ms var(--motion-ease) 1060ms forwards;
+}
+
+.breakthroughReasonList::after,
+.responsiveBreakthroughReasonList::after {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 2px rgba(238, 32, 40, 0.14),
+    inset 0 0 0 4px rgba(238, 32, 40, 0.82);
+  transform: translateY(-50%) scale(0.35);
+  opacity: 0;
+  animation: breakthroughNodeEnter 320ms var(--motion-ease) 1460ms forwards;
 }
 
 .breakthroughReasonRail,
@@ -445,35 +873,49 @@
 .responsiveBreakthroughReason {
   position: relative;
   display: grid;
-  gap: 10px;
-  min-height: 126px;
-  margin-left: 24px;
-  padding: 22px 34px 22px 30px;
+  gap: 12px;
+  min-height: 132px;
+  margin-left: 0;
+  padding: 22px 34px 24px 30px;
   border-radius: 26px;
-  border: 1px solid rgba(238, 32, 40, 0.12);
+  border: 1px solid rgba(238, 32, 40, 0.15);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 250, 250, 0.985)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(255, 250, 250, 0.99)
+    ),
     #ffffff;
   box-shadow:
-    0 16px 34px rgba(238, 32, 40, 0.06),
+    0 16px 32px rgba(238, 32, 40, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.92);
   opacity: 0;
-  transform: translateX(18px);
-  animation: breakthroughReasonEnter 720ms var(--motion-ease) calc(420ms + (var(--stagger) * 120ms)) forwards;
+  transform: translateX(52px) scale(0.96);
+  animation: breakthroughReasonEnter 820ms var(--motion-ease)
+    calc(1540ms + (var(--point-index) * 360ms)) forwards;
   overflow: hidden;
+  will-change: transform, opacity;
 }
 
 .breakthroughReason::before,
 .responsiveBreakthroughReason::before {
   content: "";
   position: absolute;
-  left: -24px;
+  left: -45px;
   top: 50%;
-  width: 24px;
+  width: 45px;
   height: 2px;
-  background: linear-gradient(90deg, rgba(238, 32, 40, 0.08), rgba(238, 32, 40, 0.38));
+  background: linear-gradient(
+    90deg,
+    rgba(238, 32, 40, 0.1),
+    rgba(238, 32, 40, 0.24)
+  );
   clip-path: none;
-  transform: translateY(-50%);
+  transform: translateY(-50%) scaleX(0.2);
+  transform-origin: left center;
+  opacity: 0;
+  animation: breakthroughBranchEnter 520ms var(--motion-ease)
+    calc(1260ms + (var(--point-index) * 360ms)) forwards;
 }
 
 .breakthroughReason:nth-child(2),
@@ -494,40 +936,67 @@
 .breakthroughReason:nth-child(2),
 .responsiveBreakthroughReason:nth-child(2) {
   background:
-    linear-gradient(180deg, #6b4751, #6b4751);
+    linear-gradient(
+      180deg,
+      rgba(255, 252, 252, 0.998),
+      rgba(255, 246, 246, 0.99)
+    ),
+    #ffffff;
 }
 
 .breakthroughReason:nth-child(3),
 .responsiveBreakthroughReason:nth-child(3) {
   background:
-    linear-gradient(180deg, #bb6c70, #bb6c70);
+    linear-gradient(
+      180deg,
+      rgba(255, 251, 251, 0.998),
+      rgba(255, 241, 242, 0.988)
+    ),
+    #ffffff;
 }
 
 .breakthroughReason:nth-child(4),
 .responsiveBreakthroughReason:nth-child(4) {
   background:
-    linear-gradient(180deg, #f2d2a6, #f2d2a6);
+    linear-gradient(
+      180deg,
+      rgba(255, 252, 249, 0.998),
+      rgba(255, 246, 241, 0.99)
+    ),
+    #ffffff;
 }
 
 .breakthroughReason:nth-child(2)::before,
 .responsiveBreakthroughReason:nth-child(2)::before {
-  background: linear-gradient(90deg, rgba(238, 32, 40, 0.08), rgba(238, 32, 40, 0.3));
+  background: linear-gradient(
+    90deg,
+    rgba(238, 32, 40, 0.07),
+    rgba(238, 32, 40, 0.2)
+  );
 }
 
 .breakthroughReason:nth-child(3)::before,
 .responsiveBreakthroughReason:nth-child(3)::before {
-  background: linear-gradient(90deg, rgba(238, 32, 40, 0.08), rgba(238, 32, 40, 0.34));
+  background: linear-gradient(
+    90deg,
+    rgba(238, 32, 40, 0.08),
+    rgba(238, 32, 40, 0.23)
+  );
 }
 
 .breakthroughReason:nth-child(4)::before,
 .responsiveBreakthroughReason:nth-child(4)::before {
-  background: linear-gradient(90deg, rgba(238, 32, 40, 0.08), rgba(238, 32, 40, 0.28));
+  background: linear-gradient(
+    90deg,
+    rgba(238, 32, 40, 0.08),
+    rgba(238, 32, 40, 0.2)
+  );
 }
 
 .breakthroughReasonNode,
 .responsiveBreakthroughReasonNode {
   position: absolute;
-  left: -34px;
+  left: -7px;
   top: 50%;
   width: 12px;
   height: 12px;
@@ -537,7 +1006,10 @@
   box-shadow:
     0 0 0 3px rgba(238, 32, 40, 0.1),
     inset 0 0 0 4px #ee2028;
-  transform: translateY(-50%);
+  transform: translateY(-50%) scale(0.4);
+  opacity: 0;
+  animation: breakthroughNodeEnter 340ms var(--motion-ease)
+    calc(1440ms + (var(--point-index) * 360ms)) forwards;
 }
 
 .breakthroughReason::after,
@@ -546,12 +1018,11 @@
   position: absolute;
   right: 18px;
   top: 50%;
-  color: transparent;
-  font-size: 110px;
+  color: rgba(238, 32, 40, 0.045);
+  font-size: 102px;
   font-weight: 700;
   letter-spacing: calc(-0.08em + var(--letter-spacing-boost));
   line-height: 0.8;
-  -webkit-text-stroke: 1px rgba(238, 32, 40, 0.12);
   transform: translateY(-50%);
 }
 
@@ -567,13 +1038,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
-  height: 34px;
-  padding: 0 10px;
+  min-width: 50px;
+  height: 38px;
+  padding: 0 12px;
   border-radius: 999px;
   background: rgba(238, 32, 40, 0.08);
   color: #ee2028;
-  font-size: 0.92rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: calc(-0.05em + var(--letter-spacing-boost));
 }
@@ -582,10 +1053,10 @@
 .responsiveBreakthroughReasonTitle {
   margin: 0;
   color: #0f0f12;
-  font-size: 25px;
+  font-size: 30px;
   font-weight: 600;
   letter-spacing: calc(-0.055em + var(--letter-spacing-boost));
-  line-height: 1.02;
+  line-height: 1.04;
 }
 
 .breakthroughReasonBody,
@@ -593,10 +1064,616 @@
   margin: 0;
   max-width: 26rem;
   color: rgba(17, 17, 17, 0.74);
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 400;
   letter-spacing: calc(-0.03em + var(--letter-spacing-boost));
   line-height: 1.18;
+}
+
+.challengeVisualLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 280px) minmax(0, 1fr) minmax(0, 280px);
+  gap: 28px;
+  align-items: end;
+  align-content: start;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: fadeInSoft 760ms var(--motion-ease) 260ms forwards;
+}
+
+.challengeSupportBlock {
+  display: grid;
+  gap: 12px;
+  max-width: 16rem;
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fadeInSoft 760ms var(--motion-ease)
+    calc(280ms + (var(--stagger) * 140ms)) forwards;
+}
+
+.challengeSupportBlockLeft {
+  grid-column: 1 / 2;
+  padding: 0 0 32px 8px;
+}
+
+.challengeSupportBlockRight {
+  grid-column: 3 / 4;
+  padding: 0 8px 32px 0;
+  justify-self: end;
+}
+
+.challengeSupportEyebrow {
+  margin: 0;
+  color: #ee2028;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: calc(0.16em + var(--letter-spacing-boost));
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.challengeSupportText {
+  margin: 0;
+  color: #131313;
+  font-size: 22px;
+  font-weight: 560;
+  letter-spacing: calc(-0.05em + var(--letter-spacing-boost));
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.challengeSupportOutcome {
+  margin: 0;
+  color: rgba(18, 18, 18, 0.66);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: calc(-0.03em + var(--letter-spacing-boost));
+  line-height: 1.26;
+}
+
+.challengeSupportOutcome span {
+  color: #ee2028;
+  font-weight: 700;
+}
+
+.challengeNarrativePanel {
+  position: relative;
+  display: grid;
+  gap: 16px;
+  min-height: 402px;
+  padding: 28px 28px 30px;
+  border-radius: 28px;
+  border: 1px solid rgba(238, 32, 40, 0.14);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(255, 248, 248, 0.98)
+    ),
+    #ffffff;
+  box-shadow:
+    0 22px 46px rgba(238, 32, 40, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(24px) scale(0.985);
+  animation: cardEnter 820ms var(--motion-ease)
+    calc(280ms + (var(--stagger) * 140ms)) forwards;
+}
+
+.challengeNarrativePanel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    118deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.74) 44%,
+    transparent 66%
+  );
+  transform: translateX(-140%);
+  animation: shimmerPass 1100ms var(--motion-ease)
+    calc(540ms + (var(--stagger) * 140ms)) 1;
+  pointer-events: none;
+}
+
+.challengeNarrativePanelLeft {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  background:
+    radial-gradient(
+      circle at 14% 14%,
+      rgba(238, 32, 40, 0.08),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(255, 247, 247, 0.985)
+    ),
+    #ffffff;
+}
+
+.challengeNarrativePanelRight {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+  background:
+    radial-gradient(circle at 86% 14%, rgba(238, 32, 40, 0.1), transparent 30%),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(255, 248, 248, 0.985)
+    ),
+    #ffffff;
+}
+
+.challengeNarrativeTop {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.challengeNarrativeLabel {
+  margin: 0;
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.74rem 1rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #ee2028;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: calc(0.14em + var(--letter-spacing-boost));
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: 0 12px 24px rgba(238, 32, 40, 0.08);
+}
+
+.challengeNarrativeTag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 92px;
+  height: 32px;
+  padding: 0 13px;
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.05);
+  color: rgba(17, 17, 17, 0.5);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: calc(0.12em + var(--letter-spacing-boost));
+  text-transform: uppercase;
+}
+
+.challengeNarrativeHeadline {
+  margin: 0;
+  max-width: 18rem;
+  color: #111111;
+  font-size: 38px;
+  font-weight: 620;
+  letter-spacing: calc(-0.062em + var(--letter-spacing-boost));
+  line-height: 0.96;
+  text-wrap: balance;
+}
+
+.challengeNarrativeLead {
+  margin: 0;
+  max-width: 18.5rem;
+  color: rgba(17, 17, 17, 0.68);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: calc(-0.036em + var(--letter-spacing-boost));
+  line-height: 1.2;
+}
+
+.challengeNarrativeList,
+.challengeStepList {
+  display: grid;
+  gap: 12px;
+}
+
+.challengeNarrativeBulletRow,
+.challengeStepRow {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.challengeNarrativeBullet {
+  width: 11px;
+  height: 11px;
+  margin-top: 0.54em;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ff6267, #ee2028);
+  box-shadow: 0 10px 18px rgba(238, 32, 40, 0.18);
+}
+
+.challengeNarrativeText {
+  margin: 0;
+  color: rgba(18, 18, 18, 0.76);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: calc(-0.034em + var(--letter-spacing-boost));
+  line-height: 1.18;
+}
+
+.challengeStepRow {
+  padding: 14px 15px;
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.84),
+      rgba(255, 250, 250, 0.7)
+    ),
+    rgba(255, 255, 255, 0.72);
+  box-shadow:
+    inset 0 0 0 1px rgba(238, 32, 40, 0.06),
+    0 10px 22px rgba(238, 32, 40, 0.05);
+}
+
+.challengeStepNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(238, 32, 40, 0.12);
+  color: #ee2028;
+  font-size: 0.94rem;
+  font-weight: 700;
+  letter-spacing: calc(-0.05em + var(--letter-spacing-boost));
+  line-height: 1;
+}
+
+.challengeStepText {
+  margin: 0;
+  color: #121212;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: calc(-0.032em + var(--letter-spacing-boost));
+  line-height: 1.16;
+}
+
+.challengeOutcomePanel {
+  grid-column: 1 / -1;
+  grid-row: 2 / 3;
+  display: grid;
+  gap: 12px;
+  padding: 24px 28px 26px;
+  border-radius: 26px;
+  border: 1px solid rgba(238, 32, 40, 0.14);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(255, 248, 248, 0.985)
+    ),
+    #ffffff;
+  box-shadow:
+    0 20px 38px rgba(238, 32, 40, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+  opacity: 0;
+  transform: translateY(24px) scale(0.985);
+  animation: cardEnter 820ms var(--motion-ease)
+    calc(280ms + (var(--stagger) * 140ms)) forwards;
+}
+
+.challengeOutcomeTop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.challengeOutcomeLabel {
+  margin: 0;
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.72rem 1rem;
+  border-radius: 999px;
+  background: rgba(238, 32, 40, 0.08);
+  color: #ee2028;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: calc(0.14em + var(--letter-spacing-boost));
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.challengeOutcomeRule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(238, 32, 40, 0.22),
+    rgba(238, 32, 40, 0)
+  );
+}
+
+.challengeOutcomeText {
+  margin: 0;
+  max-width: 58rem;
+  color: #111111;
+  font-size: 24px;
+  font-weight: 560;
+  letter-spacing: calc(-0.045em + var(--letter-spacing-boost));
+  line-height: 1.14;
+}
+
+.challengeScene {
+  position: relative;
+  grid-column: 2 / 3;
+  min-height: 468px;
+  border-radius: 32px;
+  border: 1px solid rgba(17, 17, 17, 0.06);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.995) 0%,
+    rgba(251, 247, 247, 0.99) 58%,
+    rgba(239, 239, 239, 0.98) 58%,
+    rgba(229, 229, 229, 0.98) 100%
+  );
+  box-shadow:
+    0 26px 48px rgba(18, 18, 18, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+  overflow: hidden;
+  isolation: isolate;
+  opacity: 0;
+  transform: translateY(24px) scale(0.99);
+  animation: cardEnter 860ms var(--motion-ease) 420ms forwards;
+}
+
+.challengeScene::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 42px;
+  width: 360px;
+  height: 176px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(238, 32, 40, 0.08), transparent 72%);
+  transform: translateX(-50%);
+  filter: blur(18px);
+  z-index: 0;
+}
+
+.challengeSceneLabel {
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  margin: 0;
+  padding: 0.72rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #ee2028;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: calc(0.14em + var(--letter-spacing-boost));
+  line-height: 1;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  box-shadow: 0 16px 28px rgba(18, 18, 18, 0.07);
+  z-index: 3;
+}
+
+.challengeCliff {
+  position: absolute;
+  bottom: 0;
+  width: 214px;
+  height: 284px;
+  z-index: 2;
+}
+
+.challengeCliff::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, #d8d8d8 0 72px, transparent 72px),
+    linear-gradient(180deg, transparent 0 72px, #545454 72px, #2f2f2f 100%);
+}
+
+.challengeCliff::after {
+  content: "";
+  position: absolute;
+  top: 70px;
+  width: 80px;
+  height: 214px;
+  background: linear-gradient(180deg, #4d4d4d, #262626);
+}
+
+.challengeCliffLeft {
+  left: 26px;
+  clip-path: polygon(
+    0 0,
+    80% 0,
+    92% 12%,
+    82% 17%,
+    88% 24%,
+    72% 29%,
+    58% 42%,
+    42% 58%,
+    29% 66%,
+    20% 100%,
+    0 100%
+  );
+}
+
+.challengeCliffLeft::after {
+  right: 12px;
+}
+
+.challengeCliffRight {
+  right: 26px;
+  clip-path: polygon(
+    20% 0,
+    100% 0,
+    100% 100%,
+    80% 100%,
+    71% 66%,
+    58% 58%,
+    42% 42%,
+    28% 29%,
+    12% 24%,
+    18% 17%,
+    8% 12%
+  );
+}
+
+.challengeCliffRight::after {
+  left: 12px;
+}
+
+.challengeCliffMarker {
+  position: absolute;
+  top: 24px;
+  color: rgba(17, 17, 17, 0.52);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: calc(0.08em + var(--letter-spacing-boost));
+  text-transform: uppercase;
+}
+
+.challengeCliffLeft .challengeCliffMarker {
+  left: 34px;
+}
+
+.challengeCliffRight .challengeCliffMarker {
+  right: 34px;
+}
+
+.challengeGapShadow {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 188px;
+  height: 264px;
+  background: linear-gradient(
+    180deg,
+    rgba(23, 23, 23, 0),
+    rgba(23, 23, 23, 0.52) 40%,
+    rgba(12, 12, 12, 0.9)
+  );
+  clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%);
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.challengeBridge {
+  position: absolute;
+  left: 50%;
+  top: 266px;
+  width: 344px;
+  height: 28px;
+  background: linear-gradient(180deg, #ff655c, #eb372e);
+  clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
+  transform: translateX(-50%);
+  box-shadow:
+    0 14px 26px rgba(238, 32, 40, 0.24),
+    inset 0 -7px 0 rgba(180, 24, 29, 0.74);
+  z-index: 2;
+}
+
+.challengeBridgeTrack,
+.challengeBridgeGlow {
+  position: absolute;
+  display: block;
+}
+
+.challengeBridgeTrack {
+  left: 22px;
+  right: 22px;
+  top: 10px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.42);
+  z-index: 1;
+}
+
+.challengeBridgeGlow {
+  inset: -8px 12px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.22),
+    transparent 68%
+  );
+  filter: blur(10px);
+}
+
+.challengeMarkerTrail {
+  position: absolute;
+  left: 50%;
+  top: 198px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(-72%);
+  z-index: 3;
+}
+
+.challengeMarkerTrail span {
+  display: block;
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.12);
+}
+
+.challengeMarkerTrail span:nth-child(1) {
+  width: 34px;
+  height: 6px;
+}
+
+.challengeMarkerTrail span:nth-child(2) {
+  width: 24px;
+  height: 5px;
+}
+
+.challengeMarkerTrail span:nth-child(3) {
+  width: 14px;
+  height: 4px;
+}
+
+.challengeMomentumMarker {
+  position: absolute;
+  left: 50%;
+  top: 172px;
+  width: 88px;
+  height: 132px;
+  border-radius: 28px;
+  background: linear-gradient(180deg, #111111, #2f2f2f);
+  transform: translateX(-2%) rotate(11deg);
+  box-shadow:
+    0 22px 34px rgba(17, 17, 17, 0.24),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  z-index: 4;
+}
+
+.challengeMomentumCore,
+.challengeMomentumAccent {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+}
+
+.challengeMomentumCore {
+  left: 26px;
+  top: 26px;
+  width: 24px;
+  height: 74px;
+  background: linear-gradient(180deg, #ffffff, #d8d8d8);
+  box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.04);
+}
+
+.challengeMomentumAccent {
+  left: 52px;
+  top: 18px;
+  width: 12px;
+  height: 88px;
+  background: linear-gradient(180deg, #ff6d63, #ee2028);
+  box-shadow: 0 10px 22px rgba(238, 32, 40, 0.28);
 }
 
 .sections {
@@ -614,7 +1691,11 @@
   border: 1px solid rgba(238, 32, 40, 0.12);
   border-radius: 28px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(255, 248, 248, 0.96)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(255, 248, 248, 0.96)
+    ),
     #ffffff;
   box-shadow:
     0 20px 46px rgba(238, 32, 40, 0.08),
@@ -622,7 +1703,8 @@
   overflow: hidden;
   opacity: 0;
   transform: translateY(24px) scale(0.985);
-  animation: cardEnter 820ms var(--motion-ease) calc(320ms + (var(--stagger) * 140ms)) forwards;
+  animation: cardEnter 820ms var(--motion-ease)
+    calc(320ms + (var(--stagger) * 140ms)) forwards;
 }
 
 .card::after,
@@ -637,7 +1719,8 @@
     transparent 66%
   );
   transform: translateX(-140%);
-  animation: shimmerPass 1100ms var(--motion-ease) calc(560ms + (var(--stagger) * 120ms)) 1;
+  animation: shimmerPass 1100ms var(--motion-ease)
+    calc(560ms + (var(--stagger) * 120ms)) 1;
   pointer-events: none;
 }
 
@@ -670,8 +1753,16 @@
   gap: 22px;
   padding: 30px 32px;
   background:
-    radial-gradient(circle at top right, rgba(238, 32, 40, 0.12), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(255, 246, 246, 0.97)),
+    radial-gradient(
+      circle at top right,
+      rgba(238, 32, 40, 0.12),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(255, 246, 246, 0.97)
+    ),
     #ffffff;
 }
 
@@ -705,7 +1796,11 @@
 .reasonCard {
   gap: 20px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 250, 250, 0.98)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(255, 250, 250, 0.98)
+    ),
     #ffffff;
 }
 
@@ -713,15 +1808,27 @@
   gap: 20px;
   padding: 30px 32px;
   background:
-    radial-gradient(circle at top right, rgba(238, 32, 40, 0.09), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 247, 247, 0.975)),
+    radial-gradient(
+      circle at top right,
+      rgba(238, 32, 40, 0.09),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(255, 247, 247, 0.975)
+    ),
     #ffffff;
 }
 
 .solutionCard {
   gap: 18px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 250, 250, 0.98)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(255, 250, 250, 0.98)
+    ),
     #ffffff;
 }
 
@@ -876,6 +1983,60 @@
   line-height: 1.12;
 }
 
+.solutionCircleList,
+.responsiveSolutionCircleList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+.solutionCircle,
+.responsiveSolutionCircle {
+  aspect-ratio: 1 / 1;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+  padding: 20px 18px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.98), rgba(255, 245, 245, 0.94)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 248, 248, 0.96));
+  box-shadow:
+    inset 0 0 0 1px rgba(238, 32, 40, 0.1),
+    0 16px 34px rgba(238, 32, 40, 0.08);
+  text-align: center;
+}
+
+.solutionCircleNumber,
+.responsiveSolutionCircleNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(238, 32, 40, 0.1);
+  color: #d81d26;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: calc(-0.05em + var(--letter-spacing-boost));
+  line-height: 1;
+}
+
+.solutionCircleText,
+.responsiveSolutionCircleText {
+  margin: 0;
+  color: #121212;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: calc(-0.045em + var(--letter-spacing-boost));
+  line-height: 1.14;
+  text-wrap: balance;
+}
+
 .footer,
 .responsiveFooter {
   position: absolute;
@@ -932,7 +2093,11 @@
   position: relative;
   min-height: 100%;
   background:
-    radial-gradient(circle at top right, rgba(238, 32, 40, 0.08), transparent 34%),
+    radial-gradient(
+      circle at top right,
+      rgba(238, 32, 40, 0.08),
+      transparent 34%
+    ),
     #ffffff;
 }
 
@@ -940,10 +2105,8 @@
   min-height: calc(100dvh - 5px);
   display: flex;
   flex-direction: column;
-  padding:
-    max(28px, env(safe-area-inset-top))
-    max(20px, env(safe-area-inset-right))
-    max(22px, env(safe-area-inset-bottom))
+  padding: max(28px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right)) max(22px, env(safe-area-inset-bottom))
     max(20px, env(safe-area-inset-left));
 }
 
@@ -971,7 +2134,7 @@
 
 .responsiveBrandGhost span {
   color: rgba(238, 32, 40, 0.02);
-  font-size: clamp(3.2rem, 14vw, 5.8rem);
+  font-size: clamp(4rem, 16vw, 7.2rem);
   font-weight: 700;
   letter-spacing: calc(-0.1em + var(--letter-spacing-boost));
   line-height: 0.88;
@@ -998,7 +2161,7 @@
 }
 
 .responsiveBreakthroughCircle {
-  width: min(100%, 272px);
+  width: min(100%, 292px);
   height: auto;
   aspect-ratio: 1;
   margin: 0 auto;
@@ -1007,13 +2170,13 @@
 .responsiveBreakthroughAnchor::before {
   left: 50%;
   top: 50%;
-  width: min(100%, 324px);
-  height: min(100%, 324px);
+  width: min(100%, 344px);
+  height: min(100%, 344px);
   transform: translate(-50%, -50%);
 }
 
 .responsiveBreakthroughCircleInner {
-  width: 74%;
+  width: 76%;
 }
 
 .responsiveBreakthroughCircleLabel {
@@ -1021,27 +2184,31 @@
 }
 
 .responsiveBreakthroughLead {
-  gap: 8px;
+  gap: 16px;
   max-width: 100%;
 }
 
-.responsiveBreakthroughIntroTitle {
-  font-size: clamp(2rem, 8.2vw, 3.1rem);
-  line-height: 0.9;
+.responsiveBreakthroughPreTitle {
+  font-size: clamp(1.72rem, 7.8vw, 2.18rem);
+}
+
+.responsiveBreakthroughHeroTitle {
+  max-width: 100%;
+  font-size: clamp(2.45rem, 10.8vw, 3.55rem);
 }
 
 .responsiveBreakthroughLeadText {
   max-width: 28rem;
-  font-size: clamp(0.98rem, 2.5vw, 1.16rem);
+  font-size: 1rem;
 }
 
 .responsiveBreakthroughCircleStatement {
-  font-size: clamp(1.28rem, 5vw, 1.76rem);
+  font-size: clamp(1.38rem, 5vw, 1.86rem);
 }
 
 .responsiveBreakthroughCircleSupport {
-  max-width: 10.6rem;
-  font-size: 0.84rem;
+  max-width: 12.2rem;
+  font-size: 0.88rem;
 }
 
 .responsiveBreakthroughReasons {
@@ -1050,7 +2217,7 @@
 }
 
 .responsiveBreakthroughReasonsHeader {
-  padding-left: 152px;
+  padding-left: 52px;
 }
 
 .responsiveBreakthroughReasonsLabel {
@@ -1063,20 +2230,32 @@
 
 .responsiveBreakthroughReasonList {
   gap: 14px;
-  padding-left: 0;
+  padding-left: 52px;
+}
+
+.responsiveBreakthroughReasonList::before {
+  left: 17px;
+  top: 44px;
+  bottom: 44px;
+}
+
+.responsiveBreakthroughReasonList::after {
+  left: 12px;
+  width: 10px;
+  height: 10px;
 }
 
 .responsiveBreakthroughReason {
   min-height: unset;
   gap: 10px;
-  margin-left: 18px;
+  margin-left: 0;
   padding: 16px 18px 16px 18px;
   border-radius: 20px;
 }
 
 .responsiveBreakthroughReason::before {
-  left: -18px;
-  width: 18px;
+  left: -34px;
+  width: 34px;
   top: 50%;
   height: 2px;
   clip-path: none;
@@ -1084,7 +2263,7 @@
 }
 
 .responsiveBreakthroughReasonNode {
-  left: -24px;
+  left: -6px;
   width: 10px;
   height: 10px;
   box-shadow:
@@ -1105,15 +2284,15 @@
 
 .responsiveBreakthroughReason::after {
   right: 18px;
-  font-size: 110px;
+  font-size: 88px;
 }
 
 .responsiveBreakthroughReasonTitle {
-  font-size: clamp(1.08rem, 4.2vw, 1.34rem);
+  font-size: clamp(1.06rem, 4vw, 1.28rem);
 }
 
 .responsiveBreakthroughReasonBody {
-  font-size: 0.88rem;
+  font-size: 0.86rem;
 }
 
 .responsiveEyebrow {
@@ -1147,8 +2326,16 @@
   gap: 18px;
   padding: 22px 22px 24px;
   background:
-    radial-gradient(circle at top right, rgba(238, 32, 40, 0.12), transparent 36%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(255, 246, 246, 0.97)),
+    radial-gradient(
+      circle at top right,
+      rgba(238, 32, 40, 0.12),
+      transparent 36%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(255, 246, 246, 0.97)
+    ),
     #ffffff;
 }
 
@@ -1179,20 +2366,36 @@
 
 .responsiveReasonCard {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 250, 250, 0.98)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(255, 250, 250, 0.98)
+    ),
     #ffffff;
 }
 
 .responsiveChallengeCard {
   background:
-    radial-gradient(circle at top right, rgba(238, 32, 40, 0.09), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 247, 247, 0.975)),
+    radial-gradient(
+      circle at top right,
+      rgba(238, 32, 40, 0.09),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(255, 247, 247, 0.975)
+    ),
     #ffffff;
 }
 
 .responsiveSolutionCard {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.995), rgba(255, 250, 250, 0.98)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.995),
+      rgba(255, 250, 250, 0.98)
+    ),
     #ffffff;
 }
 
@@ -1225,6 +2428,34 @@
 }
 
 @media (max-width: 1023px) {
+  .breakthroughContent {
+    --breakthrough-offset: 0cm;
+    --breakthrough-header-extra-offset: 0cm;
+    --breakthrough-circle-offset: 0cm;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .challengeContent {
+    --challenge-intro-x-offset: 0cm;
+    --challenge-pie-x-offset: 0cm;
+    --challenge-pie-y-offset: 0cm;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .breakthroughHeader {
+    width: 420px;
+  }
+
+  .challengeHeader {
+    width: min(100%, 420px);
+  }
+
   .content {
     display: flex;
     flex-direction: column;
@@ -1258,13 +2489,14 @@
   }
 
   .breakthroughLayout {
-    grid-template-columns: 390px minmax(0, 1fr);
-    gap: 46px;
+    width: 100%;
+    grid-template-columns: 432px minmax(0, 1fr);
+    gap: 22px;
   }
 
   .breakthroughCircle {
-    width: 320px;
-    height: 320px;
+    width: 352px;
+    height: 352px;
   }
 
   .breakthroughCircleStatement {
@@ -1279,6 +2511,112 @@
     font-size: 16px;
   }
 
+  .challengeVisualLayout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .challengeScene,
+  .challengeSupportBlockLeft,
+  .challengeSupportBlockRight {
+    grid-column: auto;
+  }
+
+  .challengeSupportBlock {
+    max-width: min(100%, 30rem);
+    gap: 10px;
+    padding: 0;
+    justify-self: start;
+  }
+
+  .challengeSupportText {
+    max-width: 30rem;
+    font-size: 20px;
+  }
+
+  .challengeScene {
+    min-height: 340px;
+  }
+
+  .challengeCliff {
+    width: 164px;
+    height: 194px;
+  }
+
+  .challengeCliff::before {
+    background:
+      linear-gradient(180deg, #d8d8d8 0 48px, transparent 48px),
+      linear-gradient(180deg, transparent 0 48px, #545454 48px, #2f2f2f 100%);
+  }
+
+  .challengeCliff::after {
+    top: 47px;
+    width: 58px;
+    height: 147px;
+  }
+
+  .challengeCliffLeft {
+    left: 22px;
+  }
+
+  .challengeCliffRight {
+    right: 22px;
+  }
+
+  .challengeGapShadow {
+    width: 128px;
+    height: 180px;
+  }
+
+  .challengeBridge {
+    top: 198px;
+    width: 264px;
+    height: 22px;
+  }
+
+  .challengeBridgeTrack {
+    left: 18px;
+    right: 18px;
+    top: 8px;
+  }
+
+  .challengeMarkerTrail {
+    top: 146px;
+    gap: 8px;
+  }
+
+  .challengeMarkerTrail span:nth-child(1) {
+    width: 26px;
+  }
+
+  .challengeMarkerTrail span:nth-child(2) {
+    width: 18px;
+  }
+
+  .challengeMarkerTrail span:nth-child(3) {
+    width: 10px;
+  }
+
+  .challengeMomentumMarker {
+    top: 120px;
+    width: 72px;
+    height: 110px;
+  }
+
+  .challengeMomentumCore {
+    left: 22px;
+    top: 22px;
+    width: 20px;
+    height: 62px;
+  }
+
+  .challengeMomentumAccent {
+    left: 46px;
+    top: 16px;
+    width: 10px;
+    height: 74px;
+  }
+
   .sections {
     align-content: start;
   }
@@ -1286,8 +2624,7 @@
 
 @media (max-width: 767px) {
   .responsiveInner {
-    padding:
-      max(24px, env(safe-area-inset-top))
+    padding: max(24px, env(safe-area-inset-top))
       max(16px, env(safe-area-inset-right))
       max(18px, env(safe-area-inset-bottom))
       max(16px, env(safe-area-inset-left));
@@ -1310,16 +2647,39 @@
   }
 
   .responsiveBreakthroughCircle {
-    width: min(100%, 246px);
+    width: min(100%, 264px);
   }
 
   .responsiveBreakthroughAnchor::before {
-    width: 278px;
-    height: 278px;
+    width: 296px;
+    height: 296px;
   }
 
   .responsiveBreakthroughCircleStatement {
-    font-size: clamp(1.24rem, 6vw, 1.72rem);
+    font-size: clamp(1.24rem, 6vw, 1.78rem);
+  }
+
+  .responsiveBreakthroughPreTitle {
+    font-size: clamp(1.5rem, 7vw, 1.92rem);
+  }
+
+  .responsiveBreakthroughHeroTitle {
+    font-size: clamp(2.28rem, 10vw, 3.2rem);
+    line-height: 0.9;
+  }
+
+  .responsiveBreakthroughLeadBlock {
+    gap: 14px;
+  }
+
+  .responsiveBreakthroughLeadText {
+    font-size: 1rem;
+    line-height: 1.14;
+  }
+
+  .responsiveBreakthroughAnchor::after {
+    width: 56px;
+    left: calc(100% - 6px);
   }
 
   .responsiveCard {
@@ -1337,6 +2697,268 @@
   .responsiveChallengeSupportText,
   .responsiveSolutionText {
     font-size: 0.98rem;
+  }
+
+  .challengeRevealStage {
+    grid-template-rows: auto 1fr auto auto;
+    gap: 14px;
+  }
+
+  .challengeRevealCenter {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 24px;
+    transform: none;
+  }
+
+  .challengeRevealIntro {
+    width: min(100%, 24rem);
+    gap: 16px;
+    transform: none;
+  }
+
+  .challengeRevealTitleWrap {
+    gap: 4px;
+  }
+
+  .challengeRevealKicker {
+    font-size: clamp(1.8rem, 8vw, 2.6rem);
+    line-height: 0.94;
+  }
+
+  .challengeRevealTitle {
+    font-size: clamp(2.9rem, 13vw, 4.6rem);
+    line-height: 0.84;
+  }
+
+  .challengeRevealLeadBlock {
+    gap: 14px;
+    padding: 14px 0;
+  }
+
+  .challengeRevealLeadRule {
+    width: 6px;
+    min-height: 84px;
+  }
+
+  .challengeRevealLead {
+    font-size: 1rem;
+    line-height: 1.18;
+  }
+
+  .challengePieChart {
+    width: min(100%, 340px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .challengePieCore {
+    padding: 64px 54px;
+    gap: 12px;
+    box-shadow:
+      inset 0 0 0 1px rgba(238, 32, 40, 0.08),
+      inset 0 0 0 14px rgba(238, 32, 40, 0.03),
+      0 18px 34px rgba(238, 32, 40, 0.07);
+  }
+
+  .challengePieLabel {
+    padding: 0.66rem 0.92rem;
+    font-size: 0.68rem;
+  }
+
+  .challengePieStatement {
+    font-size: clamp(1.7rem, 8vw, 2.4rem);
+    line-height: 0.92;
+  }
+
+  .challengePieSliceContent {
+    width: 102px;
+    gap: 4px;
+  }
+
+  .challengePieSliceContentOne {
+    width: 100px;
+  }
+
+  .challengePieSliceContentTwo {
+    width: 110px;
+  }
+
+  .challengePieSliceContentThree {
+    width: 96px;
+  }
+
+  .challengePieSliceNumber {
+    min-width: 34px;
+    height: 26px;
+    padding: 0 8px;
+    font-size: 0.78rem;
+  }
+
+  .challengePieSliceTitle {
+    font-size: 0.94rem;
+    line-height: 0.98;
+  }
+
+  .challengePieSliceSupport {
+    font-size: 0.56rem;
+    line-height: 1.08;
+  }
+
+  .challengePieRing {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+      inset 0 0 0 14px rgba(255, 255, 255, 0.04);
+  }
+
+  .responsiveSolutionCircleList {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .responsiveSolutionCircle {
+    width: min(100%, 220px);
+    padding: 18px 18px;
+  }
+
+  .responsiveSolutionCircleText {
+    font-size: 0.96rem;
+    line-height: 1.16;
+  }
+
+  .challengeVisualLayout {
+    gap: 14px;
+  }
+
+  .challengeSupportBlock {
+    gap: 8px;
+  }
+
+  .challengeSupportEyebrow {
+    font-size: 0.68rem;
+  }
+
+  .challengeSupportText {
+    font-size: 1.06rem;
+    line-height: 1.12;
+  }
+
+  .challengeSupportOutcome {
+    font-size: 0.82rem;
+  }
+
+  .challengeScene {
+    min-height: 250px;
+    border-radius: 26px;
+  }
+
+  .challengeScene::before {
+    top: 28px;
+    width: 180px;
+    height: 92px;
+  }
+
+  .challengeSceneLabel {
+    top: 14px;
+    padding: 0.64rem 0.9rem;
+    font-size: 0.68rem;
+  }
+
+  .challengeCliff {
+    width: 112px;
+    height: 142px;
+  }
+
+  .challengeCliff::before {
+    background:
+      linear-gradient(180deg, #d8d8d8 0 34px, transparent 34px),
+      linear-gradient(180deg, transparent 0 34px, #545454 34px, #2f2f2f 100%);
+  }
+
+  .challengeCliff::after {
+    top: 34px;
+    width: 36px;
+    height: 108px;
+  }
+
+  .challengeCliffLeft {
+    left: 8px;
+  }
+
+  .challengeCliffRight {
+    right: 8px;
+  }
+
+  .challengeCliffMarker {
+    top: 10px;
+    font-size: 0.62rem;
+  }
+
+  .challengeCliffLeft .challengeCliffMarker {
+    left: 10px;
+  }
+
+  .challengeCliffRight .challengeCliffMarker {
+    right: 10px;
+  }
+
+  .challengeGapShadow {
+    width: 86px;
+    height: 126px;
+  }
+
+  .challengeBridge {
+    top: 150px;
+    width: 174px;
+    height: 18px;
+  }
+
+  .challengeBridgeTrack {
+    left: 14px;
+    right: 14px;
+    top: 6px;
+  }
+
+  .challengeMarkerTrail {
+    top: 118px;
+    gap: 6px;
+    transform: translateX(-68%);
+  }
+
+  .challengeMarkerTrail span:nth-child(1) {
+    width: 18px;
+    height: 5px;
+  }
+
+  .challengeMarkerTrail span:nth-child(2) {
+    width: 12px;
+    height: 4px;
+  }
+
+  .challengeMarkerTrail span:nth-child(3) {
+    width: 7px;
+    height: 3px;
+  }
+
+  .challengeMomentumMarker {
+    top: 96px;
+    width: 54px;
+    height: 84px;
+    border-radius: 20px;
+  }
+
+  .challengeMomentumCore {
+    left: 17px;
+    top: 18px;
+    width: 16px;
+    height: 46px;
+  }
+
+  .challengeMomentumAccent {
+    left: 35px;
+    top: 13px;
+    width: 8px;
+    height: 56px;
   }
 
   .responsiveSolutionRow {
@@ -1442,15 +3064,142 @@
   }
 }
 
-@keyframes breakthroughReasonEnter {
+@keyframes challengePieChartEnter {
   from {
     opacity: 0;
-    transform: translateX(18px);
+    transform: translate(
+        calc(var(--challenge-pie-x-offset, 2cm) + 0.8cm),
+        calc(34px + var(--challenge-pie-y-offset, 0cm))
+      )
+      scale(0.95);
+  }
+
+  62% {
+    opacity: 1;
+    transform: translate(
+        calc(var(--challenge-pie-x-offset, 2cm) - 0.04cm),
+        calc(16px + var(--challenge-pie-y-offset, 0cm))
+      )
+      scale(1.008);
   }
 
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translate(
+        var(--challenge-pie-x-offset, 2cm),
+        calc(18px + var(--challenge-pie-y-offset, 0cm))
+      )
+      scale(1);
+  }
+}
+
+@keyframes challengePieSliceEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.88) rotate(-8deg);
+    filter: saturate(0.96) brightness(0.98);
+  }
+
+  58% {
+    opacity: 1;
+    transform: scale(1.012) rotate(0.4deg);
+    filter: saturate(1.01) brightness(1.01);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: none;
+  }
+}
+
+@keyframes challengePieSliceContentEnter {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 10px)) scale(0.9);
+  }
+
+  64% {
+    opacity: 1;
+    transform: translate(-50%, calc(-50% - 2px)) scale(1.015);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes breakthroughReasonEnter {
+  from {
+    opacity: 0;
+    transform: translateX(52px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes breakthroughCirclePop {
+  from {
+    opacity: 0;
+    transform: translateY(calc(18px + var(--breakthrough-circle-offset, 0cm)))
+      scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(var(--breakthrough-circle-offset, 0cm)) scale(1);
+  }
+}
+
+@keyframes breakthroughConnectorDraw {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scaleX(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scaleX(1);
+  }
+}
+
+@keyframes breakthroughSpineDraw {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes breakthroughBranchEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scaleX(0.2);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scaleX(1);
+  }
+}
+
+@keyframes breakthroughNodeEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.4);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
   }
 }
 
@@ -1505,15 +3254,32 @@
   .breakthroughAnchor,
   .breakthroughReasons,
   .breakthroughReason,
+  .breakthroughReason::before,
+  .breakthroughReasonNode,
   .responsiveBreakthroughLead,
   .responsiveBreakthroughAnchor,
   .responsiveBreakthroughReasons,
   .responsiveBreakthroughReason,
+  .responsiveBreakthroughReason::before,
+  .responsiveBreakthroughReasonNode,
+  .challengeVisualLayout,
+  .challengeSupportBlock,
+  .challengeNarrativePanel,
+  .challengeNarrativePanel::after,
+  .challengeScene,
+  .challengeOutcomePanel,
+  .challengeRevealStage,
+  .challengePieChart,
+  .challengePieSlice,
   .responsiveCard,
   .responsiveCard::after,
   .responsiveFooter {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .challengePieSlice {
+    transition: none !important;
   }
 }

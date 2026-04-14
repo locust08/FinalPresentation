@@ -131,6 +131,7 @@ export function PresentationPhasesSlide({
       }))
   }, [phaseGroups])
   const [preTitle, heroTitle] = title.split(" / ")
+  const ghostLabel = "TIMELINE"
   const isImageGallery = modalItems.length > 0 && modalItems.every((item) => item.kind === "image")
   const activeGalleryItem =
     isImageGallery && modalItems[activeGalleryIndex]?.kind === "image"
@@ -235,6 +236,14 @@ export function PresentationPhasesSlide({
             <div className={styles.responsiveTopLine} aria-hidden="true" />
 
             <div className={styles.responsiveInner} data-transition-panel>
+              <div
+                className={styles.responsiveBrandGhost}
+                aria-hidden="true"
+                data-transition-content="decor"
+              >
+                <span>{ghostLabel}</span>
+              </div>
+
               <header className={styles.responsiveHeader} data-transition-content="header">
                 <p className={styles.responsiveEyebrow}>Section {sectionNumber}</p>
 
@@ -338,6 +347,13 @@ export function PresentationPhasesSlide({
             >
               <div className={styles.frame}>
                 <div className={styles.topLine} aria-hidden="true" />
+                <div
+                  className={styles.brandGhost}
+                  aria-hidden="true"
+                  data-transition-content="decor"
+                >
+                  <span>{ghostLabel}</span>
+                </div>
 
                 <div className={styles.content} data-transition-panel>
                   <header className={styles.header} data-transition-content="header">

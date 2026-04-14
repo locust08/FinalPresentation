@@ -17,6 +17,87 @@ type PresentationHumanValueSlideProps = {
   title: string
 }
 
+type Differentiator = {
+  id: string
+  title: string
+  support: string
+}
+
+function normalizeSentence(value: string | undefined, fallback: string) {
+  if (!value) {
+    return fallback
+  }
+
+  const trimmed = value.trim()
+
+  if (/[.!?]$/.test(trimmed)) {
+    return trimmed
+  }
+
+  return `${trimmed}.`
+}
+
+function renderHumanValueIcon(index: number, className: string) {
+  switch (index) {
+    case 0:
+      return (
+        <svg
+          aria-hidden="true"
+          className={className}
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2.6"
+          viewBox="0 0 64 64"
+        >
+          <path d="M16 19h32" />
+          <path d="M32 19v24" />
+          <path d="M21 19 13 32h16z" />
+          <path d="M51 32 43 19l-8 13z" />
+          <path d="M21 48h22" />
+        </svg>
+      )
+    case 1:
+      return (
+        <svg
+          aria-hidden="true"
+          className={className}
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2.6"
+          viewBox="0 0 64 64"
+        >
+          <path d="M17 46V18" />
+          <path d="M17 32h16" />
+          <path d="M33 32 47 18" />
+          <path d="M33 32 47 46" />
+          <circle cx="17" cy="18" r="4" />
+          <circle cx="47" cy="18" r="4" />
+          <circle cx="47" cy="46" r="4" />
+        </svg>
+      )
+    default:
+      return (
+        <svg
+          aria-hidden="true"
+          className={className}
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2.6"
+          viewBox="0 0 64 64"
+        >
+          <path d="M32 13 46 18v12c0 11-6.5 19-14 22-7.5-3-14-11-14-22V18z" />
+          <path d="m24 32 5 5 11-11" />
+        </svg>
+      )
+  }
+}
+
 export function PresentationHumanValueSlide({
   lead,
   points,
@@ -30,6 +111,45 @@ export function PresentationHumanValueSlide({
 
   const titleTop = "What Makes Me"
   const titleBottom = "Different from AI"
+
+  const differentiators: Differentiator[] = [
+    {
+      id: "01",
+      title: "Judgement",
+      support: normalizeSentence(
+        points[0],
+        "I bring judgement and responsibility when choices affect the final outcome."
+      ),
+    },
+    {
+      id: "02",
+      title: "Adaptability",
+      support: normalizeSentence(
+        points[1],
+        "I can adjust how I communicate, collaborate, and decide in changing situations."
+      ),
+    },
+    {
+      id: "03",
+      title: "Human Value",
+      support: normalizeSentence(
+        points[2],
+        "Human understanding, flexibility, and trust shape the work beyond pure speed."
+      ),
+    },
+  ]
+
+  const orbitClasses = [
+    styles.orbitNodeUpperLeft,
+    styles.orbitNodeUpperRight,
+    styles.orbitNodeLower,
+  ]
+
+  const responsiveOrbitClasses = [
+    styles.responsiveOrbitNodeUpperLeft,
+    styles.responsiveOrbitNodeUpperRight,
+    styles.responsiveOrbitNodeLower,
+  ]
 
   return (
     <main className={styles.shell}>
@@ -61,35 +181,52 @@ export function PresentationHumanValueSlide({
                 </div>
               </header>
 
-              <ol className={styles.responsivePoints} data-transition-content="main">
-                {points.map((point, index) => (
-                  <li
-                    className={[
-                      styles.responsivePoint,
-                      index === 2 ? styles.responsivePointFeature : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
-                    key={point}
-                    style={{ "--stagger": index } as CSSProperties}
-                  >
-                    <div className={styles.responsivePointTop}>
-                      <span className={styles.responsivePointNumber}>
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <span className={styles.responsivePointLabel}>
-                        {index === 0
-                          ? "Judgement"
-                          : index === 1
-                            ? "Adaptability"
-                            : "Human Value"}
-                      </span>
-                    </div>
+              <section className={styles.responsiveDiagram} data-transition-content="main">
+                <div className={styles.responsiveCoreCluster}>
+                  <div className={styles.responsiveCoreHalo} aria-hidden="true" />
+                  <div className={styles.responsiveCoreHaloSoft} aria-hidden="true" />
 
-                    <p className={styles.responsivePointText}>{point}</p>
-                  </li>
-                ))}
-              </ol>
+                  <div className={styles.responsiveCore}>
+                    <span className={styles.responsiveCoreEyebrow}>Human Edge</span>
+                    <h2 className={styles.responsiveCoreTitle}>Me</h2>
+                    <p className={styles.responsiveCoreText}>
+                      Context, trust, and human judgement shape the work beyond
+                      output alone.
+                    </p>
+                  </div>
+                </div>
+
+                <ol className={styles.responsiveOrbitList}>
+                  {differentiators.map((item, index) => (
+                    <li
+                      className={[
+                        styles.responsiveOrbitNode,
+                        responsiveOrbitClasses[index] ?? "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      key={item.id}
+                      style={
+                        {
+                          "--ring-rotation": `${index * 118 + 16}deg`,
+                          "--stagger": index,
+                        } as CSSProperties
+                      }
+                      >
+                        <div className={styles.responsiveOrbitRing} aria-hidden="true" />
+
+                      <article className={styles.responsiveOrbitCard}>
+                        <div className={styles.responsiveOrbitIconWrap}>
+                          {renderHumanValueIcon(index, styles.responsiveOrbitIcon)}
+                        </div>
+
+                        <h3 className={styles.responsiveOrbitTitle}>{item.title}</h3>
+                        <p className={styles.responsiveOrbitText}>{item.support}</p>
+                      </article>
+                    </li>
+                  ))}
+                </ol>
+              </section>
 
               <footer className={styles.responsiveFooter} data-transition-content="footer">
                 <div className={styles.responsiveFooterLine} aria-hidden="true" />
@@ -141,35 +278,62 @@ export function PresentationHumanValueSlide({
                     </div>
                   </header>
 
-                  <ol className={styles.points} data-transition-content="main">
-                    {points.map((point, index) => (
-                      <li
-                        className={[
-                          styles.point,
-                          index === 2 ? styles.pointFeature : "",
-                        ]
-                          .filter(Boolean)
-                          .join(" ")}
-                        key={point}
-                        style={{ "--stagger": index } as CSSProperties}
-                      >
-                        <div className={styles.pointTop}>
-                          <span className={styles.pointNumber}>
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <span className={styles.pointLabel}>
-                            {index === 0
-                              ? "Judgement"
-                              : index === 1
-                                ? "Adaptability"
-                                : "Human Value"}
-                          </span>
-                        </div>
+                  <section className={styles.diagramPanel} data-transition-content="main">
+                    <svg
+                      aria-hidden="true"
+                      className={styles.diagramLinks}
+                      viewBox="0 0 1040 700"
+                    >
+                      <path d="M520 350C456 292 396 246 312 214" />
+                      <path d="M520 350C584 292 644 246 728 214" />
+                      <path d="M520 350C520 470 520 620 520 772" />
+                    </svg>
 
-                        <p className={styles.pointText}>{point}</p>
-                      </li>
-                    ))}
-                  </ol>
+                    <div className={styles.coreCluster}>
+                      <div className={styles.coreHalo} aria-hidden="true" />
+                      <div className={styles.coreHaloSoft} aria-hidden="true" />
+
+                      <div className={styles.core}>
+                        <span className={styles.coreEyebrow}>Human Edge</span>
+                        <h2 className={styles.coreTitle}>Me</h2>
+                        <p className={styles.coreText}>
+                          Context, trust, and human judgement shape the work
+                          beyond output alone.
+                        </p>
+                      </div>
+                    </div>
+
+                    <ol className={styles.orbitList}>
+                      {differentiators.map((item, index) => (
+                        <li
+                          className={[
+                            styles.orbitNode,
+                            orbitClasses[index] ?? "",
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
+                          key={item.id}
+                          style={
+                            {
+                              "--ring-rotation": `${index * 118 + 16}deg`,
+                              "--stagger": index,
+                            } as CSSProperties
+                          }
+                        >
+                          <div className={styles.orbitRing} aria-hidden="true" />
+
+                          <article className={styles.orbitCard}>
+                            <div className={styles.orbitIconWrap}>
+                              {renderHumanValueIcon(index, styles.orbitIcon)}
+                            </div>
+
+                            <h3 className={styles.orbitTitle}>{item.title}</h3>
+                            <p className={styles.orbitText}>{item.support}</p>
+                          </article>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
                 </div>
 
                 <footer className={styles.footer} data-transition-content="footer">

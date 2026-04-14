@@ -37,6 +37,10 @@ const SHARED_SHAPE_CLIP_PATH =
 const SHARED_PANEL_CLIP_PATH =
   "polygon(3% 0%, 97% 0%, 100% 8%, 100% 92%, 97% 100%, 3% 100%, 0% 92%, 0% 8%)"
 const PHASES_INTERSTITIAL_SLIDE_ID = "project-phases"
+const CHALLENGE_REVEAL_SLIDE_ID = "biggest-challenge-content"
+const MAX_CHALLENGE_REVEAL_STEP = 3
+const ADVICE_REVEAL_SLIDE_ID = "advice-to-future-intern"
+const MAX_ADVICE_REVEAL_STEP = 1
 
 type SharedElementKind = "shape" | "panel"
 
@@ -93,7 +97,8 @@ function toSharedMorphRect(
   kind: SharedElementKind
 ): SharedMorphRect {
   return {
-    clipPath: kind === "shape" ? SHARED_SHAPE_CLIP_PATH : SHARED_PANEL_CLIP_PATH,
+    clipPath:
+      kind === "shape" ? SHARED_SHAPE_CLIP_PATH : SHARED_PANEL_CLIP_PATH,
     height: elementRect.height,
     left: elementRect.left - containerRect.left,
     top: elementRect.top - containerRect.top,
@@ -101,15 +106,18 @@ function toSharedMorphRect(
   }
 }
 
-const SLIDES = [
-  ...BASE_SLIDES,
-  ...SECTION_TITLES.flatMap((title, index) => {
+function getSlides(challengeRevealStep: number, adviceRevealStep: number) {
+  return [
+    ...BASE_SLIDES,
+    ...SECTION_TITLES.flatMap((title, index) => {
     const sectionNumber = String(index + 1).padStart(2, "0")
     const openerSlide = {
       id: `section-opener-${sectionNumber}`,
       label: title,
       theme: "dark" as const,
-      render: () => <SectionOpenerSlide sectionNumber={sectionNumber} title={title} />,
+      render: () => (
+        <SectionOpenerSlide sectionNumber={sectionNumber} title={title} />
+      ),
     }
 
     if (index === 0) {
@@ -265,29 +273,29 @@ const SLIDES = [
           label: "My Most Exciting Moment",
           theme: "light" as const,
           render: () => (
-              <PresentationStorySlide
-                lead="A breakthrough during the internship that turned repeated trial and error into a moment of real progress."
-                sectionNumber="03"
-                sections={[
-                  {
-                    label: "Exciting Moment",
-                    body: [
-                      "AI generated what I want",
-                      "After many wrong results and repeated testing, that moment felt truly rewarding.",
-                    ],
-                  },
-                  {
-                    label: "Why It Mattered",
-                    body: [
-                      "It showed my prompting and testing were improving.",
-                      "It proved the effort was paying off.",
-                      "It gave me confidence to keep refining the work.",
-                    ],
-                  },
-                ]}
-                title="My Most Exciting Moment"
-                variant="breakthrough"
-              />
+            <PresentationStorySlide
+              lead="A breakthrough that turned repeated trial and error into visible progress."
+              sectionNumber="03"
+              sections={[
+                {
+                  label: "Exciting Moment",
+                  body: [
+                    "AI generated what I want",
+                    "After many wrong results and repeated testing, that moment felt truly rewarding.",
+                  ],
+                },
+                {
+                  label: "Why It Mattered",
+                  body: [
+                    "It showed my prompting and testing were improving.",
+                    "It proved the effort was paying off.",
+                    "It gave me confidence to keep refining the work.",
+                  ],
+                },
+              ]}
+              title="My Most Exciting Moment"
+              variant="breakthrough"
+            />
           ),
         },
       ]
@@ -301,30 +309,31 @@ const SLIDES = [
           label: "Biggest Challenge & How to Overcome",
           theme: "light" as const,
           render: () => (
-              <PresentationStorySlide
-                lead="One of the toughest parts of the internship was learning how to choose the right tools and build a workflow that actually worked."
-                sectionNumber="04"
-                sections={[
-                  {
-                    label: "Biggest Challenge",
-                    body: [
-                      "Figuring out the right tools and workflow was the hardest part.",
-                      "Some outputs looked promising at first, but did not really work in practice.",
-                      "It was stressful because I had to learn fast and still produce something useful.",
-                    ],
-                  },
-                  {
-                    label: "How to Overcome",
-                    body: [
-                      "I tested things step by step and compared the results properly.",
-                      "I started asking questions earlier and improved the workflow each time.",
-                      "That process made me more adaptable, organised, and confident.",
-                    ],
-                  },
-                ]}
-                title="Biggest Challenge & How to Overcome"
-                variant="challenge"
-              />
+            <PresentationStorySlide
+              challengeRevealStep={challengeRevealStep}
+              lead="One of the toughest parts of the internship was learning how to choose the right tools and build a workflow that actually worked."
+              sectionNumber="04"
+              sections={[
+                {
+                  label: "Biggest Challenge",
+                  body: [
+                    "Figuring out the right tools and workflow",
+                    "Some outputs looked promising at first, but did not really work in practice.",
+                    "It was stressful because I had to learn fast and still produce something useful.",
+                  ],
+                },
+                {
+                  label: "How to Overcome",
+                  body: [
+                    "I tested things step by step and compared the results properly.",
+                    "I started asking questions earlier and improved the workflow each time.",
+                    "That process made me more adaptable, organised, and confident.",
+                  ],
+                },
+              ]}
+              title="Biggest Challenge & How to Overcome"
+              variant="challenge"
+            />
           ),
         },
       ]
@@ -377,7 +386,7 @@ const SLIDES = [
               points={[
                 "AI can generate faster, but I bring judgement and responsibility.",
                 "I can adapt, communicate, and make more careful decisions.",
-                "What makes me different is human understanding, flexibility, and trust.",
+                "Human understanding, flexibility, and trust.",
               ]}
               sectionNumber="06"
               title="What Makes Me Different from AI"
@@ -403,6 +412,7 @@ const SLIDES = [
                   "Work Smart Not Hard",
                 ],
               }}
+              quoteReveal={adviceRevealStep > 0}
               sectionNumber="06"
               title="Advice to My Future Junior Intern"
             />
@@ -433,24 +443,27 @@ const SLIDES = [
       ]
     }
 
-    return [openerSlide]
-  }),
-  {
-    id: "thank-you",
-    label: "Thank You",
-    theme: "dark" as const,
-    render: () => <SectionOpenerSlide sectionNumber="" title="Thank You" />,
-  },
-].map((slide, index) => ({
+      return [openerSlide]
+    }),
+    {
+      id: "thank-you",
+      label: "Thank You",
+      theme: "dark" as const,
+      render: () => <SectionOpenerSlide sectionNumber="" title="Thank You" />,
+    },
+  ].map((slide, index) => ({
     ...slide,
     shortLabel: `Slide ${index + 1}`,
   }))
+}
 
 export function PresentationDeck() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [showControls, setShowControls] = useState(false)
   const [isResponsiveViewport, setIsResponsiveViewport] = useState(false)
   const [showPhasesInterstitial, setShowPhasesInterstitial] = useState(false)
+  const [challengeRevealStep, setChallengeRevealStep] = useState(0)
+  const [adviceRevealStep, setAdviceRevealStep] = useState(0)
   const [sharedMorphTransition, setSharedMorphTransition] =
     useState<SharedMorphTransition | null>(null)
   const deckRef = useRef<HTMLDivElement | null>(null)
@@ -460,10 +473,14 @@ export function PresentationDeck() {
   const sharedTransitionRevealTimerRef = useRef<number | null>(null)
   const sharedTransitionFinishTimerRef = useRef<number | null>(null)
   const touchStartRef = useRef<{ x: number; y: number } | null>(null)
+  const slides = useMemo(
+    () => getSlides(challengeRevealStep, adviceRevealStep),
+    [adviceRevealStep, challengeRevealStep]
+  )
 
-  const currentSlide = SLIDES[currentIndex]
+  const currentSlide = slides[currentIndex]
   const visibleSlide = sharedMorphTransition
-    ? SLIDES[sharedMorphTransition.toIndex]
+    ? slides[sharedMorphTransition.toIndex]
     : currentSlide
   const isPhasesInterstitialActive =
     currentSlide.id === PHASES_INTERSTITIAL_SLIDE_ID &&
@@ -488,8 +505,12 @@ export function PresentationDeck() {
     return [
       styles.controls,
       showControls ? styles.controlsVisible : "",
-      visibleSlide.id === "product-showcase-runtime" ? styles.controlsHidden : "",
-      visibleSlide.theme === "dark" ? styles.controlsDark : styles.controlsLight,
+      visibleSlide.id === "product-showcase-runtime"
+        ? styles.controlsHidden
+        : "",
+      visibleSlide.theme === "dark"
+        ? styles.controlsDark
+        : styles.controlsLight,
     ]
       .filter(Boolean)
       .join(" ")
@@ -539,17 +560,72 @@ export function PresentationDeck() {
       return
     }
 
-    const clampedIndex = Math.max(0, Math.min(nextIndex, SLIDES.length - 1))
+    const clampedIndex = Math.max(0, Math.min(nextIndex, slides.length - 1))
     const isOnPhasesSlide = currentSlide.id === PHASES_INTERSTITIAL_SLIDE_ID
+    const isOnChallengeRevealSlide =
+      currentSlide.id === CHALLENGE_REVEAL_SLIDE_ID
+    const isOnAdviceRevealSlide = currentSlide.id === ADVICE_REVEAL_SLIDE_ID
 
-    if (isOnPhasesSlide && showPhasesInterstitial && clampedIndex === currentIndex - 1) {
+    if (
+      isOnPhasesSlide &&
+      showPhasesInterstitial &&
+      clampedIndex === currentIndex - 1
+    ) {
       setShowPhasesInterstitial(false)
       revealControls()
       return
     }
 
-    if (isOnPhasesSlide && !showPhasesInterstitial && clampedIndex === currentIndex + 1) {
+    if (
+      isOnPhasesSlide &&
+      !showPhasesInterstitial &&
+      clampedIndex === currentIndex + 1
+    ) {
       setShowPhasesInterstitial(true)
+      revealControls()
+      return
+    }
+
+    if (
+      isOnChallengeRevealSlide &&
+      challengeRevealStep > 0 &&
+      clampedIndex === currentIndex - 1
+    ) {
+      setChallengeRevealStep((previousStep) => Math.max(0, previousStep - 1))
+      revealControls()
+      return
+    }
+
+    if (
+      isOnChallengeRevealSlide &&
+      challengeRevealStep < MAX_CHALLENGE_REVEAL_STEP &&
+      clampedIndex === currentIndex + 1
+    ) {
+      setChallengeRevealStep((previousStep) =>
+        Math.min(MAX_CHALLENGE_REVEAL_STEP, previousStep + 1)
+      )
+      revealControls()
+      return
+    }
+
+    if (
+      isOnAdviceRevealSlide &&
+      adviceRevealStep > 0 &&
+      clampedIndex === currentIndex - 1
+    ) {
+      setAdviceRevealStep((previousStep) => Math.max(0, previousStep - 1))
+      revealControls()
+      return
+    }
+
+    if (
+      isOnAdviceRevealSlide &&
+      adviceRevealStep < MAX_ADVICE_REVEAL_STEP &&
+      clampedIndex === currentIndex + 1
+    ) {
+      setAdviceRevealStep((previousStep) =>
+        Math.min(MAX_ADVICE_REVEAL_STEP, previousStep + 1)
+      )
       revealControls()
       return
     }
@@ -619,12 +695,16 @@ export function PresentationDeck() {
       return
     }
 
-    const fromSlide = SLIDES[sharedMorphTransition.fromIndex]
-    const toSlide = SLIDES[sharedMorphTransition.toIndex]
+    const fromSlide = slides[sharedMorphTransition.fromIndex]
+    const toSlide = slides[sharedMorphTransition.toIndex]
     const fromIsOpener = isSectionOpenerSlide(fromSlide.id)
     const toIsOpener = isSectionOpenerSlide(toSlide.id)
-    const sourceSelector = fromIsOpener ? "[data-transition-shape]" : "[data-transition-panel]"
-    const targetSelector = toIsOpener ? "[data-transition-shape]" : "[data-transition-panel]"
+    const sourceSelector = fromIsOpener
+      ? "[data-transition-shape]"
+      : "[data-transition-panel]"
+    const targetSelector = toIsOpener
+      ? "[data-transition-shape]"
+      : "[data-transition-panel]"
     const sourceKind: SharedElementKind = fromIsOpener ? "shape" : "panel"
     const targetKind: SharedElementKind = toIsOpener ? "shape" : "panel"
     const sourceElement = fromElement.querySelector<HTMLElement>(sourceSelector)
@@ -735,7 +815,10 @@ export function PresentationDeck() {
   }, [currentIndex, sharedMorphTransition])
 
   useEffect(() => {
-    if (currentSlide.id !== PHASES_INTERSTITIAL_SLIDE_ID && showPhasesInterstitial) {
+    if (
+      currentSlide.id !== PHASES_INTERSTITIAL_SLIDE_ID &&
+      showPhasesInterstitial
+    ) {
       setShowPhasesInterstitial(false)
     }
   }, [currentSlide.id, showPhasesInterstitial])
@@ -751,8 +834,12 @@ export function PresentationDeck() {
   const sharedMorphClassName = useMemo(() => {
     return [
       styles.sharedMorph,
-      sharedMorphTransition?.direction === "backward" ? styles.sharedMorphBackward : "",
-      sharedMorphTransition?.stage === "reveal" ? styles.sharedMorphSettled : "",
+      sharedMorphTransition?.direction === "backward"
+        ? styles.sharedMorphBackward
+        : "",
+      sharedMorphTransition?.stage === "reveal"
+        ? styles.sharedMorphSettled
+        : "",
     ]
       .filter(Boolean)
       .join(" ")
@@ -762,8 +849,12 @@ export function PresentationDeck() {
     return [
       styles.slideStage,
       sharedMorphTransition ? styles.slideStageTransitioning : "",
-      sharedMorphTransition?.direction === "forward" ? styles.slideStageForward : "",
-      sharedMorphTransition?.direction === "backward" ? styles.slideStageBackward : "",
+      sharedMorphTransition?.direction === "forward"
+        ? styles.slideStageForward
+        : "",
+      sharedMorphTransition?.direction === "backward"
+        ? styles.slideStageBackward
+        : "",
       sharedMorphTransition?.stage === "reveal" ? styles.slideStageReveal : "",
     ]
       .filter(Boolean)
@@ -799,7 +890,10 @@ export function PresentationDeck() {
         const deltaX = touch.clientX - start.x
         const deltaY = touch.clientY - start.y
 
-        if (Math.abs(deltaX) < SLIDE_SWIPE_DISTANCE || Math.abs(deltaX) <= Math.abs(deltaY)) {
+        if (
+          Math.abs(deltaX) < SLIDE_SWIPE_DISTANCE ||
+          Math.abs(deltaX) <= Math.abs(deltaY)
+        ) {
           return
         }
 
@@ -839,12 +933,18 @@ export function PresentationDeck() {
       <div className={sharedTransitionClassName}>
         {sharedMorphTransition ? (
           <>
-            <div className={[styles.slideLayer, styles.slideLayerTo].join(" ")} ref={transitionToRef}>
-              {SLIDES[sharedMorphTransition.toIndex].render()}
+            <div
+              className={[styles.slideLayer, styles.slideLayerTo].join(" ")}
+              ref={transitionToRef}
+            >
+              {slides[sharedMorphTransition.toIndex].render()}
             </div>
 
-            <div className={[styles.slideLayer, styles.slideLayerFrom].join(" ")} ref={transitionFromRef}>
-              {SLIDES[sharedMorphTransition.fromIndex].render()}
+            <div
+              className={[styles.slideLayer, styles.slideLayerFrom].join(" ")}
+              ref={transitionFromRef}
+            >
+              {slides[sharedMorphTransition.fromIndex].render()}
             </div>
 
             {sharedMorphTransition.overlayRect ? (
@@ -922,7 +1022,7 @@ export function PresentationDeck() {
         <button
           aria-label="Next slide"
           className={styles.controlButton}
-          disabled={currentIndex === SLIDES.length - 1}
+          disabled={currentIndex === slides.length - 1}
           onClick={() => goToSlide(currentIndex + 1)}
           type="button"
         >

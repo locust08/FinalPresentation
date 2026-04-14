@@ -16,6 +16,84 @@ type PresentationConclusionSlideProps = {
   sectionNumber: string
 }
 
+function renderConclusionIcon(index: number, className: string) {
+  switch (index) {
+    case 0:
+      return (
+        <svg
+          aria-hidden="true"
+          className={className}
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3"
+          viewBox="0 0 64 64"
+        >
+          <path d="M8 34 20 22h24l12 12" />
+          <path d="M12 30h40" />
+          <circle cx="32" cy="31" r="8" />
+          <path d="M18 22l-4-8" />
+          <path d="M25 20l-2-10" />
+          <path d="M32 19V8" />
+          <path d="M39 20l2-10" />
+          <path d="M46 22l4-8" />
+        </svg>
+      )
+    case 1:
+      return (
+        <svg
+          aria-hidden="true"
+          className={className}
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3"
+          viewBox="0 0 64 64"
+        >
+          <circle cx="16" cy="11" r="4.5" />
+          <path d="M12 28l7-9 8 5" />
+          <path d="M15 28l-6 11" />
+          <path d="M23 31l7 1" />
+          <path d="M21 23l-1 12" />
+          <path d="M20 35l-6 11" />
+          <path d="M21 35l9 11" />
+          <path d="M7 49V40h8v9z" />
+          <path d="M20 49V31h9v18z" />
+          <path d="M34 49V24h9v25z" />
+          <path d="M48 49V14h9v35z" />
+          <path d="M34 18l18-12" />
+          <path d="M45 6h7v7" />
+        </svg>
+      )
+    default:
+      return (
+        <svg
+          aria-hidden="true"
+          className={className}
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3"
+          viewBox="0 0 64 64"
+        >
+          <path d="M20 44V18a15 15 0 0 1 30 0" />
+          <path d="M50 18c0 6-2 11-4 15" />
+          <path d="M22 45h26v7H22z" />
+          <path d="M24 52l2 4h18l2-4" />
+          <path d="M30 56v4h10v-4" />
+          <circle cx="30" cy="22" r="5" />
+          <path d="M30 27v11" />
+          <path d="M30 29h18" />
+          <rect height="14" rx="3" width="6" x="44" y="22" />
+          <path d="M50 24h2a5 5 0 0 1 0 10h-2" />
+        </svg>
+      )
+  }
+}
+
 export function PresentationConclusionSlide({
   lead,
   points,
@@ -67,13 +145,16 @@ export function PresentationConclusionSlide({
                       .join(" ")}
                     key={point}
                     style={{ "--stagger": index } as CSSProperties}
-                  >
-                    <div className={styles.responsiveTakeawayTop}>
-                      <span className={styles.responsiveTakeawayNumber}>
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <span className={styles.responsiveTakeawayLabel}>
-                        {index === 0
+                    >
+                      <div className={styles.responsiveTakeawayTop}>
+                        <span className={styles.responsiveTakeawayNumber}>
+                          {renderConclusionIcon(
+                            index,
+                            styles.responsiveTakeawayIcon
+                          )}
+                        </span>
+                        <span className={styles.responsiveTakeawayLabel}>
+                          {index === 0
                           ? "Perspective"
                           : index === 1
                             ? "Growth"
@@ -150,7 +231,7 @@ export function PresentationConclusionSlide({
                       >
                         <div className={styles.takeawayTop}>
                           <span className={styles.takeawayNumber}>
-                            {String(index + 1).padStart(2, "0")}
+                            {renderConclusionIcon(index, styles.takeawayIcon)}
                           </span>
                           <span className={styles.takeawayLabel}>
                             {index === 0
