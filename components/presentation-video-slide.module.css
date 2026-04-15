@@ -1,0 +1,55 @@
+.shell {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.08), transparent 22%),
+    linear-gradient(180deg, #080808, #000000);
+}
+
+.frameWrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 32px;
+  background: #020202;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 28px 72px rgba(0, 0, 0, 0.34);
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 30%),
+    #000000;
+}
+
+@media (max-width: 1023px) {
+  .shell {
+    padding: 16px;
+  }
+
+  .frameWrap {
+    border-radius: 26px;
+  }
+}
+
+@media (max-width: 767px) {
+  .shell {
+    padding:
+      max(10px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right))
+      max(10px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
+  }
+
+  .frameWrap {
+    border-radius: 18px;
+  }
+}

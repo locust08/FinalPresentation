@@ -17,8 +17,7 @@ import { PresentationInitialExpectationSlide } from "@/components/presentation-i
 import { PresentationHumanValueSlide } from "@/components/presentation-human-value-slide"
 import { PresentationLocusReasonsSlide } from "@/components/presentation-locus-reasons-slide"
 import { PresentationOverviewSlide } from "@/components/presentation-overview-slide"
-import { PresentationEmbeddedWebsiteSlide } from "@/components/presentation-embedded-website-slide"
-import { PresentationShowcasePlaceholderSlide } from "@/components/presentation-showcase-placeholder-slide"
+import { PresentationVideoSlide } from "@/components/presentation-video-slide"
 import { SECTION_TITLES } from "@/components/presentation-sections"
 import { PresentationStorySlide } from "@/components/presentation-story-slide"
 import { SectionOpenerSlide } from "@/components/section-opener-slide"
@@ -347,10 +346,9 @@ function getSlides(challengeRevealStep: number, adviceRevealStep: number) {
           label: "Product Showcase Runtime",
           theme: "light" as const,
           render: () => (
-            <PresentationEmbeddedWebsiteSlide
-              musicSrc="/audio/fireplace-ambience.mp3"
-              src="https://project1-three-ashy.vercel.app/en"
-              title="Thibault Guignand portfolio runtime"
+            <PresentationVideoSlide
+              title="Product showcase video"
+              videoSrc="/videos/slide-14/outputs.mp4"
             />
           ),
         },
@@ -429,14 +427,9 @@ function getSlides(challengeRevealStep: number, adviceRevealStep: number) {
           label: "My Internship & My Future",
           theme: "light" as const,
           render: () => (
-            <PresentationShowcasePlaceholderSlide
-              caption="Internship Reflection Video"
-              description="Final reflection video covering my internship experience and the direction I want to pursue next."
-              eyebrow="Future Reflection"
-              frameLabel="Reflection Media"
-              mediaFormat="landscape"
-              tags={["Reflection", "Presentation", "Future Direction"]}
+            <PresentationVideoSlide
               title="My Internship & My Future"
+              videoSrc="/videos/slide-20/fp-video.mp4"
             />
           ),
         },
